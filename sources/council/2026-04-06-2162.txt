@@ -1,0 +1,375 @@
+                TOWN OF MOUNT PLEASANT, SC
+               MOUNT PLEASANT TOWN COUNCIL
+                     Special Council Meeting
+                      Monday, April 6, 2026
+                           12:30 p.m.
+              Municipal Complex, Council Chambers
+         100 Ann Edwards Lane, Mount Pleasant, SC 29464
+
+                                MINUTES
+
+                   Click here to listen to the recording
+
+1. Call to Order
+Mayor Will Haynie called the Special Town Council Meeting to order on
+Monday, April 6, 2026 at 12:41 p.m. Council Members Brownstein,
+Whitaker, Hyatt, Chapman, Rambo, Tinkey, Crosby and Iacofano were
+all present. The Mayor noted that Council Members had been engaged
+in departmental budget reviews throughout the day in addition to the
+regular business items on the agenda.
+
+2. Public Comments
+Mayor Haynie opened the floor for public comment, requesting that
+speakers provide their name and address and observe the two-and-a-
+half-minute time limit.
+Bob Adams stated that he had previously spoken in favor of the
+wetlands ordinance at the March 10 Town Council meeting. He returned
+to identify what he considered a drafting deficiency in the current
+language. He explained that the Supreme Court's decision in Sackett v.
+EPA limits the Clean Water Act to wetlands with a continuous surface
+connection to federally regulated water bodies, and that the proposed
+ordinance in Section 155.054(B)1 intends to cover areas not protected
+by that Act. However, he argued that the draft's references to "vernal
+pools and seasonal wet surface depressions" are limited to temporary
+bodies of water, leaving permanent wetlands unprotected and potentially
+subject to fill and development. He recommended amending Sections
+(B)1 and (B)3 to replace the existing phrases with broader language,
+such as "wetlands and other bodies of water fed by water sources not
+protected by the Clean Water Act" and "buffer to wetlands and other
+bodies of water defined in (B)1," respectively.
+                                                       Special Town Council Meeting
+                                                                       April 6, 2026
+                                                                      Page 2 of 22
+
+Lisa Schnipke expressed support for the ordinance, noting that wetland
+protections provide community resiliency. She emphasized that
+alterations to private property, including wetland fill or destruction,
+impact neighboring properties. She also asked that Town Council
+consider the potential for microplastics runoff from artificial turf at Gary
+Santos Park into nearby wetlands.
+Susie Carlson, attorney with the Southern Environmental Law Center
+and a Mount Pleasant resident, expressed support for the ordinance,
+citing increasing risks from sea level rise and flooding. She urged
+Council to keep the exceptions in the ordinance narrowly tailored,
+warning that broader exceptions — such as those covering home
+additions — could lead to cumulative and significant wetland loss over
+time and allow development regardless of project size or impact.
+Harriet Parker, Director of Development Stewardship at Charleston
+Waterkeeper, spoke in favor of Ordinance 26022. She described
+wetlands as critical infrastructure that filters pollution, stores floodwater,
+and provides habitat at no cost. She characterized the ordinance as a
+thoughtful, locally developed approach to protecting wetlands that lack
+state and federal protections and stated that Charleston Waterkeeper
+supports the ordinance as written.
+Michael Ramsey, a Charleston County resident, asked Council to
+consider carving out existing single-family lots and existing residential
+homes from the ordinance, while expressing understanding that the
+ordinance would make sense for new development and large
+developments.
+There being no additional speakers, Mayor Haynie closed public
+comment.
+3. Final Reading: An Ordinance to amend Chapter 155, of the Mount
+Pleasant Code of Ordinances, specifically modifying Chapter
+155.054, Greenspace Preservation and Protection Plan, and
+Environmental Guidelines for Land Development. This Ordinance
+establishes developmental standards for the environmental
+protection of isolated non-jurisdictional wetlands, Ord. No. 26022
+(Item listed to allow for amendments. Final reading anticipated at
+April regular Town Council Meeting)
+
+Mayor Haynie clarified for the record that although the item was listed as
+a final reading, Council had agreed in advance to use this special
+meeting to consider and vote on amendments, with final reading
+                                                   Special Town Council Meeting
+                                                                   April 6, 2026
+                                                                  Page 3 of 22
+
+anticipated at the regular Town Council meeting the following Tuesday,
+April 14.
+Procedural Motion
+Legal Counsel David Pagliarini advised that the preferred procedural
+approach was to move for final approval, vote on any amendments, but
+withhold the final approval vote — leaving the item open for any
+additional amendments or discussion at the regular meeting.
+    Council Member John Iacofano moved for final reading and for the
+    item to be taken to the next council meeting, with the current
+    meeting limited to discussion and possible action on amendments.
+    The motion was seconded by Council Member Chapman.
+Mayor Haynie provided context for the ordinance, noting that it would
+add Section 155.055 to the existing Chapter 155 Land Development
+Regulations, which is part of the Greenspace Preservation and
+Protection Plan. He emphasized that the ordinance was not a new
+chapter but an amendment to and addition within an existing framework.
+The Mayor reflected on the more than one year of public process, citing
+coverage in the news media as early as March 31, 2025, and
+referencing the Town of Bluffton's loss of 500 acres of wetlands as a
+cautionary example. He stated that resiliency issues cannot wait, as lost
+wetlands cannot be recovered. He noted that the ordinance had been
+reviewed by the Flood Resilience Committee, the Planning Committee,
+the Police, Judicial and Legal Committee, the Planning Commission, and
+the Green Commission before arriving at Town Council.
+                                                   Special Town Council Meeting
+                                                                   April 6, 2026
+                                                                  Page 4 of 22
+
+
+
+
+Staff Presentation
+Kevin Mitchell presented an overview of the ordinance and its
+implementation tools. He noted that the ordinance applies to non-
+jurisdictional, isolated wetlands — those not covered under Army Corps
+of Engineers regulations — and that determinations of jurisdictional
+status would require a wetlands professional with a minimum of five
+years of field experience using the 1987 Army Corps Federal Manual
+and the appropriate regional data sheet. The ordinance would apply to
+all subdivisions and single-family activity. A buffer averaging 10 feet,
+                                                      Special Town Council Meeting
+                                                                      April 6, 2026
+                                                                     Page 5 of 22
+
+with a minimum of 5 feet and a maximum of 20 feet, would be required
+around isolated wetlands, with the Planning Commission having
+authority to increase the buffer width when deemed necessary for larger
+or more impactful developments.
+Regarding exemptions, Mr. Mitchell described the three-part criteria that
+would exempt a property from requiring a wetlands professional: (1) the
+owner submits an affidavit affirming no known knowledge of isolated
+wetlands or previous delineations on their property; (2) the town's GIS
+mapping tool shows no indication of suspected wetlands; and (3) the
+proposal does not increase density on the property. He noted this
+framework was modeled closely on Bluffton's ordinance.
+Environmental Manager Maeve Gimbert presented the GIS mapping tool
+used to identify potential isolated wetland areas. The tool layers three
+data sources: the National Wetland Inventory (US Fish and Wildlife,
+2011), hydric soil data (USDA National Resources Conservation
+Service), and a sink/depression layer developed by the town's GIS team
+using 2025 topography data. Ms. Gimbert explained that hydric soil and
+depressional sinks represent two of the three primary wetland indicators
+under the Army Corps manual, with the third — hydrophilic vegetation —
+not yet available as a data layer. Stormwater ponds were removed from
+the tool to reduce confusion, as they are not classified as wetlands. The
+combined layer covers just under nine percent of the town. She noted
+that the tool is used as an internal staff tool to flag properties for closer
+review, not as a hard determination of wetland presence.
+Special Town Council Meeting
+                April 6, 2026
+               Page 6 of 22
+Special Town Council Meeting
+                April 6, 2026
+               Page 7 of 22
+Special Town Council Meeting
+                April 6, 2026
+               Page 8 of 22
+Special Town Council Meeting
+                April 6, 2026
+               Page 9 of 22
+Special Town Council Meeting
+                April 6, 2026
+              Page 10 of 22
+Special Town Council Meeting
+                April 6, 2026
+              Page 11 of 22
+Special Town Council Meeting
+                April 6, 2026
+              Page 12 of 22
+Special Town Council Meeting
+                April 6, 2026
+              Page 13 of 22
+Special Town Council Meeting
+                April 6, 2026
+              Page 14 of 22
+Special Town Council Meeting
+                April 6, 2026
+              Page 15 of 22
+Special Town Council Meeting
+                April 6, 2026
+              Page 16 of 22
+Special Town Council Meeting
+                April 6, 2026
+              Page 17 of 22
+                                                    Special Town Council Meeting
+                                                                    April 6, 2026
+                                                                  Page 18 of 22
+
+
+
+
+Several Council Members asked clarifying questions about the practical
+application of the tool. Mr. Mitchell confirmed that staff would exercise
+judgment — including field visits — before requiring a property owner to
+hire a wetlands professional, and that a blue dot on the map alone would
+not automatically trigger that requirement. He confirmed that interior
+renovations not involving land disturbance would not be subject to the
+ordinance. Council Member Brownstein asked about the cost of a
+wetland delineation, and Mr. Mitchell estimated a range of approximately
+$1,500 to $2,000 for an initial site visit and data collection.
+Mr. Mitchell also presented a slide clarifying the roles and
+responsibilities under the ordinance: the Planning Commission reviews
+and decides on subdivision requests and holds authority to increase
+buffer widths; property owners are responsible for disclosing historical
+knowledge, employing wetlands professionals (consistent with existing
+practices for stormwater and tree removal compliance), and ensuring
+long-term protection of isolated wetlands; and staff administers permits,
+uses the GIS tool, ensures design compliance, and investigates
+unpermitted impacts.
+Council Member Iacofano raised concerns about the visual complexity of
+the GIS map, particularly regarding random or isolated data points that
+may appear on residential properties, and expressed a preference for
+clearer, more black-and-white guidance for residents and staff. Ms.
+Gimbert clarified that data points appearing on roads or under structures
+are likely the result of the parent soil material or a closed topographic
+                                                      Special Town Council Meeting
+                                                                      April 6, 2026
+                                                                    Page 19 of 22
+
+contour and would be recognized as non-wetland data artifacts by
+trained staff.
+Amendment 1 — Strike Section D.2 Except for Critical
+Infrastructure and Emergency Activity
+Council Member Mike Tinkey introduced the first amendment, citing the
+importance of the town abiding by the same rules it imposes on
+residents. He proposed amending Section D.2, which provides an
+exception allowing the Director of Engineering and Development
+Services to authorize alterations serving an overriding public interest —
+including parks, recreation facilities, capital improvement projects, critical
+infrastructure, and emergency activities. His amendment would strike the
+broader language while retaining the provisions for critical infrastructure
+and emergency activity and would remove the single-director authority in
+favor of routing such requests through the normal Planning Commission
+review process.
+Council Member Brownstein asked what the normal process would be
+for a project that is no longer exempt. Mr. Mitchell explained that the
+Planning Commission reviews subdivision requests and could also
+review wetland impact applications from property owners or the town,
+similar to a model used by Bluffton. He indicated he had a draft slide
+outlining an alternate procedural pathway, which he briefly shared:
+applicants would submit a wetland impact application, which would go
+on public notice and be reviewed and decided upon by the Planning
+Commission.
+                                                    Special Town Council Meeting
+                                                                    April 6, 2026
+                                                                  Page 20 of 22
+
+
+
+
+Council Member Rambo expressed concern about vesting a significant
+amount of authority in an unelected body, particularly with respect to
+council-approved projects. He raised the scenario of a council-approved
+capital project being denied or substantially altered at the Planning
+Commission level, noting the potential for increased costs and outcomes
+contrary to Council's intent. Legal Counsel Pagliarini acknowledged that
+such a scenario could create a situation in which the town is defending
+or prosecuting something adverse to Council's wishes.
+Town Administrator Eric DeMoura confirmed that Gary Santos Park,
+currently under construction, would not be affected by the ordinance,
+and that most foreseeable future town projects involve roads, existing
+stormwater infrastructure, or already-built facilities that would be
+exempted or unaffected.
+The amendment was put to a roll call vote.
+    Council Member Tinkey moved to amend the ordinance to strike
+    Section D.2, retaining only the provisions for critical infrastructure
+    and emergency activity, and removing the single-director authority in
+    favor of the Planning Commission review process. Council Member
+    Chapman seconded the motion. The motion carried 5–4, with
+    Council Members Chapman, Crosby, Hyatt, Tinkey, and Mayor
+    Haynie voting in favor, and Council Members Iacofano, Rambo,
+    Whitaker, and Brownstein voting in opposition.
+Amendment 2 — Remove "Or Adjacent To" from Buffer Language
+Council Member Brownstein proposed removing the phrase "or adjacent
+to" from Section C.3.b., which prohibits the introduction of invasive
+species or non-native landscaping "within or adjacent to" the buffer or
+wetlands. He expressed concern that as written, the phrase could be
+interpreted as regulating landscaping anywhere on a property, since
+essentially all areas are "adjacent to" something. Mr. Mitchell confirmed
+that enforcement intent was not to be heavy-handed in this regard, but
+Council Member Brownstein suggested that removing the phrase would
+simplify and clarify the language. Council Member Hyatt noted the
+original purpose was to protect the wetland from nearby invasive
+plantings, such as kudzu, that could encroach into it.
+    Council Member Brownstein moved to amend the buffer section of
+    the ordinance to remove the phrase "or adjacent to" from Section
+    C.3.b. Council Member Iacofano seconded the motion. The motion
+                                                   Special Town Council Meeting
+                                                                   April 6, 2026
+                                                                 Page 21 of 22
+
+    carried 5–4 with Council Members Iacofano, Rambo, Brownstein,
+    Chapman and Mayor Haynie voting in favor. Council Members
+    Hyatt, Tinkey, Whitaker and Crosby voting in opposition.
+Amendment 3 — Exempt Existing Single-Family Homes (Not
+Adding Density)
+Council Member Brownstein moved to exempt existing single-family
+homes not adding density from the ordinance, expressing the view that
+the ordinance should first be implemented and tested on subdivisions
+and commercial projects before being extended to existing residential
+properties. He stated that homeowners with single-family residences do
+not have the same flexibility as developers to redesign or relocate
+improvements, and that lessons learned from initial implementation
+should inform any expansion of the ordinance's scope.
+Council Member Hyatt opposed the amendment, stating that the
+purpose of the ordinance is to protect wetlands regardless of where they
+are located, and that no exceptions should be made. Council Member
+Tinkey agreed, emphasizing that wetland loss is cumulative and that
+incremental losses — one at a time — add up to significant damage over
+time. Mayor Haynie stated that the vast majority of Mount Pleasant
+citizens are asking for more sensitivity about where and how
+development occurs, and that he would not support an amendment that
+allows existing single-family homeowners to damage wetlands affecting
+neighboring properties.
+Council Member Iacofano, who had seconded the motion for discussion
+purposes, ultimately voted against it, citing concern about the GIS map's
+blue dots appearing on properties that may not have obvious wetlands.
+    Council Member Brownstein moved to amend the ordinance to
+    exempt existing single-family homes not adding density from the
+    ordinance's requirements. Council Member Iacofano seconded the
+    motion for discussion purposes. The motion failed 2–7. Council
+    Members Brownstein and Chapman voted in favor with Council
+    Members Crosby, Hyatt, Iacofano, Rambo, Tinkey, Whitaker and
+    Mayor Haynie voting in opposition.
+Amendment 4 — Update Language in Sections B(1) and B(3) to
+Reflect Clean Water Act Coverage
+Council Member Crosby moved to adopt the language amendments
+proposed by public commenter Bob Adams, updating Sections b(1) and
+b(3) to replace references to "vernal pools and seasonal wet surface
+                                                     Special Town Council Meeting
+                                                                     April 6, 2026
+                                                                   Page 22 of 22
+
+depressions" with broader language clarifying coverage of wetlands and
+water bodies not protected by the Clean Water Act. Legal Counsel
+Pagliarini confirmed that the language as proposed in Mr. Adams's
+correspondence was sufficient and that staff would redraft accordingly.
+    Council Member Crosby moved to amend the ordinance to update
+    Sections (B)1 and (B)3 to replace "vernal pools and seasonal wet
+    surface depressions" with language encompassing wetlands and
+    other bodies of water not protected by the Clean Water Act,
+    consistent with the language proposed by public commenter Bob
+    Adams. The motion was seconded by Council Member Hyatt. The
+    motion carried unanimously.
+Additional Requests
+Council Member Rambo requested that Legal Counsel prepare, prior to
+the April 14 regular meeting, a legal brief addressing the enforceability of
+the ordinance, any potential legal vulnerabilities, and the legal
+implications of a council-approved project being subject to Planning
+Commission denial.
+Mayor Haynie confirmed that all amendments voted on during the
+special meeting would be incorporated into the version of the ordinance
+presented for final reading at the regular Town Council meeting on
+Tuesday, April 14, 2026. Legal Counsel clarified that the draft language
+would not be physically changed prior to that meeting, as the
+amendments would only be formally incorporated upon final vote.
+
+4. Adjourn
+Mayor Haynie thanked Kevin Mitchell and staff, Brad Morrison, and
+Town Administrator Eric DeMoura for their extensive work on the
+ordinance. With no further business, the meeting was adjourned at 2:05
+p.m.
+Respectfully submitted,
+
+
+Christine Barrett
+Clerk of Council
+April 6, 2026
+

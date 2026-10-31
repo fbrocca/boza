@@ -1,21 +1,42 @@
 """Fetch parcel boundaries by TMS number from Charleston County GIS.
 
-    python3 tools/parcels.py <cases.json> <data/parcels.json>
+    python3 tools/parcels.py <data/parcels.json> <cases.json> [more.json ...]
 
 The county parcel layer (ProVal/Parcels) is keyed by PID, which is the TMS
 number without dashes. For each TMS in the cases we store the lot outline
 (simplified) and a point inside it for the map pin. TMS numbers retired since
 the hearing (lots split or combined) are cached as null and fall back to the
-street-address geocode.
+street-address geocode. Each parcel also gets the county's street address
+at its pin (reverse geocode), used to label cases the minutes don't address.
 """
 import json
 import os
 import sys
 import urllib.parse
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor
 
 URL = ("https://gisccapps.charlestoncounty.org/arcgis/rest/services/"
        "ProVal/Parcels/MapServer/0/query")
+REVERSE = ("https://gisccapps.charlestoncounty.org/arcgis/rest/services/LOCATORS/"
+           "AddressStreetCompositeLocator_Pro/GeocodeServer/reverseGeocode")
+
+
+def tms_of(c):
+    t = c.get("tms")
+    return [t] if isinstance(t, str) else list(t or [])
+
+
+def reverse(loc):
+    q = urllib.parse.urlencode({"location": f"{loc['lng']},{loc['lat']}", "outSR": 4326,
+                                "distance": 60, "f": "json"})
+    try:
+        with urllib.request.urlopen(REVERSE + "?" + q, timeout=60) as r:
+            a = json.load(r).get("address") or {}
+    except Exception:
+        return None
+    street = (a.get("Address") or "").strip()
+    return street.title() if street and street[0].isdigit() else None
 
 
 def centroid(ring):
@@ -67,7 +88,7 @@ def fetch(pids):
     q = urllib.parse.urlencode({
         "where": "PID IN (" + ",".join(f"'{p}'" for p in pids) + ")",
         "outFields": "PID,ACRES_CAL", "outSR": 4326, "returnGeometry": "true",
-        "geometryPrecision": 6, "maxAllowableOffset": 0.000005, "f": "json",
+        "geometryPrecision": 6, "maxAllowableOffset": 0.00001, "f": "json",
     })
     with urllib.request.urlopen(URL + "?" + q, timeout=120) as r:
         data = json.load(r)
@@ -76,10 +97,10 @@ def fetch(pids):
     return data["features"]
 
 
-def main(cases_path, out_path):
-    cases = json.load(open(cases_path, encoding="utf-8"))
+def main(out_path, *case_paths):
+    cases = [c for p in case_paths for c in json.load(open(p, encoding="utf-8"))]
     cache = json.load(open(out_path)) if os.path.exists(out_path) else {}
-    tms = sorted({c["tms"] for c in cases if c["tms"]} - set(cache))
+    tms = sorted({t for c in cases for t in tms_of(c)} - set(cache))
     print(f"{len(tms)} parcels to fetch ({len(cache)} cached)")
     for i in range(0, len(tms), 80):
         chunk = tms[i:i + 80]
@@ -98,9 +119,14 @@ def main(cases_path, out_path):
         for t in chunk:
             cache[t] = got.get(t.replace("-", ""))
         print(f"  {i + len(chunk)}/{len(tms)}: {len(got)} found")
+    todo = [t for t, v in cache.items() if v and "address" not in v]
+    with ThreadPoolExecutor(6) as pool:
+        for t, a in zip(todo, pool.map(lambda t: reverse(cache[t]), todo)):
+            cache[t]["address"] = a
+    print(f"reverse-geocoded {len(todo)} parcels")
     json.dump(dict(sorted(cache.items())), open(out_path, "w"), separators=(",", ":"))
     print(f"parcels: {sum(1 for v in cache.values() if v)}/{len(cache)} found")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    main(*sys.argv[1:])

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zoning Appeals Map</title>
-<meta name="description" content="Every property heard by the Town of Mount Pleasant, SC Board of Zoning Appeals since 2017, on a map, with links to the minutes.">
+<title>Mount Pleasant Zoning Map</title>
+<meta name="description" content="Every variance, appeal, rezoning, annexation and sketch plan heard in Mount Pleasant, SC since 2017, on a map, with each step from Planning Commission to Town Council and links to the minutes.">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="vendor/markercluster/MarkerCluster.css">
 <link rel="stylesheet" href="style.css">
@@ -14,8 +14,8 @@
   <aside class="panel" id="panel" aria-label="Cases">
     <header class="panel-head">
       <div class="grip" aria-hidden="true"></div>
-      <h1>Zoning Appeals Map</h1>
-      <p class="sub">Town of Mount Pleasant, SC &middot; Board of Zoning Appeals</p>
+      <h1>Mount Pleasant Zoning Map</h1>
+      <p class="sub">Zoning Appeals &middot; Planning Commission &middot; Town Council</p>
       <p class="stats" id="stats">Loading cases&hellip;</p>
     </header>
 
@@ -23,27 +23,19 @@
       <div class="controls">
         <label class="search">
           <span class="sr">Search</span>
-          <input id="q" type="search" placeholder="Address, case no. (V-06-25), TMS, or keyword" autocomplete="off">
+          <input id="q" type="search" placeholder="Address, case no. (R-12-26), TMS, or keyword" autocomplete="off">
         </label>
+        <div class="segmented" role="radiogroup" aria-label="Board" id="fBoard">
+          <button type="button" role="radio" aria-checked="true" data-v="">All</button>
+          <button type="button" role="radio" aria-checked="false" data-v="boza">Zoning Appeals</button>
+          <button type="button" role="radio" aria-checked="false" data-v="planning">Rezoning &amp; planning</button>
+        </div>
         <div class="filters">
-          <label><span>Decision</span>
-            <select id="fDecision">
-              <option value="">All</option>
-              <option>Approved</option>
-              <option>Approved with conditions</option>
-              <option>Denied</option>
-              <option>Deferred</option>
-              <option>Withdrawn</option>
-              <option value="other">Other / see minutes</option>
-            </select>
+          <label><span>Outcome</span>
+            <select id="fDecision"><option value="">All</option></select>
           </label>
           <label><span>Type</span>
-            <select id="fKind">
-              <option value="">All</option>
-              <option>Variance</option>
-              <option>Appeal</option>
-              <option>Special exception</option>
-            </select>
+            <select id="fKind"><option value="">All</option></select>
           </label>
           <label><span>Year</span>
             <select id="fYear"><option value="">All</option></select>
@@ -63,9 +55,10 @@
     </section>
 
     <footer class="panel-foot">
-      Extracted automatically from the
-      <a href="https://github.com/fbrocca/boza/tree/main/minutes">official minutes</a>.
-      Decisions are inferred from the recorded motions; the minutes are authoritative.
+      Extracted automatically from the Town's
+      <a href="https://sc-mountpleasant2.civicplus.com/AgendaCenter" target="_blank" rel="noopener">official minutes</a>
+      (<a href="https://github.com/fbrocca/boza">how</a>). Outcomes are inferred from the recorded motions;
+      the minutes are authoritative.
     </footer>
   </aside>
 

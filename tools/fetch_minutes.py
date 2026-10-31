@@ -1,19 +1,25 @@
-"""Download Board of Zoning Appeals minutes from the Town of Mount Pleasant.
+"""Download minutes from the Town of Mount Pleasant Agenda Center.
 
-    python3 tools/fetch_minutes.py [minutes_dir]
+    python3 tools/fetch_minutes.py
 
-Scrapes the CivicPlus Agenda Center (category 8 = Board of Zoning Appeals),
-downloads any minutes PDF not already present as minutes/YYYY-MM-DD.pdf, and
-rewrites minutes/index.csv and minutes/README.md. Existing PDFs are never
-re-downloaded. The Town's server drops connections often, so every request
-is retried.
+Board of Zoning Appeals (category 8): PDFs are kept in minutes/ as
+YYYY-MM-DD.pdf, with minutes/index.csv and minutes/README.md rewritten.
+
+Planning Commission (1), Planning Committee (17), Town Council (4): only the
+text is kept, as sources/<body>/YYYY-MM-DD-<agendaID>.txt, because their PDFs
+total well over GitHub Pages' 1 GB limit. The map links to the Town's copy.
+
+Files already present are never re-downloaded. The Town's server drops
+connections often, so every request is retried.
 """
 import csv
 import datetime
 import html
 import os
 import re
+import subprocess
 import sys
+import tempfile
 import time
 import urllib.parse
 import urllib.request
@@ -21,6 +27,8 @@ import urllib.request
 BASE = "https://sc-mountpleasant2.civicplus.com"
 CAT = 8
 FIRST_YEAR = 2017
+TEXT_BODIES = {"pc": 1, "pcom": 17, "council": 4}
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 UA = {"User-Agent": "boza-archive (+https://github.com/fbrocca/boza)"}
 
 
@@ -37,8 +45,8 @@ def get(url, data=None, tries=6):
             time.sleep(3 * (i + 1))
 
 
-def year_rows(year):
-    body = urllib.parse.urlencode({"year": year, "catID": CAT}).encode()
+def year_rows(year, cat=CAT):
+    body = urllib.parse.urlencode({"year": year, "catID": cat}).encode()
     page = get(f"{BASE}/AgendaCenter/UpdateCategoryList", data=body).decode("utf-8", "replace")
     for r in re.split(r'<tr id="row', page)[1:]:
         m = re.search(r'aria-label="Agenda for ([^"]+)"', r)
@@ -52,7 +60,32 @@ def year_rows(year):
             "title": html.unescape(re.sub(r"\s+", " ", title.group(1))) if title else "",
             "minutes": BASE + mins.group(1) if mins else "",
             "agenda": BASE + ag.group(1) if ag else "",
+            "id": mins.group(1).rsplit("-", 1)[1] if mins else "",
         }
+
+
+def fetch_text_bodies():
+    """Keep only pdftotext output for the large-PDF bodies."""
+    for body, cat in TEXT_BODIES.items():
+        out = os.path.join(ROOT, "sources", body)
+        os.makedirs(out, exist_ok=True)
+        have = set(os.listdir(out))
+        new = 0
+        for y in range(FIRST_YEAR, datetime.date.today().year + 1):
+            for r in year_rows(y, cat):
+                name = f"{r['date']}-{r['id']}.txt"
+                if not r["minutes"] or name in have:
+                    continue
+                pdf = get(r["minutes"])
+                if not pdf.startswith(b"%PDF"):
+                    continue
+                with tempfile.NamedTemporaryFile(suffix=".pdf") as t:
+                    t.write(pdf)
+                    t.flush()
+                    subprocess.run(["pdftotext", "-layout", t.name, os.path.join(out, name)], check=True)
+                have.add(name)
+                new += 1
+        print(f"{body}: {len(have)} minutes, {new} new")
 
 
 def main(out):
@@ -105,4 +138,5 @@ def main(out):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), "..", "minutes"))
+    main(os.path.join(ROOT, "minutes"))
+    fetch_text_bodies()

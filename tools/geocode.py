@@ -1,6 +1,6 @@
 """Geocode case addresses.
 
-    python3 tools/geocode.py <cases.json> <data/geocode-cache.json>
+    python3 tools/geocode.py <data/geocode-cache.json> <cases.json> [more.json ...]
 
 Two sources, both cached in the same file:
   county: Charleston County address points (exact building/lot location)
@@ -36,7 +36,7 @@ BBOX = (32.70, 33.00, -80.00, -79.65)  # lat_min, lat_max, lng_min, lng_max
 def street_addresses(cases):
     seen = set()
     for c in cases:
-        a = re.sub(r"\s+", " ", c.get("address") or "").strip()
+        a = re.sub(r"\s+", " ", c.get("address") or c.get("label") or "").strip()
         if re.match(r"^\d+[A-Za-z]?\s+\S", a) and a.lower() not in seen:
             seen.add(a.lower())
             yield a
@@ -86,8 +86,8 @@ def county(address):
     return None
 
 
-def main(cases_path, cache_path):
-    cases = json.load(open(cases_path, encoding="utf-8"))
+def main(cache_path, *case_paths):
+    cases = [c for p in case_paths for c in json.load(open(p, encoding="utf-8"))]
     cache = json.load(open(cache_path)) if os.path.exists(cache_path) else {}
     # Migrate the old flat format ({address: census_hit}) to {address: {census, county}}.
     cache = {a: (v if isinstance(v, dict) and ("census" in v or "county" in v) else {"census": v})
@@ -111,4 +111,4 @@ def main(cases_path, cache_path):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    main(*sys.argv[1:])

@@ -3,6 +3,14 @@
   "census": null,
   "county": null
  },
+ "0 Hale Road": {
+  "census": null,
+  "county": null
+ },
+ "0 May Lane": {
+  "census": null,
+  "county": null
+ },
  "0 McCormick Street": {
   "census": null,
   "county": null
@@ -206,6 +214,20 @@
    "quality": "address point"
   }
  },
+ "1051 Theodore Road": {
+  "census": {
+   "lat": 32.888032,
+   "lng": -79.739151,
+   "matched": "1051 THEODORE RD, MOUNT PLEASANT, SC, 29429",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.887647,
+   "lng": -79.739537,
+   "matched": "1051 THEODORE RD, AWENDAW, SC, 29429",
+   "quality": "address point"
+  }
+ },
  "1054 Phillips Park Drive": {
   "census": {
    "lat": 32.794704,
@@ -248,6 +270,20 @@
    "quality": "address point"
   }
  },
+ "106 May Lane": {
+  "census": {
+   "lat": 32.789206,
+   "lng": -79.876794,
+   "matched": "106 MAY LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.789556,
+   "lng": -79.876476,
+   "matched": "106 MAY LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "1060 Deleisseline Blvd": {
   "census": {
    "lat": 32.838731,
@@ -273,6 +309,20 @@
    "lat": 32.798916,
    "lng": -79.875639,
    "matched": "1063 MEADER LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1076 and 1096 Beehive Road": {
+  "census": {
+   "lat": 32.886594,
+   "lng": -79.743059,
+   "matched": "1096 BEE HIVE RD, MOUNT PLEASANT, SC, 29429",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.887053,
+   "lng": -79.743272,
+   "matched": "1096 BEEHIVE RD, AWENDAW, SC, 29429",
    "quality": "address point"
   }
  },
@@ -303,6 +353,38 @@
    "matched": "108 2ND ST, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
+ },
+ "1081 Johnnie Dodds Boulevard": {
+  "census": {
+   "lat": 32.812131,
+   "lng": -79.859636,
+   "matched": "1081 JOHNNIE DODDS BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.811876,
+   "lng": -79.85934,
+   "matched": "1081 JOHNNIE DODDS BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1093 Washrich Street": {
+  "census": null,
+  "county": {
+   "lat": 32.796819,
+   "lng": -79.854336,
+   "matched": "1093 WASHRICH CT, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1098 Cottingham Dr": {
+  "census": {
+   "lat": 32.796174,
+   "lng": -79.878105,
+   "matched": "1098 COTTINGHAM DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": null
  },
  "1098 S. Shadow Drive": {
   "census": {
@@ -343,6 +425,20 @@
    "lat": 32.816196,
    "lng": -79.877682,
    "matched": "110 LATITUDE LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "110 Pitt St": {
+  "census": {
+   "lat": 32.7869,
+   "lng": -79.876286,
+   "matched": "110 PITT ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.78691,
+   "lng": -79.876161,
+   "matched": "110 PITT ST, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -402,6 +498,20 @@
    "quality": "address point"
   }
  },
+ "1110 Chuck Dawley": {
+  "census": {
+   "lat": 32.801467,
+   "lng": -79.855703,
+   "matched": "1110 CHUCK DAWLEY BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.80194,
+   "lng": -79.85741,
+   "matched": "1110 CHUCK DAWLEY BOULEVARD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "1111 McKnight Rd": {
   "census": {
    "lat": 32.851569,
@@ -413,6 +523,20 @@
    "lat": 32.851926,
    "lng": -79.804076,
    "matched": "1111 MCKNIGHT RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "1116 Graddick Rd": {
+  "census": {
+   "lat": 32.817429,
+   "lng": -79.843407,
+   "matched": "1116 GRADDICK RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.817726,
+   "lng": -79.843329,
+   "matched": "1116 GRADDICK RD, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -485,6 +609,20 @@
    "quality": "address point"
   }
  },
+ "1124 and 1126 Venning Road Parcel ID": {
+  "census": {
+   "lat": 32.822078,
+   "lng": -79.838055,
+   "matched": "1126 VENNING RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.822514,
+   "lng": -79.838285,
+   "matched": "1124 VENNING RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "1127 Daffodil Lane": {
   "census": {
    "lat": 32.844351,
@@ -499,6 +637,20 @@
    "quality": "address point"
   }
  },
+ "1129 Joe Bryant": {
+  "census": {
+   "lat": 32.869143,
+   "lng": -79.782785,
+   "matched": "1129 JOE BRYANT CT, MOUNT PLEASANT, SC, 29466",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.869521,
+   "lng": -79.782647,
+   "matched": "1129 JOE BRYANT COURT, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
  "1129 Sea Island Crossing Lane": {
   "census": {
    "lat": 32.798111,
@@ -510,6 +662,34 @@
    "lat": 32.799051,
    "lng": -79.860501,
    "matched": "1129 SEA ISLAND CROSSING LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1131 Louise Terrace": {
+  "census": {
+   "lat": 32.812873,
+   "lng": -79.847245,
+   "matched": "1131 LOUISE TER, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.812956,
+   "lng": -79.847064,
+   "matched": "1131 LOUISE TER, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1134 Gregorie Ferry Road": {
+  "census": {
+   "lat": 32.861581,
+   "lng": -79.796394,
+   "matched": "1134 GREGORIE FERRY RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.860566,
+   "lng": -79.796129,
+   "matched": "1134 GREGORIE FERRY ROAD, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -538,6 +718,20 @@
    "lat": 32.799555,
    "lng": -79.851137,
    "matched": "1136 MEADOWCROFT LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1137 Louise Terrace": {
+  "census": {
+   "lat": 32.812696,
+   "lng": -79.846844,
+   "matched": "1137 LOUISE TER, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.812632,
+   "lng": -79.84634,
+   "matched": "1137 LOUISE TERRACE, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -667,6 +861,15 @@
    "quality": "address point"
   }
  },
+ "1156 Russell Dr": {
+  "census": {
+   "lat": 32.796421,
+   "lng": -79.863139,
+   "matched": "1156 RUSSELL DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": null
+ },
  "116 Beach Street": {
   "census": {
    "lat": 32.788382,
@@ -690,6 +893,52 @@
    "quality": "address point"
   }
  },
+ "1170 Rifle Range Road": {
+  "census": {
+   "lat": 32.798901,
+   "lng": -79.849945,
+   "matched": "1170 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.799627,
+   "lng": -79.849764,
+   "matched": "1170 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1178 Highway 41": {
+  "census": null,
+  "county": {
+   "lat": 32.861907,
+   "lng": -79.797411,
+   "matched": "1178 HIGHWAY 41, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "1180 Freelock Drive": {
+  "census": null,
+  "county": {
+   "lat": 32.798862,
+   "lng": -79.858877,
+   "matched": "1180 FREELOCK DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1182 Russell Drive": {
+  "census": {
+   "lat": 32.796241,
+   "lng": -79.863314,
+   "matched": "1182 RUSSELL DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.795559,
+   "lng": -79.86254,
+   "matched": "1182 RUSSELL DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "1190 Moss Bluff": {
   "census": {
    "lat": 32.843847,
@@ -701,6 +950,20 @@
    "lat": 32.84379,
    "lng": -79.833191,
    "matched": "1190 MOSS BLF, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1190 Shadow Drive Parcel ID": {
+  "census": {
+   "lat": 32.805576,
+   "lng": -79.853393,
+   "matched": "1190 SHADOW DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.805927,
+   "lng": -79.853373,
+   "matched": "1190 SHADOW DR, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -783,6 +1046,34 @@
   },
   "county": null
  },
+ "1227 Long Point Road Parcel ID": {
+  "census": {
+   "lat": 32.847006,
+   "lng": -79.827445,
+   "matched": "1227 LONG POINT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.847264,
+   "lng": -79.82762,
+   "matched": "1227 LONG POINT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1228 Melvin Bennett Road": {
+  "census": {
+   "lat": 32.806086,
+   "lng": -79.849345,
+   "matched": "1228 MELVIN BENNETT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.806404,
+   "lng": -79.850039,
+   "matched": "1228 MELVIN BENNETT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "123 Hibben Street": {
   "census": {
    "lat": 32.787745,
@@ -853,12 +1144,86 @@
    "quality": "address point"
   }
  },
+ "1236 Melvin Bennett Road": {
+  "census": {
+   "lat": 32.806103,
+   "lng": -79.848865,
+   "matched": "1236 MELVIN BENNETT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.806269,
+   "lng": -79.849008,
+   "matched": "1236 MELVIN BENNETT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1236 Melvin Bennett Road Parcel ID": {
+  "census": {
+   "lat": 32.806103,
+   "lng": -79.848865,
+   "matched": "1236 MELVIN BENNETT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.806269,
+   "lng": -79.849008,
+   "matched": "1236 MELVIN BENNETT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1238 & 1242 Schirmer Avenue": {
+  "census": {
+   "lat": 32.795713,
+   "lng": -79.857964,
+   "matched": "1242 SCHIRMER AVE, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.795505,
+   "lng": -79.857405,
+   "matched": "1242 SCHIRMER AV, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1240 Six Mile Road": {
+  "census": {
+   "lat": 32.835824,
+   "lng": -79.811392,
+   "matched": "1240 SIX MILE RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": null
+ },
+ "1240 Six Mile Road and known as Watts Mobile Home Park": {
+  "census": {
+   "lat": 32.835824,
+   "lng": -79.811392,
+   "matched": "1240 SIX MILE RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "non_exact"
+  },
+  "county": null
+ },
  "1242 Main Canal Drive": {
   "census": null,
   "county": {
    "lat": 32.798691,
    "lng": -79.847492,
    "matched": "1242 MAIN CANAL DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1242 White Flat Rd": {
+  "census": {
+   "lat": 32.807829,
+   "lng": -79.847773,
+   "matched": "1242 WHITE FLAT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.806872,
+   "lng": -79.847636,
+   "matched": "1242 WHITE FLAT RD, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -918,6 +1283,20 @@
    "quality": "address point"
   }
  },
+ "1251 and 1259 Foxtail Lane": {
+  "census": {
+   "lat": 32.807918,
+   "lng": -79.848772,
+   "matched": "1259 FOX TAIL LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.807529,
+   "lng": -79.848675,
+   "matched": "1251 FOX TAIL LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "1266 West Vagabond Lane": {
   "census": {
    "lat": 32.822649,
@@ -929,6 +1308,15 @@
    "lat": 32.822721,
    "lng": -79.860546,
    "matched": "1266 W VAGABOND LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1268 Porchers Bluff": {
+  "census": null,
+  "county": {
+   "lat": 32.85792,
+   "lng": -79.782237,
+   "matched": "1268 PORCHERS BLUFF ROAD, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -1036,6 +1424,34 @@
    "lat": 32.827941,
    "lng": -79.818192,
    "matched": "1304 CADET CT, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "1306 Erckmann Drive": {
+  "census": {
+   "lat": 32.791506,
+   "lng": -79.862032,
+   "matched": "1306 ERCKMANN DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.792787,
+   "lng": -79.863467,
+   "matched": "1306 ERCKMANN DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1306 Old Rosebud Trail": {
+  "census": {
+   "lat": 32.901111,
+   "lng": -79.740986,
+   "matched": "1306 OLD ROSEBUD TRL, MOUNT PLEASANT, SC, 29429",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.90157,
+   "lng": -79.74032,
+   "matched": "1306 OLD ROSEBUD TR, MOUNT PLEASANT, SC, 29429",
    "quality": "address point"
   }
  },
@@ -1151,6 +1567,20 @@
    "quality": "address point"
   }
  },
+ "1328 Erckmann Dr": {
+  "census": {
+   "lat": 32.792003,
+   "lng": -79.862692,
+   "matched": "1328 ERCKMANN DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.792031,
+   "lng": -79.862189,
+   "matched": "1328 ERCKMANN DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "1328 Erckmann Drive": {
   "census": {
    "lat": 32.792003,
@@ -1193,6 +1623,20 @@
    "quality": "address point"
   }
  },
+ "1342 Porchers Bluff": {
+  "census": {
+   "lat": 32.855392,
+   "lng": -79.778161,
+   "matched": "1342 PORCHERS BLUFF RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.855769,
+   "lng": -79.779411,
+   "matched": "1342 PORCHERS BLUFF RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
  "1363 Majore Street": {
   "census": {
    "lat": 32.791279,
@@ -1207,6 +1651,20 @@
    "quality": "address point"
   }
  },
+ "1374 Rifle Range Rd": {
+  "census": {
+   "lat": 32.803593,
+   "lng": -79.844255,
+   "matched": "1374 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.804721,
+   "lng": -79.844004,
+   "matched": "1374 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "138 3rd Ave": {
   "census": {
    "lat": 32.815013,
@@ -1218,6 +1676,20 @@
    "lat": 32.81508,
    "lng": -79.901231,
    "matched": "138 3RD AV, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "14 Vincent Drive": {
+  "census": {
+   "lat": 32.793558,
+   "lng": -79.872079,
+   "matched": "14 VINCENT DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.793768,
+   "lng": -79.872147,
+   "matched": "14 VINCENT DR, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -1389,12 +1861,40 @@
    "quality": "address point"
   }
  },
+ "1433 Hale Rd": {
+  "census": {
+   "lat": 32.807587,
+   "lng": -79.834311,
+   "matched": "1433 HALE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.807772,
+   "lng": -79.834761,
+   "matched": "1433 HALE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "1434 Ira Road": {
   "census": null,
   "county": {
    "lat": 32.815611,
    "lng": -79.848041,
    "matched": "1434 IRA RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1435 Six Mile Road": {
+  "census": {
+   "lat": 32.831974,
+   "lng": -79.807989,
+   "matched": "1435 SIX MILE RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.830353,
+   "lng": -79.808504,
+   "matched": "1435 SIX MILE RD, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -1409,6 +1909,20 @@
    "lat": 32.804604,
    "lng": -79.83707,
    "matched": "1436 WINTON RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1437 & 1439 Venning Road": {
+  "census": {
+   "lat": 32.811473,
+   "lng": -79.829001,
+   "matched": "1439 VENNING RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.811021,
+   "lng": -79.829357,
+   "matched": "1439 VENNING ROAD, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -1465,6 +1979,34 @@
    "lat": 32.801274,
    "lng": -79.844418,
    "matched": "1449 SCOTTS CREEK CIR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1450 Chandler Road": {
+  "census": {
+   "lat": 32.912202,
+   "lng": -79.737271,
+   "matched": "1450 CHANDLER RD, MOUNT PLEASANT, SC, 29429",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.91219,
+   "lng": -79.734825,
+   "matched": "1450 CHANDLER RD, AWENDAW, SC, 29429",
+   "quality": "address point"
+  }
+ },
+ "1454 North Point Lane": {
+  "census": {
+   "lat": 32.79202,
+   "lng": -79.851391,
+   "matched": "1454 N POINT LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.791788,
+   "lng": -79.851573,
+   "matched": "1454 NORTH POINT LN, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -1566,6 +2108,20 @@
    "quality": "address point"
   }
  },
+ "1465 Stuart Engals Boulevard": {
+  "census": {
+   "lat": 32.814046,
+   "lng": -79.847606,
+   "matched": "1465 STUART ENGALS BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.814063,
+   "lng": -79.847258,
+   "matched": "1465 STUART ENGALS BOULEVARD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "147 Hobcaw Drive": {
   "census": {
    "lat": 32.82087,
@@ -1616,6 +2172,15 @@
    "matched": "1478 BARBARA ST, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
+ },
+ "1480 & 1492 Rifle Range Road": {
+  "census": {
+   "lat": 32.808281,
+   "lng": -79.837572,
+   "matched": "1492 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": null
  },
  "1481 Village Square": {
   "census": {
@@ -1668,6 +2233,34 @@
    "quality": "address point"
   }
  },
+ "1490 Boston Grill Road": {
+  "census": {
+   "lat": 32.845988,
+   "lng": -79.785754,
+   "matched": "1490 BOSTON GRILL RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.847273,
+   "lng": -79.784987,
+   "matched": "1490 BOSTON GRILL RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "1490 Old Rosebud Trail": {
+  "census": {
+   "lat": 32.907283,
+   "lng": -79.741925,
+   "matched": "1490 OLD ROSEBUD TRL, MOUNT PLEASANT, SC, 29429",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.908203,
+   "lng": -79.741998,
+   "matched": "1490 OLD ROSEBUD TR, MOUNT PLEASANT, SC, 29429",
+   "quality": "address point"
+  }
+ },
  "1491 Simmons Street": {
   "census": {
    "lat": 32.781696,
@@ -1679,6 +2272,20 @@
    "lat": 32.7816,
    "lng": -79.863705,
    "matched": "1491 SIMMONS ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1494 Stratton Place/Sheepshead Lane": {
+  "census": {
+   "lat": 32.867192,
+   "lng": -79.754483,
+   "matched": "1494 STRATTON PL, MOUNT PLEASANT, SC, 29466",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.866812,
+   "lng": -79.754625,
+   "matched": "1494 STRATTON PL, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -1696,6 +2303,43 @@
    "quality": "address point"
   }
  },
+ "1498 Old Rosebud Trail from R-1": {
+  "census": {
+   "lat": 32.907668,
+   "lng": -79.742219,
+   "matched": "1498 OLD ROSEBUD TRL, MOUNT PLEASANT, SC, 29429",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.908707,
+   "lng": -79.741598,
+   "matched": "1498 OLD ROSEBUD TR, MOUNT PLEASANT, SC, 29429",
+   "quality": "address point"
+  }
+ },
+ "1498 Old Rosebud Trail from R-1, Low Density Residential District": {
+  "census": {
+   "lat": 32.907668,
+   "lng": -79.742219,
+   "matched": "1498 OLD ROSEBUD TRL, MOUNT PLEASANT, SC, 29429",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.908707,
+   "lng": -79.741598,
+   "matched": "1498 OLD ROSEBUD TR, MOUNT PLEASANT, SC, 29429",
+   "quality": "address point"
+  }
+ },
+ "1500 Clubhouse Lane / Raven’s Run Subdivision": {
+  "census": null,
+  "county": {
+   "lat": 32.823126,
+   "lng": -79.808877,
+   "matched": "1500 CLUBHOUSE LN, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
  "1503 Mathis Ferry Road": {
   "census": {
    "lat": 32.823854,
@@ -1710,12 +2354,54 @@
    "quality": "address point"
   }
  },
+ "1503 and 1513 Mathis Ferry Rd": {
+  "census": {
+   "lat": 32.82391,
+   "lng": -79.849006,
+   "matched": "1513 MATHIS FERRY RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.822946,
+   "lng": -79.84805,
+   "matched": "1513 MATHIS FERRY RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "1506 Checker Court": {
   "census": null,
   "county": {
    "lat": 32.885118,
    "lng": -79.803144,
    "matched": "1506 CHECKER CT, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "1510 Mathis Ferry Road": {
+  "census": {
+   "lat": 32.824098,
+   "lng": -79.848874,
+   "matched": "1510 MATHIS FERRY RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.824359,
+   "lng": -79.848914,
+   "matched": "1510 MATHIS FERRY RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1510 Mathis Ferry Road, identified by": {
+  "census": {
+   "lat": 32.824098,
+   "lng": -79.848874,
+   "matched": "1510 MATHIS FERRY RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.824359,
+   "lng": -79.848914,
+   "matched": "1510 MATHIS FERRY RD, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -1747,6 +2433,20 @@
    "quality": "address point"
   }
  },
+ "1520 Rifle Range Road": {
+  "census": {
+   "lat": 32.808868,
+   "lng": -79.836631,
+   "matched": "1520 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.809293,
+   "lng": -79.8368,
+   "matched": "1520 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "153 Pondsbury Rd": {
   "census": {
    "lat": 32.817195,
@@ -1772,6 +2472,20 @@
    "lat": 32.817276,
    "lng": -79.877052,
    "matched": "153 PONSBURY RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1543 Barquentine Dr": {
+  "census": {
+   "lat": 32.780288,
+   "lng": -79.86073,
+   "matched": "1543 BARQUENTINE DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.779521,
+   "lng": -79.860204,
+   "matched": "1543 BARQUENTINE DR, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -1812,6 +2526,20 @@
    "quality": "address point"
   }
  },
+ "1572 Joe Rouse Rd": {
+  "census": {
+   "lat": 32.88102,
+   "lng": -79.808298,
+   "matched": "1572 JOE ROUSE RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.882427,
+   "lng": -79.807523,
+   "matched": "1572 JOE ROUSE ROAD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
  "1581 Porcher Bluff Road": {
   "census": {
    "lat": 32.858253,
@@ -1823,6 +2551,34 @@
    "lat": 32.857929,
    "lng": -79.765547,
    "matched": "1581 PORCHERS BLUFF RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "1600 and 1604 Diddy Drive": {
+  "census": {
+   "lat": 32.804367,
+   "lng": -79.831584,
+   "matched": "1604 DIDDY DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.804442,
+   "lng": -79.831377,
+   "matched": "1604 DIDDY DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1602 Rifle Range Road": {
+  "census": {
+   "lat": 32.81075,
+   "lng": -79.833677,
+   "matched": "1602 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.810949,
+   "lng": -79.833758,
+   "matched": "1602 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -1874,6 +2630,34 @@
    "lat": 32.829885,
    "lng": -79.84976,
    "matched": "1617 LONG VIEW RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1619 Highway 41": {
+  "census": {
+   "lat": 32.881633,
+   "lng": -79.810032,
+   "matched": "1619 STATE HWY 41, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.881914,
+   "lng": -79.810736,
+   "matched": "1619 HIGHWAY 41, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "1619 Highway 41, identified by": {
+  "census": {
+   "lat": 32.881633,
+   "lng": -79.810032,
+   "matched": "1619 STATE HWY 41, MOUNT PLEASANT, SC, 29466",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.881914,
+   "lng": -79.810736,
+   "matched": "1619 HIGHWAY 41, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -1975,6 +2759,131 @@
    "quality": "address point"
   }
  },
+ "1724 Lacannon Lane": {
+  "census": null,
+  "county": {
+   "lat": 32.822694,
+   "lng": -79.836912,
+   "matched": "1724 LACANNON LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1729 Halls Pond Road": {
+  "census": {
+   "lat": 32.823237,
+   "lng": -79.83734,
+   "matched": "1729 HALLS POND RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.823009,
+   "lng": -79.837349,
+   "matched": "1729 HALLS POND ROAD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1735 and 1733 Highway 17 North": {
+  "census": {
+   "lat": 32.825384,
+   "lng": -79.837991,
+   "matched": "1733 N US HWY 17, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.824935,
+   "lng": -79.837524,
+   "matched": "1733 N HIGHWAY 17, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1748 Halls Pond Road": {
+  "census": {
+   "lat": 32.823577,
+   "lng": -79.837011,
+   "matched": "1748 HALLS POND RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.823657,
+   "lng": -79.836017,
+   "matched": "1748 HALLS POND RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1750 Palmetto Isle Drive": {
+  "census": {
+   "lat": 32.885496,
+   "lng": -79.824874,
+   "matched": "1750 PALMETTO ISLE DR, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.887449,
+   "lng": -79.82645,
+   "matched": "1750 PALMETTO ISLE DR, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "1751 & 1755 Rifle Range Road": {
+  "census": {
+   "lat": 32.815971,
+   "lng": -79.827652,
+   "matched": "1755 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.815188,
+   "lng": -79.827638,
+   "matched": "1755 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1751 Rifle Range Road": {
+  "census": {
+   "lat": 32.815718,
+   "lng": -79.827927,
+   "matched": "1751 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.815179,
+   "lng": -79.828115,
+   "matched": "1751 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "1843 Rifle Range Road": {
+  "census": {
+   "lat": 32.819804,
+   "lng": -79.823974,
+   "matched": "1843 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": null
+ },
+ "1843 Rifle Range Road Parcel ID": {
+  "census": {
+   "lat": 32.819804,
+   "lng": -79.823974,
+   "matched": "1843 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": null
+ },
+ "1862 Peaceful Way": {
+  "census": {
+   "lat": 32.860872,
+   "lng": -79.828102,
+   "matched": "1862 PEACEFUL WAY, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.859648,
+   "lng": -79.828196,
+   "matched": "1862 PEACEFUL WAY, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "187 4th Avenue": {
   "census": {
    "lat": 32.813019,
@@ -2017,6 +2926,20 @@
    "quality": "address point"
   }
  },
+ "1909 N Highway 17": {
+  "census": {
+   "lat": 32.832392,
+   "lng": -79.827899,
+   "matched": "1909 N US HWY 17, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.830479,
+   "lng": -79.827143,
+   "matched": "1909 N HIGHWAY 17, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "1935 N. Smokerise Way": {
   "census": {
    "lat": 32.899457,
@@ -2053,6 +2976,20 @@
    "quality": "exact"
   },
   "county": null
+ },
+ "2035 Highway 41": {
+  "census": {
+   "lat": 32.899319,
+   "lng": -79.82089,
+   "matched": "2035 STATE HWY 41, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.897826,
+   "lng": -79.821698,
+   "matched": "2035 HIGHWAY 41, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
  },
  "2035 Hwy 41": {
   "census": {
@@ -2105,6 +3042,24 @@
    "quality": "address point"
   }
  },
+ "210 Klink Lane": {
+  "census": null,
+  "county": null
+ },
+ "210 Lucas St": {
+  "census": {
+   "lat": 32.792225,
+   "lng": -79.878167,
+   "matched": "210 LUCAS ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.792121,
+   "lng": -79.877898,
+   "matched": "210 LUCAS ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "210 West Coleman Boulevard": {
   "census": {
    "lat": 32.797562,
@@ -2144,6 +3099,52 @@
    "lat": 32.789502,
    "lng": -79.883937,
    "matched": "214 HADDRELL ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "214 Lucas Street": {
+  "census": {
+   "lat": 32.792183,
+   "lng": -79.878123,
+   "matched": "214 LUCAS ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": null
+ },
+ "214 Lucas Street / both parcels located between Lucas": {
+  "census": {
+   "lat": 32.792183,
+   "lng": -79.878123,
+   "matched": "214 LUCAS ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": null
+ },
+ "2154 Rifle Range Road": {
+  "census": {
+   "lat": 32.831287,
+   "lng": -79.810331,
+   "matched": "2154 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.831577,
+   "lng": -79.81079,
+   "matched": "2154 RIFLE RANGE RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "2161 Annie Laura Lane": {
+  "census": {
+   "lat": 32.835884,
+   "lng": -79.814649,
+   "matched": "2161 ANNIE LAURA LN, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.83578,
+   "lng": -79.814457,
+   "matched": "2161 ANNIE LAURA LN, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -2203,12 +3204,40 @@
    "quality": "address point"
   }
  },
+ "2237 North Highway 17": {
+  "census": {
+   "lat": 32.842632,
+   "lng": -79.815836,
+   "matched": "2237 N US HWY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.843106,
+   "lng": -79.815101,
+   "matched": "2237 N HIGHWAY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
  "2259 Primus Road": {
   "census": null,
   "county": {
    "lat": 32.840325,
    "lng": -79.812662,
    "matched": "2259 PRIMUS RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "2310 Ruffin Road": {
+  "census": {
+   "lat": 32.828837,
+   "lng": -79.799922,
+   "matched": "2310 RUFFIN RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.829102,
+   "lng": -79.7999,
+   "matched": "2310 RUFFIN RD, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -2265,6 +3294,20 @@
    "lat": 32.832945,
    "lng": -79.800552,
    "matched": "2346 N PALMETTO FORT DR, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "2347 N Hwy 17 / Old Georgetown Road Parcel ID": {
+  "census": {
+   "lat": 32.845928,
+   "lng": -79.812079,
+   "matched": "2347 N US HWY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.845527,
+   "lng": -79.812131,
+   "matched": "2347 N HIGHWAY 17, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -2338,6 +3381,34 @@
    "quality": "address point"
   }
  },
+ "2361 North Highway 17": {
+  "census": {
+   "lat": 32.84643,
+   "lng": -79.811451,
+   "matched": "2361 N US HWY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.846121,
+   "lng": -79.811105,
+   "matched": "2361 N HIGHWAY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "2361 North Highway 17, identified by": {
+  "census": {
+   "lat": 32.84643,
+   "lng": -79.811451,
+   "matched": "2361 N US HWY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.846121,
+   "lng": -79.811105,
+   "matched": "2361 N HIGHWAY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
  "2362 N. Palmetto Fort": {
   "census": {
    "lat": 32.831894,
@@ -2377,6 +3448,62 @@
    "lat": 32.833449,
    "lng": -79.799751,
    "matched": "2370 N PALMETTO FORT DR, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "2377 North Highway 17": {
+  "census": {
+   "lat": 32.847034,
+   "lng": -79.810689,
+   "matched": "2377 N US HWY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.846931,
+   "lng": -79.8102,
+   "matched": "2377 NORTH HIGHWAY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "2405 Old Georgetown Road": {
+  "census": {
+   "lat": 32.847483,
+   "lng": -79.808755,
+   "matched": "2405 OLD GEORGETOWN RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.847327,
+   "lng": -79.808643,
+   "matched": "2405 OLD GEORGETOWN ROAD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "242 6th Avenue": {
+  "census": {
+   "lat": 32.810438,
+   "lng": -79.896535,
+   "matched": "242 6TH AVE, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.810571,
+   "lng": -79.89503,
+   "matched": "242 6TH AV, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "242 6th Avenue, identified by": {
+  "census": {
+   "lat": 32.810438,
+   "lng": -79.896535,
+   "matched": "242 6TH AVE, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.810571,
+   "lng": -79.89503,
+   "matched": "242 6TH AV, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -2464,6 +3591,20 @@
    "quality": "address point"
   }
  },
+ "264 North Shelmore Boulevard": {
+  "census": {
+   "lat": 32.815752,
+   "lng": -79.880715,
+   "matched": "264 N SHELMORE BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.815935,
+   "lng": -79.880558,
+   "matched": "264 N SHELMORE BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "276 Bayview Drive": {
   "census": {
    "lat": 32.793739,
@@ -2492,6 +3633,57 @@
    "quality": "address point"
   }
  },
+ "2839 North Highway 17": {
+  "census": {
+   "lat": 32.857779,
+   "lng": -79.796654,
+   "matched": "2839 N US HWY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.856921,
+   "lng": -79.795625,
+   "matched": "2839 N HIGHWAY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "2839 North Highway 17 / Located between Yough Hall Road": {
+  "census": {
+   "lat": 32.857779,
+   "lng": -79.796654,
+   "matched": "2839 N US HWY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.856921,
+   "lng": -79.795625,
+   "matched": "2839 N HIGHWAY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "2841 Parkers Island Road": {
+  "census": {
+   "lat": 32.884058,
+   "lng": -79.817246,
+   "matched": "2841 PARKERS ISLAND RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.883831,
+   "lng": -79.816419,
+   "matched": "2841 PARKERS ISLAND RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "2904 Tradewind Dr": {
+  "census": {
+   "lat": 32.868135,
+   "lng": -79.802899,
+   "matched": "2904 TRADEWIND DR, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": null
+ },
  "292 North Hobcaw Drive": {
   "census": {
    "lat": 32.821424,
@@ -2517,6 +3709,34 @@
    "lat": 32.924529,
    "lng": -79.799886,
    "matched": "2945 RIVER VISTA WAY, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "295 West Coleman Boulevard": {
+  "census": {
+   "lat": 32.797415,
+   "lng": -79.890709,
+   "matched": "295 W COLEMAN BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.797242,
+   "lng": -79.891416,
+   "matched": "295 W COLEMAN BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "2965 N Hwy 17": {
+  "census": {
+   "lat": 32.860874,
+   "lng": -79.792169,
+   "matched": "2965 N US HWY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.860575,
+   "lng": -79.791575,
+   "matched": "2965 N HIGHWAY 17, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -2576,6 +3796,24 @@
    "quality": "address point"
   }
  },
+ "301 7th Avenue": {
+  "census": {
+   "lat": 32.808876,
+   "lng": -79.894921,
+   "matched": "301 7TH AVE, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": null
+ },
+ "301 7th Avenue, Scanlonville": {
+  "census": {
+   "lat": 32.808876,
+   "lng": -79.894921,
+   "matched": "301 7TH AVE, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": null
+ },
  "302 Bank Street": {
   "census": {
    "lat": 32.785228,
@@ -2632,6 +3870,20 @@
    "quality": "address point"
   }
  },
+ "307 Morrison St": {
+  "census": {
+   "lat": 32.786264,
+   "lng": -79.875506,
+   "matched": "307 MORRISON ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.786757,
+   "lng": -79.874843,
+   "matched": "307 MORRISON ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "307 Morrison Street": {
   "census": {
    "lat": 32.786264,
@@ -2657,6 +3909,20 @@
    "lat": 32.786289,
    "lng": -79.877435,
    "matched": "309 BENNETT ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "31 & 33 Vincent Drive": {
+  "census": {
+   "lat": 32.795198,
+   "lng": -79.873586,
+   "matched": "33 VINCENT DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.795109,
+   "lng": -79.874253,
+   "matched": "33 VINCENT DR, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -2795,6 +4061,15 @@
    "quality": "address point"
   }
  },
+ "3305 N Hwy 17": {
+  "census": {
+   "lat": 32.872159,
+   "lng": -79.775819,
+   "matched": "3305 N US HWY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": null
+ },
  "336 Coinbow Drive": {
   "census": {
    "lat": 32.820786,
@@ -2803,6 +4078,20 @@
    "quality": "exact"
   },
   "county": null
+ },
+ "3404 Turgot Lane": {
+  "census": {
+   "lat": 32.883756,
+   "lng": -79.785185,
+   "matched": "3404 TURGOT LN, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.883777,
+   "lng": -79.786976,
+   "matched": "3404 TURGOT LN, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
  },
  "344 Shelmore Blvd": {
   "census": {
@@ -2841,6 +4130,29 @@
    "quality": "address point"
   }
  },
+ "3543 Holmgren Street": {
+  "census": {
+   "lat": 32.90481,
+   "lng": -79.776885,
+   "matched": "3543 HOLMGREN ST, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.905638,
+   "lng": -79.777895,
+   "matched": "3543 HOLMGREN ST, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "3575 North Highway 17": {
+  "census": {
+   "lat": 32.879564,
+   "lng": -79.76284,
+   "matched": "3575 N US HWY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": null
+ },
  "3584 Crosstree Lane": {
   "census": {
    "lat": 32.896365,
@@ -2852,6 +4164,20 @@
    "lat": 32.897475,
    "lng": -79.768292,
    "matched": "3584 CROSSTREES LN, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "3587 North Highway 17": {
+  "census": {
+   "lat": 32.880141,
+   "lng": -79.761797,
+   "matched": "3587 N US HWY 17, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.879043,
+   "lng": -79.760529,
+   "matched": "3587 N HIGHWAY 17, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -2869,6 +4195,20 @@
    "quality": "address point"
   }
  },
+ "3635 & 3637 Marginal Road": {
+  "census": {
+   "lat": 32.881002,
+   "lng": -79.759883,
+   "matched": "3637 MARGINAL RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.880978,
+   "lng": -79.759035,
+   "matched": "3637 MARGINAL RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
  "3637 Marginal Road": {
   "census": {
    "lat": 32.881002,
@@ -2883,6 +4223,20 @@
    "quality": "address point"
   }
  },
+ "3638 Zacoma Drive": {
+  "census": {
+   "lat": 32.875458,
+   "lng": -79.75245,
+   "matched": "3638 ZACOMA DR, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.875317,
+   "lng": -79.753433,
+   "matched": "3638 ZACOMA DR, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
  "3643 Marginal Road": {
   "census": {
    "lat": 32.880678,
@@ -2894,6 +4248,20 @@
    "lat": 32.881446,
    "lng": -79.758707,
    "matched": "3643 MARGINAL RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "3667 Tower Drive": {
+  "census": {
+   "lat": 32.88039,
+   "lng": -79.755292,
+   "matched": "3667 TOWER DR, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.880258,
+   "lng": -79.755035,
+   "matched": "3667 TOWER DR, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -2953,6 +4321,43 @@
    "quality": "address point"
   }
  },
+ "3745 North Highway 17": {
+  "census": {
+   "lat": 32.883321,
+   "lng": -79.753203,
+   "matched": "3745 N US HWY 17, MOUNT PLEASANT, SC, 29429",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.882922,
+   "lng": -79.753788,
+   "matched": "3745 N HIGHWAY 17, AWENDAW, SC, 29429",
+   "quality": "address point"
+  }
+ },
+ "3759 North Highway 17": {
+  "census": {
+   "lat": 32.883463,
+   "lng": -79.752337,
+   "matched": "3759 N US HWY 17, MOUNT PLEASANT, SC, 29429",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.882598,
+   "lng": -79.75188,
+   "matched": "3759 NORTH HIGHWAY 17, AWENDAW, SC, 29429",
+   "quality": "address point"
+  }
+ },
+ "3804 Garden Hill Road": {
+  "census": {
+   "lat": 32.878161,
+   "lng": -79.746429,
+   "matched": "3804 GARDEN HILL RD, MOUNT PLEASANT, SC, 29429",
+   "quality": "exact"
+  },
+  "county": null
+ },
  "384 Evian Way": {
   "census": {
    "lat": 32.852181,
@@ -2992,6 +4397,20 @@
    "lat": 32.846157,
    "lng": -79.855398,
    "matched": "391 EGYPT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "396 Evian Way": {
+  "census": {
+   "lat": 32.852119,
+   "lng": -79.863178,
+   "matched": "396 EVIAN WAY, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.853231,
+   "lng": -79.86213,
+   "matched": "396 EVIAN WAY, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -3199,6 +4618,15 @@
    "quality": "address point"
   }
  },
+ "424 Banks Street": {
+  "census": {
+   "lat": 32.785804,
+   "lng": -79.872376,
+   "matched": "424 BANK ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": null
+ },
  "424 McCants Dr": {
   "census": {
    "lat": 32.783213,
@@ -3210,6 +4638,34 @@
    "lat": 32.783967,
    "lng": -79.868696,
    "matched": "424 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "425 Bank Street": {
+  "census": {
+   "lat": 32.786085,
+   "lng": -79.871818,
+   "matched": "425 BANK ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.786127,
+   "lng": -79.87158,
+   "matched": "425 BANK ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "426 Egypt Road": {
+  "census": {
+   "lat": 32.845878,
+   "lng": -79.854223,
+   "matched": "426 EGYPT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.846067,
+   "lng": -79.854107,
+   "matched": "426 EGYPT RD, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -3366,6 +4822,20 @@
    "quality": "address point"
   }
  },
+ "479 Long Point Road": {
+  "census": {
+   "lat": 32.837288,
+   "lng": -79.871786,
+   "matched": "479 LONG POINT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.837733,
+   "lng": -79.871162,
+   "matched": "479 LONG POINT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "48 Robert Mills Circle": {
   "census": {
    "lat": 32.821963,
@@ -3391,6 +4861,20 @@
    "lat": 32.905746,
    "lng": -79.769102,
    "matched": "480 TRIPLE OAK DR, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
+ "485 Mathis Ferry Road": {
+  "census": {
+   "lat": 32.811785,
+   "lng": -79.878945,
+   "matched": "485 MATHIS FERRY RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.810562,
+   "lng": -79.88472,
+   "matched": "485 MATHIS FERRY RD, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -3442,6 +4926,20 @@
    "lat": 32.787378,
    "lng": -79.871886,
    "matched": "505 KING ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "506 Live Oak Dr": {
+  "census": {
+   "lat": 32.791654,
+   "lng": -79.876578,
+   "matched": "506 LIVE OAK DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.791518,
+   "lng": -79.877142,
+   "matched": "506 LIVE OAK DR, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -3577,6 +5075,34 @@
    "lng": -79.872052,
    "matched": "520 KING ST, MOUNT PLEASANT, SC, 29464",
    "quality": "exact"
+  },
+  "county": {
+   "lat": 32.787945,
+   "lng": -79.872147,
+   "matched": "520 KING ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "520 King Street / between Greenwich": {
+  "census": {
+   "lat": 32.787298,
+   "lng": -79.872267,
+   "matched": "KING ST & GREENWICH ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.787945,
+   "lng": -79.872147,
+   "matched": "520 KING ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "520 King Street / between Greenwich and Simmons Street": {
+  "census": {
+   "lat": 32.787298,
+   "lng": -79.872267,
+   "matched": "KING ST & GREENWICH ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
   },
   "county": {
    "lat": 32.787945,
@@ -3776,6 +5302,20 @@
   },
   "county": null
  },
+ "6 Vincent Drive": {
+  "census": {
+   "lat": 32.792937,
+   "lng": -79.870993,
+   "matched": "6 VINCENT DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.793102,
+   "lng": -79.871009,
+   "matched": "6 VINCENT DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "603 Atlantic Street": {
   "census": {
    "lat": 32.785883,
@@ -3829,6 +5369,34 @@
    "lat": 32.787252,
    "lng": -79.868714,
    "matched": "620 CORAL ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "620 Wando Park Boulevard": {
+  "census": {
+   "lat": 32.839044,
+   "lng": -79.867327,
+   "matched": "620 WANDO PARK BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.844987,
+   "lng": -79.877912,
+   "matched": "620 WANDO PARK BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "621 Dupre Lane / Ryefield Subdivision": {
+  "census": {
+   "lat": 32.82335,
+   "lng": -79.866958,
+   "matched": "621 DUPRE LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.822649,
+   "lng": -79.865654,
+   "matched": "621 DUPRE LN, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -3916,6 +5484,20 @@
    "quality": "address point"
   }
  },
+ "641 Coral St": {
+  "census": {
+   "lat": 32.787036,
+   "lng": -79.86842,
+   "matched": "641 CORAL ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.787594,
+   "lng": -79.867494,
+   "matched": "641 CORAL ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "642 Spark Street": {
   "census": {
    "lat": 32.818668,
@@ -3924,6 +5506,20 @@
    "quality": "exact"
   },
   "county": null
+ },
+ "642 Sparks St": {
+  "census": {
+   "lat": 32.818668,
+   "lng": -79.868097,
+   "matched": "642 SPARK ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.818815,
+   "lng": -79.868088,
+   "matched": "642 SPARKS ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
  },
  "647 Fox Pond": {
   "census": {
@@ -3950,6 +5546,56 @@
    "lat": 32.786433,
    "lng": -79.865613,
    "matched": "648 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "650 Ellis St": {
+  "census": null,
+  "county": null
+ },
+ "650 Ellis Street": {
+  "census": null,
+  "county": null
+ },
+ "651 McCants Drive / Corner of McCants Dr": {
+  "census": {
+   "lat": 32.786313,
+   "lng": -79.86531,
+   "matched": "651 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.786352,
+   "lng": -79.864902,
+   "matched": "651 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "653 Bank Street from R-1": {
+  "census": {
+   "lat": 32.789339,
+   "lng": -79.86771,
+   "matched": "653 BANK ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.788809,
+   "lng": -79.867985,
+   "matched": "653 BANK ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "653 Bank Street from R-1, Low-Density Residential District": {
+  "census": {
+   "lat": 32.789339,
+   "lng": -79.86771,
+   "matched": "653 BANK ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.788809,
+   "lng": -79.867985,
+   "matched": "653 BANK ST, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -4006,6 +5652,20 @@
    "lat": 32.784525,
    "lng": -79.863345,
    "matched": "661 FOX POND DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "663 Faulkner Drive": {
+  "census": {
+   "lat": 32.902921,
+   "lng": -79.755104,
+   "matched": "663 FAULKNER DR, MOUNT PLEASANT, SC, 29466",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.902596,
+   "lng": -79.757109,
+   "matched": "663 FAULKNER DRIVE, MOUNT PLEASANT, SC, 29466",
    "quality": "address point"
   }
  },
@@ -4121,6 +5781,15 @@
    "quality": "address point"
   }
  },
+ "700 Faison Road/Mount Pleasant Regional Airport Parcel ID": {
+  "census": null,
+  "county": {
+   "lat": 32.898159,
+   "lng": -79.780311,
+   "matched": "700 FAISON RD, MOUNT PLEASANT, SC, 29466",
+   "quality": "address point"
+  }
+ },
  "704 Remley Lane": {
   "census": {
    "lat": 32.814767,
@@ -4174,6 +5843,20 @@
    "lat": 32.787936,
    "lng": -79.87041,
    "matched": "710 SIMMONS ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "710 Sparks Street": {
+  "census": {
+   "lat": 32.817066,
+   "lng": -79.867634,
+   "matched": "710 SPARK ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.817411,
+   "lng": -79.867458,
+   "matched": "710 SPARKS ST, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -4325,6 +6008,20 @@
    "quality": "address point"
   }
  },
+ "734 Dupre Ln": {
+  "census": {
+   "lat": 32.819855,
+   "lng": -79.86306,
+   "matched": "734 DUPRE LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.820156,
+   "lng": -79.862783,
+   "matched": "734 DUPRE LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "735 Attwood Circle": {
   "census": {
    "lat": 32.821449,
@@ -4367,6 +6064,34 @@
    "quality": "address point"
   }
  },
+ "740 Atlantic Street": {
+  "census": {
+   "lat": 32.789485,
+   "lng": -79.863774,
+   "matched": "740 ATLANTIC ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.789736,
+   "lng": -79.8638,
+   "matched": "740 ATLANTIC ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "740 Atlantic Street, Planning Commission": {
+  "census": {
+   "lat": 32.789485,
+   "lng": -79.863774,
+   "matched": "740 ATLANTIC ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.789736,
+   "lng": -79.8638,
+   "matched": "740 ATLANTIC ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "744 Eagle Street": {
   "census": {
    "lat": 32.815466,
@@ -4378,6 +6103,20 @@
    "lat": 32.814342,
    "lng": -79.869533,
    "matched": "744 EAGLE ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "747 Winthrop St": {
+  "census": {
+   "lat": 32.79091,
+   "lng": -79.864668,
+   "matched": "747 WINTHROP ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.790726,
+   "lng": -79.864578,
+   "matched": "747 WINTHROP ST, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -4437,6 +6176,20 @@
    "quality": "address point"
   }
  },
+ "753 Winthrop Street": {
+  "census": {
+   "lat": 32.790933,
+   "lng": -79.864592,
+   "matched": "753 WINTHROP ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.790861,
+   "lng": -79.864209,
+   "matched": "753 WINTHROP ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "754 Atlantic": {
   "census": {
    "lat": 32.789715,
@@ -4479,6 +6232,20 @@
    "quality": "address point"
   }
  },
+ "759 Muirhead Road": {
+  "census": {
+   "lat": 32.812958,
+   "lng": -79.883646,
+   "matched": "759 MUIRHEAD RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.812326,
+   "lng": -79.883595,
+   "matched": "759 MUIRHEAD RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "763 3rd Street": {
   "census": {
    "lat": 32.814179,
@@ -4487,6 +6254,20 @@
    "quality": "exact"
   },
   "county": null
+ },
+ "763 and 767 Long Point": {
+  "census": {
+   "lat": 32.841535,
+   "lng": -79.848836,
+   "matched": "767 LONG POINT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.841792,
+   "lng": -79.848572,
+   "matched": "767 LONG POINT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
  },
  "767 3rd Street": {
   "census": {
@@ -4541,6 +6322,15 @@
    "lat": 32.811444,
    "lng": -79.901109,
    "matched": "779 3RD ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "785 Dunloe Court": {
+  "census": null,
+  "county": {
+   "lat": 32.820246,
+   "lng": -79.859196,
+   "matched": "785 DUNLOE CT, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -4637,6 +6427,20 @@
    "quality": "address point"
   }
  },
+ "820 McCants Drive": {
+  "census": {
+   "lat": 32.790165,
+   "lng": -79.860753,
+   "matched": "820 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.790285,
+   "lng": -79.861055,
+   "matched": "820 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "824 Armsway Street": {
   "census": {
    "lat": 32.795039,
@@ -4688,6 +6492,20 @@
   },
   "county": null
  },
+ "835 Erckmann Drive": {
+  "census": {
+   "lat": 32.791083,
+   "lng": -79.860726,
+   "matched": "835 ERCKMANN DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.791014,
+   "lng": -79.860537,
+   "matched": "835 ERCKMANN DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "835 Pitt Street": {
   "census": {
    "lat": 32.779173,
@@ -4701,6 +6519,15 @@
    "matched": "835 PITT ST, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
+ },
+ "84 Belle Point Drive": {
+  "census": {
+   "lat": 32.843601,
+   "lng": -79.856852,
+   "matched": "84 BELLE POINT DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": null
  },
  "843 Bridge Point Circle": {
   "census": {
@@ -4758,6 +6585,48 @@
    "quality": "address point"
   }
  },
+ "855 Von Kolnitz Road": {
+  "census": {
+   "lat": 32.820095,
+   "lng": -79.85346,
+   "matched": "855 VON KOLNITZ RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.81832,
+   "lng": -79.853387,
+   "matched": "855 VON KOLNITZ RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "860 & 862 Coleman Boulevard": {
+  "census": {
+   "lat": 32.793967,
+   "lng": -79.864083,
+   "matched": "862 COLEMAN BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.794362,
+   "lng": -79.863606,
+   "matched": "862 COLEMAN BLVD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "883 Long Point": {
+  "census": {
+   "lat": 32.843146,
+   "lng": -79.841071,
+   "matched": "883 LONG POINT RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.843538,
+   "lng": -79.841102,
+   "matched": "883 LONG POINT ROAD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "90 Jane Jacobs Street": {
   "census": {
    "lat": 32.817197,
@@ -4800,6 +6669,20 @@
    "quality": "address point"
   }
  },
+ "904 Old Georgetown Road": {
+  "census": {
+   "lat": 32.795452,
+   "lng": -79.861346,
+   "matched": "904 OLD GEORGETOWN RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.795397,
+   "lng": -79.861784,
+   "matched": "904 OLD GEORGETOWN RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "908 Calvary Circle": {
   "census": null,
   "county": null
@@ -4815,6 +6698,76 @@
    "lat": 32.786136,
    "lng": -79.868984,
    "matched": "909 SIMMONS ST, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "912 Old Georgetown Road": {
+  "census": {
+   "lat": 32.795578,
+   "lng": -79.861183,
+   "matched": "912 OLD GEORGETOWN RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.795721,
+   "lng": -79.861757,
+   "matched": "912 OLD GEORGETOWN RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "912 Old Georgetown Road and 1182 B B Lane": {
+  "census": {
+   "lat": 32.79531,
+   "lng": -79.861433,
+   "matched": "OLD GEORGETOWN RD & B B LN, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.795721,
+   "lng": -79.861757,
+   "matched": "912 OLD GEORGETOWN RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "913 Bowman Road": {
+  "census": {
+   "lat": 32.815233,
+   "lng": -79.85843,
+   "matched": "913 BOWMAN RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.81418,
+   "lng": -79.857896,
+   "matched": "913 BOWMAN RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "915 McCants Drive": {
+  "census": {
+   "lat": 32.791263,
+   "lng": -79.859213,
+   "matched": "915 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.790951,
+   "lng": -79.859124,
+   "matched": "915 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "915 and 917 McCants": {
+  "census": {
+   "lat": 32.79132,
+   "lng": -79.859147,
+   "matched": "917 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.79114,
+   "lng": -79.858971,
+   "matched": "917 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -4916,6 +6869,20 @@
    "quality": "address point"
   }
  },
+ "952 McCants Drive": {
+  "census": {
+   "lat": 32.792342,
+   "lng": -79.85805,
+   "matched": "952 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.792733,
+   "lng": -79.858512,
+   "matched": "952 MCCANTS DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "952 South Shem Drive": {
   "census": {
    "lat": 32.798495,
@@ -4941,6 +6908,20 @@
    "lat": 32.802273,
    "lng": -79.8863,
    "matched": "953 LANSING DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "958 Key Colony Court": {
+  "census": {
+   "lat": 32.788083,
+   "lng": -79.851859,
+   "matched": "958 KEY COLONY CT, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.788233,
+   "lng": -79.851843,
+   "matched": "958 KEY COLONY CT, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
@@ -4972,6 +6953,48 @@
    "quality": "address point"
   }
  },
+ "964 Pine Hollow Road": {
+  "census": {
+   "lat": 32.807706,
+   "lng": -79.868096,
+   "matched": "964 PINE HOLLOW RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.807088,
+   "lng": -79.867499,
+   "matched": "964 PINE HOLLOW RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "964 Pine Hollow Road, consist of approximately +0 1": {
+  "census": {
+   "lat": 32.807706,
+   "lng": -79.868096,
+   "matched": "964 PINE HOLLOW RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.807088,
+   "lng": -79.867499,
+   "matched": "964 PINE HOLLOW RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "967 Pine Hollow Road": {
+  "census": {
+   "lat": 32.807632,
+   "lng": -79.868213,
+   "matched": "967 PINE HOLLOW RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.806566,
+   "lng": -79.868291,
+   "matched": "967 PINE HOLLOW RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "971 Fowler Ct": {
   "census": {
    "lat": 32.805886,
@@ -4986,6 +7009,20 @@
    "quality": "address point"
   }
  },
+ "980 Pine Hollow Road": {
+  "census": {
+   "lat": 32.807358,
+   "lng": -79.867981,
+   "matched": "980 PINE HOLLOW RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "exact"
+  },
+  "county": {
+   "lat": 32.806062,
+   "lng": -79.867607,
+   "matched": "980 PINE HOLLOW RD, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
  "982 Cliffwood": {
   "census": {
    "lat": 32.801336,
@@ -4997,6 +7034,20 @@
    "lat": 32.800887,
    "lng": -79.883757,
    "matched": "982 CLIFFWOOD DR, MOUNT PLEASANT, SC, 29464",
+   "quality": "address point"
+  }
+ },
+ "986 and 988 Key Colony Court": {
+  "census": {
+   "lat": 32.788098,
+   "lng": -79.851645,
+   "matched": "988 KEY COLONY CT, MOUNT PLEASANT, SC, 29464",
+   "quality": "non_exact"
+  },
+  "county": {
+   "lat": 32.787972,
+   "lng": -79.851474,
+   "matched": "988 KEY COLONY CT, MOUNT PLEASANT, SC, 29464",
    "quality": "address point"
   }
  },
