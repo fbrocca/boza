@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Rebuild the map data from the minutes PDFs.
-#   tools/build.sh            extract + build (uses cached geocodes)
-#   tools/build.sh --geocode  also look up new parcels/addresses (network)
+# Rebuild the map data.
+#   tools/build.sh            extract + build (uses cached parcel/address lookups)
+#   tools/build.sh --geocode  also look up new parcels and addresses (network)
+# Run tools/fetch_minutes.py first to pull new minutes from the Town.
 # Needs pdftotext (poppler-utils) and python3.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
@@ -15,8 +16,9 @@ for pdf in "$root"/minutes/*.pdf; do
   pdftotext -layout "$pdf" "$work/txt/$(basename "${pdf%.pdf}").txt"
 done
 python3 -I "$here/extract_cases.py" "$work/txt" > "$data/cases.json"
+python3 -I "$here/extract_planning.py" "$root/sources" > "$data/planning.json"
 if [[ "${1:-}" == "--geocode" ]]; then
-  python3 -I "$here/parcels.py" "$data/cases.json" "$data/parcels.json"
-  python3 -I "$here/geocode.py" "$data/cases.json" "$data/geocode-cache.json"
+  python3 -I "$here/parcels.py" "$data/parcels.json" "$data/cases.json" "$data/planning.json"
+  python3 -I "$here/geocode.py" "$data/geocode-cache.json" "$data/cases.json" "$data/planning.json"
 fi
-python3 -I "$here/build_data.py" "$data/cases.json" "$data"
+python3 -I "$here/build_data.py" "$data"

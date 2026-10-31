@@ -163,3 +163,27 @@ h1 { font-size: 20px; margin: 0; letter-spacing: -.01em; }
   .legend > div:last-child { display: none; }
   h1 { font-size: 18px; }
 }
+
+/* ---- Multi-board additions ---- */
+.segmented { display: grid; grid-template-columns: auto 1fr 1.3fr; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 2px; gap: 2px; }
+.segmented button { all: unset; text-align: center; font-size: 13px; padding: 6px 8px; border-radius: 6px; cursor: pointer; color: var(--muted); white-space: nowrap; }
+.segmented button[aria-checked="true"] { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.segmented button:focus-visible { outline: 2px solid var(--focus); }
+.filters { grid-template-columns: 1.3fr 1.2fr .7fr; }
+.aka { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+.case-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 12px; }
+.case-top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.case-id { font-weight: 600; }
+.board-tag { font-size: 12px; color: var(--muted); margin-top: 1px; }
+.timeline { list-style: none; margin: 10px 0 0; padding: 0 0 0 14px; border-left: 2px solid var(--line); }
+.timeline > li { position: relative; padding: 0 0 12px 10px; }
+.timeline > li:last-child { padding-bottom: 0; }
+.timeline > li::before { content: ""; position: absolute; left: -21px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--surface); border: 2px solid var(--muted); }
+.tl-head { display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; font-size: 13px; }
+.tl-date { font-weight: 600; font-variant-numeric: tabular-nums; }
+.tl-body { color: var(--muted); }
+.tl-decision { font-size: 14px; margin: 1px 0 6px; }
+.btn.small { font-size: 12px; padding: 3px 8px; }
+.legend-note { margin-top: 2px; color: var(--muted); }
+.pin.planning span { border-radius: 4px; transform: rotate(45deg) scale(.9); }
+.pin.planning.active span { transform: rotate(45deg) scale(1.15); }
