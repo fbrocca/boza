@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zoning Appeals Map</title>
+<meta name="description" content="Every property heard by the Town of Mount Pleasant, SC Board of Zoning Appeals since 2017, on a map, with links to the minutes.">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="vendor/markercluster/MarkerCluster.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="panel" id="panel" aria-label="Cases">
+    <header class="panel-head">
+      <div class="grip" aria-hidden="true"></div>
+      <h1>Zoning Appeals Map</h1>
+      <p class="sub">Town of Mount Pleasant, SC &middot; Board of Zoning Appeals</p>
+      <p class="stats" id="stats">Loading cases&hellip;</p>
+    </header>
+
+    <section id="listView" class="view">
+      <div class="controls">
+        <label class="search">
+          <span class="sr">Search</span>
+          <input id="q" type="search" placeholder="Address, case no. (V-06-25), TMS, or keyword" autocomplete="off">
+        </label>
+        <div class="filters">
+          <label><span>Decision</span>
+            <select id="fDecision">
+              <option value="">All</option>
+              <option>Approved</option>
+              <option>Approved with conditions</option>
+              <option>Denied</option>
+              <option>Deferred</option>
+              <option>Withdrawn</option>
+              <option value="other">Other / see minutes</option>
+            </select>
+          </label>
+          <label><span>Type</span>
+            <select id="fKind">
+              <option value="">All</option>
+              <option>Variance</option>
+              <option>Appeal</option>
+              <option>Special exception</option>
+            </select>
+          </label>
+          <label><span>Year</span>
+            <select id="fYear"><option value="">All</option></select>
+          </label>
+        </div>
+        <div class="list-meta">
+          <span id="count"></span>
+          <label class="inview"><input type="checkbox" id="fInView"> Only what's on the map</label>
+        </div>
+      </div>
+      <ol class="results" id="results"></ol>
+    </section>
+
+    <section id="detailView" class="view" hidden>
+      <button class="back" id="back" type="button">&larr; All properties</button>
+      <div id="detail"></div>
+    </section>
+
+    <footer class="panel-foot">
+      Extracted automatically from the
+      <a href="https://github.com/fbrocca/boza/tree/main/minutes">official minutes</a>.
+      Decisions are inferred from the recorded motions; the minutes are authoritative.
+    </footer>
+  </aside>
+
+  <main class="map-wrap">
+    <div id="map" role="region" aria-label="Map of Mount Pleasant"></div>
+    <div class="legend" id="legend" aria-label="Legend"></div>
+  </main>
+</div>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="vendor/markercluster/leaflet.markercluster.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

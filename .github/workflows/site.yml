@@ -1,0 +1,66 @@
+name: Update and publish
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 11 5 * *"   # 5th of each month, 11:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    # Pull new minutes from the Town, rebuild the map data, commit if anything changed.
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -q && sudo apt-get install -y -q poppler-utils
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 tools/fetch_minutes.py
+      - run: tools/build.sh --geocode
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add minutes data
+          if git diff --cached --quiet; then
+            echo "No new minutes."
+          else
+            git commit -m "Update minutes and map data ($(date -u +%Y-%m-%d))"
+            git push
+          fi
+
+  deploy:
+    needs: update
+    if: always() && (needs.update.result == 'success' || needs.update.result == 'skipped')
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+      - name: Assemble site
+        run: |
+          mkdir _site
+          cp -r index.html app.js style.css vendor data minutes _site/
+          rm -f _site/data/cases.json _site/data/geocode-cache.json _site/data/parcels.json
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
