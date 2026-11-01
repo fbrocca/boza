@@ -17,8 +17,9 @@ for pdf in "$root"/minutes/*.pdf; do
 done
 python3 -I "$here/extract_cases.py" "$work/txt" > "$data/cases.json"
 python3 -I "$here/extract_planning.py" "$root/sources" > "$data/planning.json"
+python3 -I "$here/extract_design.py" "$root/sources" > "$data/design.json"
 if [[ "${1:-}" == "--geocode" ]]; then
-  python3 -I "$here/parcels.py" "$data/parcels.json" "$data/cases.json" "$data/planning.json"
-  python3 -I "$here/geocode.py" "$data/geocode-cache.json" "$data/cases.json" "$data/planning.json"
+  python3 -I "$here/parcels.py" "$data/parcels.json" "$data/cases.json" "$data/planning.json" "$data/design.json"
+  python3 -I "$here/geocode.py" "$data/geocode-cache.json" "$data/cases.json" "$data/planning.json" "$data/design.json"
 fi
 python3 -I "$here/build_data.py" "$data"

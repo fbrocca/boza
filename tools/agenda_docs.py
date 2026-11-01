@@ -111,7 +111,9 @@ def meeting_wide(slug, txt):
 ITEM_START = re.compile(r"^\s*(?:[A-Ha-h]|\d{1,2})[.)](?:\s+\S|\s*$)")
 
 
-def assign(runs, links):
+def assign(runs, links, by_item=False):
+    """by_item: boards without case numbers (HDPC, DRB). Documents inside an item keep the
+    item's text, and build_data.py matches them to a property by TMS or street address."""
     # Agenda items in reading order; each item's case = first case number inside it.
     starts = [(pn, top) for pn, top, _, txt in runs if ITEM_START.match(txt)]
     def item_of(pos):
@@ -128,6 +130,10 @@ def assign(runs, links):
                 if m:
                     return norm(m)
         return None
+    def text_of(item):
+        nxt = [s_ for s_ in starts if s_ > item]
+        end = nxt[0] if nxt else (10 ** 6, 0)
+        return " ".join(txt for pn, top, _, txt in runs if item <= (pn, top) < end)[:400]
     best = {}  # href -> (strength, order, doc)
     for order, (pn, top, left, href, txt) in enumerate(links):
         href = href.strip()
@@ -145,6 +151,13 @@ def assign(runs, links):
             case = norm(ms or mt)
         elif item is not None:
             case = case_in_item(item)
+            if case is None and by_item and not meeting_wide(slug, txt):
+                dtype = doc_type(f"{slug} {txt}")
+                label = slug if re.search(r"[A-Za-z]{3}", slug) else txt
+                doc = {"case": None, "item": text_of(item), "type": dtype, "url": href, "label": label.strip()[:90]}
+                if href not in best:
+                    best[href] = (1, order, doc)
+                continue
             if case is None and not meeting_wide(slug, txt):
                 continue  # an item without a case number (street names, text amendments)
         else:
@@ -169,11 +182,15 @@ def meetings():
             m = re.search(r"_(\d{8})-(\d+)", row["source_agenda"] or "")
             if m:
                 yield "boza", row["date"], m.group(0)
-    for name in sorted(os.listdir(os.path.join(ROOT, "sources", "pc"))):
-        m = re.match(r"(\d{4})-(\d{2})-(\d{2})-(\d+)\.txt$", name)
-        if m:
-            y, mo, d, aid = m.groups()
-            yield "pc", f"{y}-{mo}-{d}", f"_{mo}{d}{y}-{aid}"
+    for body in ("pc", "hdpc", "drb"):
+        folder = os.path.join(ROOT, "sources", body)
+        if not os.path.isdir(folder):
+            continue
+        for name in sorted(os.listdir(folder)):
+            m = re.match(r"(\d{4})-(\d{2})-(\d{2})-(\d+)\.txt$", name)
+            if m:
+                y, mo, d, aid = m.groups()
+                yield body, f"{y}-{mo}-{d}", f"_{mo}{d}{y}-{aid}"
 
 
 def main():
@@ -185,7 +202,7 @@ def main():
         if not pdf.startswith(b"%PDF"):
             continue  # not cached: retried next run
         runs, links = links_in(pdf)
-        data[f"{body}/{date}"] = assign(runs, links)
+        data[f"{body}/{date}"] = assign(runs, links, by_item=body in ("hdpc", "drb"))
         if k % 25 == 0:
             print(f"  {k}/{len(todo)}")
             json.dump(dict(sorted(data.items())), open(OUT, "w"), indent=1)

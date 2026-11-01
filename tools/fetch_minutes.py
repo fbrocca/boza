@@ -27,7 +27,7 @@ import urllib.request
 BASE = "https://sc-mountpleasant2.civicplus.com"
 CAT = 8
 FIRST_YEAR = 2017
-TEXT_BODIES = {"pc": 1, "pcom": 17, "council": 4}
+TEXT_BODIES = {"pc": 1, "pcom": 17, "council": 4, "hdpc": 16, "drb": 11}
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 UA = {"User-Agent": "boza-archive (+https://github.com/fbrocca/boza)"}
 
