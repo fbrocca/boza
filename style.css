@@ -291,3 +291,10 @@ a { color: inherit; text-underline-offset: 3px; }
 }
 
 .pill-marker.design > span .dot { border-radius: 1px; }
+
+/* Decluttered markers: plain dots until zoom 17 (or hover / selection) */
+.leaflet-container:not(.show-labels) .pill-marker:not(.hl):not(.active) > span {
+  padding: 3px; gap: 0; box-shadow: 0 0 0 1px rgb(0 0 0 / .12), 0 1px 3px rgb(0 0 0 / .25);
+}
+.leaflet-container:not(.show-labels) .pill-marker:not(.hl):not(.active) .lbl { display: none; }
+.leaflet-container:not(.show-labels) .pill-marker:not(.hl):not(.active) > span .dot { width: 9px; height: 9px; }
