@@ -298,3 +298,13 @@ a { color: inherit; text-underline-offset: 3px; }
 }
 .leaflet-container:not(.show-labels) .pill-marker:not(.hl):not(.active) .lbl { display: none; }
 .leaflet-container:not(.show-labels) .pill-marker:not(.hl):not(.active) > span .dot { width: 9px; height: 9px; }
+
+/* Zoning facts and AI case summary */
+.zoning { margin: 0 0 18px; }
+.zoning-label { font-size: 12px; font-weight: 600; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: .04em; }
+.zoning .facts { margin-top: 6px; }
+a.badge { text-decoration: none; }
+a.badge:hover { background: var(--accent); }
+.case-card .facts { margin: 10px 0 0; }
+.summary { margin: 10px 0 0; font-size: 13.5px; color: var(--foreground); }
+.ai-tag { display: inline-block; font-size: 11px; font-weight: 600; color: var(--muted-foreground); border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; margin-right: 6px; vertical-align: 1px; cursor: help; }
