@@ -308,3 +308,9 @@ a.badge:hover { background: var(--accent); }
 .case-card .facts { margin: 10px 0 0; }
 .summary { margin: 10px 0 0; font-size: 13.5px; color: var(--foreground); }
 .ai-tag { display: inline-block; font-size: 11px; font-weight: 600; color: var(--muted-foreground); border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; margin-right: 6px; vertical-align: 1px; cursor: help; }
+
+.evidence { margin: 6px 0 0; font-size: 13px; }
+.evidence summary { cursor: pointer; color: var(--muted-foreground); font-weight: 500; }
+.evidence blockquote { margin: 6px 0 0; padding: 6px 10px; border-left: 3px solid var(--border); color: var(--foreground); background: var(--muted); border-radius: 0 6px 6px 0; }
+
+@media (max-width: 760px) { .plan-btn { display: none; } }

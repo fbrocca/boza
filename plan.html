@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan a Zoning Request</title>
+<meta name="description" content="Planning a variance or rezoning in Mount Pleasant, SC? See your lot's zoning, the right application, comparable past cases and how successful applicants made their case.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="plan.css">
+</head>
+<body class="plan-page">
+<header class="topbar">
+  <a class="brand" href="./" aria-label="Zoning Map, home">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" fill="currentColor"/></svg>
+    <span>Zoning Map</span>
+  </a>
+  <div></div>
+  <div class="topbar-right"><a class="btn btn-outline btn-sm" href="./">← Back to the map</a></div>
+</header>
+
+<main class="plan">
+  <section class="plan-intro">
+    <p class="eyebrow">Plan a request</p>
+    <h1>Planning a variance or rezoning?</h1>
+    <p class="muted lead">Enter your address and what you want to do. You'll see your lot's current zoning, which application you likely need, how comparable requests in Mount Pleasant fared, and what successful applicants did. Based on 684 cases read from the Town's minutes, 2017–2026.</p>
+  </section>
+
+  <form class="card plan-form" id="planForm">
+    <div class="field">
+      <label class="label" for="addr">1. Property address or parcel number (TMS)</label>
+      <div class="row">
+        <input class="input" id="addr" type="text" placeholder="e.g. 100 Ann Edwards Lane" autocomplete="off" required>
+      </div>
+      <p class="hint" id="addrHint">Mount Pleasant, SC only. If the lot shown isn't yours, enter its TMS (e.g. 532-01-00-147).</p>
+    </div>
+    <div class="field">
+      <label class="label" for="relief">2. What do you want to do?</label>
+      <select class="input" id="relief" required>
+        <option value="">Choose…</option>
+        <optgroup label="Build closer to a property line">
+          <option value="front_setback">Reduce the front setback</option>
+          <option value="side_setback">Reduce a side setback</option>
+          <option value="rear_setback">Reduce the rear setback</option>
+          <option value="multiple_setbacks">Reduce several setbacks</option>
+        </optgroup>
+        <optgroup label="Size and shape">
+          <option value="height">Build taller than allowed</option>
+          <option value="lot_coverage_or_bar">Cover more of the lot (coverage / building area ratio)</option>
+          <option value="accessory_structure">Bigger or closer accessory structure (garage, pool house, shed)</option>
+          <option value="porch_or_design_standard">Depart from a porch or design standard</option>
+        </optgroup>
+        <optgroup label="Site">
+          <option value="tree_removal_or_protection">Remove or build near a protected tree</option>
+          <option value="parking">Fewer parking spaces</option>
+          <option value="buffer">Reduce a buffer</option>
+          <option value="dock_or_marsh">Dock or marsh-side structure</option>
+          <option value="signage">Signage</option>
+        </optgroup>
+        <optgroup label="Use and land">
+          <option value="use">Use the property for something its zoning doesn't allow (e.g. residential on a commercial lot)</option>
+          <option value="lot_size_density_subdivision">Split the lot or add units</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field" id="sizeField">
+      <label class="label">3. How much? <span class="muted">(optional)</span></label>
+      <div class="row size-row">
+        <span>Ask for</span><input class="input num" id="sizeAsk" type="number" min="0" step="0.5" placeholder="3">
+        <span>of a</span><input class="input num" id="sizeReq" type="number" min="0" step="0.5" placeholder="10">
+        <span>requirement</span>
+        <select class="input unit" id="sizeUnit"><option>ft</option><option>%</option><option>sq ft</option><option>inches</option></select>
+      </div>
+      <p class="hint">E.g. a 3 ft encroachment into a 10 ft side setback. Used only to compare with past requests, in your browser.</p>
+    </div>
+    <button class="btn btn-primary" type="submit" id="go">Show my options</button>
+    <p class="hint">Nothing you enter is stored. The address is looked up with Charleston County and Town of Mount Pleasant map services.</p>
+  </form>
+
+  <div id="out" aria-live="polite"></div>
+
+  <footer class="plan-foot muted small">
+    Information from public records, not legal advice. Patterns describe past cases and do not predict any decision.
+    Confirm requirements with the Town of Mount Pleasant Planning Department before applying.
+    Outcomes and summaries were read from the minutes with AI assistance and checked against them; the minutes are authoritative.
+  </footer>
+</main>
+
+<script>window.goatcounter = { path: function () { return location.pathname; } };</script>
+<script data-goatcounter="https://fbrocca.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script src="plan.js"></script>
+</body>
+</html>

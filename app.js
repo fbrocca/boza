@@ -398,7 +398,8 @@
     if (f.magnitude) bits.push(`<span class="badge badge-outline">${esc(f.magnitude)}</span>`);
     if (f.vote) bits.push(`<span class="badge badge-outline">Vote ${esc(f.vote)}</span>`);
     return `${bits.length ? `<div class="facts">${bits.join('')}</div>` : ''}
-      ${f.key_factor ? `<p class="summary"><span class="ai-tag" title="Summarised from the minutes by AI and checked against them; the minutes are authoritative.">AI summary</span>${esc(f.key_factor)}</p>` : ''}`;
+      ${f.key_factor ? `<p class="summary"><span class="ai-tag" title="Summarised from the minutes by AI and checked against them; the minutes are authoritative.">AI summary</span>${esc(f.key_factor)}</p>` : ''}
+      ${f.evidence && f.evidence.length ? `<details class="evidence"><summary>From the minutes</summary>${f.evidence.map((q) => `<blockquote>“${esc(q)}”</blockquote>`).join('')}</details>` : ''}`;
   }
 
   function zoningHtml(p) {
@@ -464,6 +465,7 @@
         <span class="badge badge-outline">${p.cases.length} ${p.cases.length === 1 ? 'case' : 'cases'}</span>
         ${p.lat ? `<a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}" target="_blank" rel="noopener">${ICON.ext}Google Maps</a>` : ''}
       </div>
+      <a class="btn btn-primary btn-sm alerts-inline" href="plan.html?address=${encodeURIComponent(p.address)}">Planning a request here?</a>
       <button class="btn btn-outline btn-sm alerts-inline" type="button" data-alerts="property" data-addr="${esc(p.address)}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alert me about new cases near here</button>
       ${p.geo ? `<p class="geo-note">${esc(GEO_LABEL[p.geo] || p.geo)}</p>` : ''}
       ${zoningHtml(p)}

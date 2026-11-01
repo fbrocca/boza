@@ -57,7 +57,7 @@ jobs:
       - name: Assemble site
         run: |
           mkdir _site
-          cp -r index.html app.js style.css vendor data minutes _site/
+          cp -r index.html app.js style.css plan.html plan.js plan.css vendor data minutes _site/
           rm -f _site/data/cases.json _site/data/planning.json _site/data/geocode-cache.json _site/data/parcels.json
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
