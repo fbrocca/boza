@@ -24,6 +24,18 @@ correspondence, presentation).
 
 **Site:** https://fbrocca.github.io/boza/
 
+## Coming up
+
+`tools/upcoming.py` reads the agendas the Town has posted for meetings that
+haven't happened yet (about a week ahead) for Zoning Appeals, Planning
+Commission, Planning Committee, Town Council, Historic District and Design
+Review, and writes `data/upcoming.json`: meeting date and time, comment
+deadline and address where the agenda gives them, and each zoning item (case
+number, address / TMS, request). Committee and Council agendas keep only
+zoning-related items. Items are pinned from our own properties (same case or
+TMS) or the county parcel layer. The map shows a "Coming up" panel above the
+list, blue date pins, and an "On the agenda" note on the property page.
+
 ## Plan a request (`plan.html`)
 
 Enter an address (or TMS) and what you want to do. The page looks up the lot live
@@ -119,9 +131,10 @@ not coded yet: they show the automatic outcome until coded.
 ## Automation
 
 `.github/workflows/site.yml` publishes the site to GitHub Pages on every push
-to `main`. On the 5th of each month it also downloads new minutes, rebuilds
-the data, commits the changes, and redeploys. Run it by hand from the Actions
-tab ("Update and publish" → Run workflow).
+to `main`. Every day it refreshes `data/upcoming.json` from posted agendas.
+On the 5th of each month it also downloads new minutes, rebuilds the data,
+commits the changes, and redeploys. Running it by hand from the Actions tab
+("Update and publish" → Run workflow) does the full monthly rebuild.
 
 ## Accuracy
 

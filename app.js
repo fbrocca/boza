@@ -267,7 +267,8 @@
 
   $('legend').innerHTML = '<summary>Legend</summary><div class="legend-body">' + GROUPS.map((g) =>
     `<div><span class="dot" style="${tone(g.key)}"></span>${esc(g.label)}</div>`).join('') +
-    '<div class="legend-note">● zoning appeal &nbsp;◆ rezoning &amp; planning &nbsp;■ design review</div></div>';
+    '<div class="legend-note">● zoning appeal &nbsp;◆ rezoning &amp; planning &nbsp;■ design review</div>' +
+    '<div class="legend-note"><span class="soon-key">Nov 9</span> on an upcoming agenda (date of the meeting)</div></div>';
 
   function pinIcon(p, cases, state) {
     const c = (cases || p.cases)[0];
@@ -467,6 +468,7 @@
         <span class="badge badge-outline">${p.cases.length} ${p.cases.length === 1 ? 'case' : 'cases'}</span>
         ${p.lat ? `<a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}" target="_blank" rel="noopener">${ICON.ext}Google Maps</a>` : ''}
       </div>
+      ${agendaBanner(p)}
       <a class="btn btn-primary btn-sm alerts-inline" href="plan.html?address=${encodeURIComponent(p.address)}">Planning a request here?</a>
       <button class="btn btn-outline btn-sm alerts-inline" type="button" data-alerts="property" data-addr="${esc(p.address)}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alert me about new cases near here</button>
       ${p.geo ? `<p class="geo-note">${esc(GEO_LABEL[p.geo] || p.geo)}</p>` : ''}
@@ -665,6 +667,111 @@
     $('fKind').innerHTML = '<option value="">Type of case</option>' + kinds.map((k) => `<option${k === cur ? ' selected' : ''}>${esc(k)}</option>`).join('');
   }
 
+  // ---------- Coming up: agendas posted for meetings that haven't happened yet ----------
+  // data/upcoming.json is refreshed daily by tools/upcoming.py from the Town's Agenda Center.
+  const soonLayer = L.layerGroup().addTo(map);
+  let upcoming = [];
+  const soonByProp = new Map();
+  const dayIso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const fmtDay = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  function relDay(iso) {
+    const t = new Date(); const today = dayIso(t);
+    const tm = new Date(t); tm.setDate(t.getDate() + 1);
+    if (iso === today) return 'today';
+    if (iso === dayIso(tm)) return 'tomorrow';
+    const n = Math.round((new Date(iso + 'T12:00:00') - new Date(today + 'T12:00:00')) / 864e5);
+    return n > 1 && n < 8 ? `in ${n} days` : '';
+  }
+  const SHORT_BOARD = { boza: 'Zoning Appeals', pc: 'Planning Commission', pcom: 'Planning Committee', council: 'Town Council', hdpc: 'Historic District', drb: 'Design Review' };
+  function soonPopup(m, it) {
+    return `<div class="preview-body">
+      <span class="eyebrow">${esc(it.kind || '')} · ${esc(m.label)}</span>
+      <span class="preview-title">${esc(it.title)}</span>
+      ${it.address ? `<span class="muted small">${esc(it.address)}</span>` : ''}
+      ${it.request ? `<span class="small">${esc(it.request)}</span>` : ''}
+      <span class="small"><b>${esc(fmtDay(m.date))}${m.time ? ', ' + esc(m.time) : ''}</b>${m.deadline ? ` · comments by ${esc(m.deadline)}` : ''}</span>
+      ${it.property && byId.has(it.property) ? `<button class="btn btn-primary btn-sm" type="button" data-open="${esc(it.property)}">See past cases here</button>` : ''}
+      <a class="btn btn-outline btn-sm" href="${esc(m.agenda)}" target="_blank" rel="noopener" data-track="upcoming/agenda">Agenda (PDF)</a>
+    </div>`;
+  }
+  function showSoon(m, it) {
+    track('upcoming/item', `${SHORT_BOARD[m.body]}: ${it.title}`.slice(0, 120));
+    if (it.lat) {
+      map.flyTo([it.lat, it.lng], Math.max(map.getZoom(), 17), { duration: 0.6 });
+      L.popup({ className: 'preview', offset: [0, -12], maxWidth: 320, autoPanPadding: [40, 40] })
+        .setLatLng([it.lat, it.lng]).setContent(soonPopup(m, it)).openOn(map);
+      if (window.matchMedia('(max-width: 760px)').matches) { document.body.classList.add('show-map'); syncMapToggle(); setTimeout(() => map.invalidateSize(), 50); }
+    } else if (it.property && byId.has(it.property)) {
+      openProperty(it.property);
+    } else {
+      window.open(m.agenda, '_blank', 'noopener');
+    }
+  }
+  function renderUpcoming() {
+    const el = $('upcoming');
+    const today = dayIso(new Date());
+    const meets = upcoming.filter((m) => m.date >= today);
+    soonLayer.clearLayers();
+    soonByProp.clear();
+    if (!meets.length) { el.hidden = true; return; }
+    const nItems = meets.reduce((a, m) => a + m.items.length, 0);
+    const itemHtml = (m, mi, it, ii) => `<li><button type="button" class="up-item" data-m="${mi}" data-i="${ii}">
+        <span class="up-kind">${esc(it.kind || 'Item')}</span>
+        <span class="up-title">${esc(it.title)}${it.status ? ` <span class="up-flag">(${esc(it.status)})</span>` : ''}</span>
+        ${it.request || it.address ? `<span class="up-req">${esc([it.address, it.request].filter(Boolean).join(' · '))}</span>` : ''}
+      </button></li>`;
+    el.innerHTML = `<summary><span class="up-live" aria-hidden="true"></span><h2>Coming up</h2>
+        <span class="up-sub">${nItems} ${nItems === 1 ? 'item' : 'items'} on ${meets.length} posted ${meets.length === 1 ? 'agenda' : 'agendas'}</span></summary>
+      ${meets.map((m, mi) => {
+        const rel = relDay(m.date);
+        const first = m.items.slice(0, 3), rest = m.items.slice(3);
+        return `<div class="up-meet">
+          <div class="up-when">${rel ? `<span class="up-rel">${esc(rel[0].toUpperCase() + rel.slice(1))}</span>·` : ''}<b>${esc(fmtDay(m.date))}${m.time ? ', ' + esc(m.time) : ''}</b><span class="muted">${esc(m.label)}</span></div>
+          <ul class="up-items">${first.map((it, ii) => itemHtml(m, mi, it, ii)).join('')}</ul>
+          ${rest.length ? `<details class="up-more"><summary>${rest.length} more</summary><ul class="up-items">${rest.map((it, k) => itemHtml(m, mi, it, k + 3)).join('')}</ul></details>` : ''}
+          <div class="up-foot">
+            ${m.deadline ? `<span>Written comments by <b>${esc(m.deadline)}</b>${m.email ? ` to <a href="mailto:${esc(m.email)}">${esc(m.email)}</a>` : ''}</span>` : (m.public_comment ? '<span>Public comment is on the agenda</span>' : '')}
+            <a href="${esc(m.agenda)}" target="_blank" rel="noopener" data-track="upcoming/agenda">Agenda (PDF)</a>
+          </div>
+        </div>`;
+      }).join('')}`;
+    el.hidden = false;
+    meets.forEach((m, mi) => m.items.forEach((it) => {
+      if (it.property && !soonByProp.has(it.property)) soonByProp.set(it.property, { m, it });
+      if (!it.lat) return;
+      const mk = L.marker([it.lat, it.lng], {
+        icon: L.divIcon({ className: 'soon-marker', html: `<span>${esc(fmtDay(m.date).replace(/^\w+, /, ''))}</span>`, iconSize: [0, 0] }),
+        title: `${it.title} (${m.label}, ${fmtDay(m.date)})`, keyboard: true, zIndexOffset: 9000,
+      });
+      mk.on('click', () => showSoon(m, it));
+      soonLayer.addLayer(mk);
+    }));
+    upcomingMeets = meets;
+  }
+  let upcomingMeets = [];
+  $('upcoming').addEventListener('click', (e) => {
+    const b = e.target.closest('.up-item');
+    if (b) { const m = upcomingMeets[+b.dataset.m]; showSoon(m, m.items[+b.dataset.i]); }
+  });
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[data-track]');
+    if (a) track(a.dataset.track, a.textContent.trim());
+  });
+  function agendaBanner(p) {
+    const s = soonByProp.get(p.id);
+    if (!s) return '';
+    const { m, it } = s;
+    return `<div class="on-agenda"><b>On the agenda:</b> ${esc(m.label)}, ${esc(fmtDay(m.date))}${m.time ? ' at ' + esc(m.time) : ''}.
+      ${it.request ? esc(it.request) : esc(it.title)}
+      ${m.deadline ? `Written comments by ${esc(m.deadline)}${m.email ? ` to <a href="mailto:${esc(m.email)}">${esc(m.email)}</a>` : ''}.` : ''}
+      <a href="${esc(m.agenda)}" target="_blank" rel="noopener" data-track="upcoming/agenda">Agenda (PDF)</a></div>`;
+  }
+  function loadUpcoming() {
+    fetch('data/upcoming.json').then((r) => (r.ok ? r.json() : { meetings: [] }))
+      .then((d) => { upcoming = d.meetings || []; renderUpcoming(); })
+      .catch(() => { /* optional feature */ });
+  }
+
   // ---------- Load ----------
   fetch('data/properties.json').then((r) => r.json()).then(({ meta, properties }) => {
     props = properties;
@@ -707,6 +814,7 @@
         map.fitBounds([[q(la, 0.02), q(ln, 0.02)], [q(la, 0.98), q(ln, 0.98)]], { padding: [30, 30], maxZoom: 14 });
       }
     }
+    loadUpcoming();
     const hash = decodeURIComponent(location.hash.slice(1));
     if (hash && byId.has(hash)) openProperty(hash);
   }).catch((e) => {

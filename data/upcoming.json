@@ -1,0 +1,209 @@
+{
+ "updated": "2026-11-01",
+ "meetings": [
+  {
+   "body": "pcom",
+   "label": "Planning Committee",
+   "date": "2026-11-02",
+   "time": "12:15pm",
+   "agenda": "https://sc-mountpleasant2.civicplus.com/AgendaCenter/ViewFile/Agenda/_11022026-2292",
+   "title": "View the November 2, 2026 Planning Committee Agenda",
+   "deadline": null,
+   "email": null,
+   "public_comment": true,
+   "items": [
+    {
+     "case": null,
+     "tms": null,
+     "title": "Discussion of commercial zoning regulations related to vape shops and proximity to schools",
+     "address": null,
+     "kind": "Discussion",
+     "request": "",
+     "status": null
+    },
+    {
+     "case": null,
+     "tms": null,
+     "title": "Continued discussion of an Ordinance providing for an amendment to the Oakland Plantation Planned Development District Ordinance (Ord. No. 04014, as amended), by amending the PD Zoning Map to incorporate 87 Townhouse Units on a 6-acre tract of land. (Ord. No. 26054) Planning Commission recommended denial. Planning Committee made no recommendation",
+     "address": null,
+     "kind": "Ordinance",
+     "request": "",
+     "status": null,
+     "property": "addr-oakland-plantation-pd"
+    },
+    {
+     "case": "R-30-26",
+     "tms": null,
+     "title": "R-30-26. Belle Hall PD Amendment. Request to amend the Belle Hall PD, Planned Development District Ordinance, to allow additional permitted use of Commercial Recreation on an approximately 6.86-acre parcel located off Long Point Road",
+     "address": null,
+     "kind": "Ordinance",
+     "request": "",
+     "status": null,
+     "property": "tms-537-00-00-004",
+     "lat": 32.839206,
+     "lng": -79.869712
+    },
+    {
+     "case": null,
+     "tms": null,
+     "title": "Discussion of Zoning as it relates to the Comprehensive Plan Future Land Use Map Recommendation",
+     "address": null,
+     "kind": "Discussion",
+     "request": "",
+     "status": null
+    },
+    {
+     "case": null,
+     "tms": null,
+     "title": "Discussion of Data Center Land Use and Zoning",
+     "address": null,
+     "kind": "Discussion",
+     "request": "",
+     "status": null
+    }
+   ]
+  },
+  {
+   "body": "council",
+   "label": "Town Council",
+   "date": "2026-11-02",
+   "time": "1:15pm",
+   "agenda": "https://sc-mountpleasant2.civicplus.com/AgendaCenter/ViewFile/Agenda/_11022026-2293",
+   "title": "View the Monday, November 2, 2026 Special Town Council Meeting Agenda",
+   "deadline": null,
+   "email": null,
+   "public_comment": true,
+   "items": [
+    {
+     "case": null,
+     "tms": null,
+     "title": "First Reading: An Ordinance to amend Chapter 156, Zoning Code, of the Mount Pleasant Code of Ordinances by adding new section 156.1662 (Ordinance 26060), related to regulation of smoke or vape shops (Ord. No. 26060).",
+     "address": null,
+     "kind": "Ordinance",
+     "request": "",
+     "status": null
+    }
+   ]
+  },
+  {
+   "body": "hdpc",
+   "label": "Historic District Preservation Commission",
+   "date": "2026-11-09",
+   "time": "5:00pm",
+   "agenda": "https://sc-mountpleasant2.civicplus.com/AgendaCenter/ViewFile/Agenda/_11092026-2285",
+   "title": "Historic District Preservation Commission November 9, 2026, Meeting Agenda",
+   "deadline": "Thursday, November 5, 2026",
+   "email": null,
+   "public_comment": true,
+   "items": [
+    {
+     "case": null,
+     "tms": "532-09-00-025",
+     "title": "234 Middle St.",
+     "address": null,
+     "kind": "Historic review",
+     "request": "Final Review for the alterations to a previously approved COA.",
+     "status": null,
+     "property": "tms-532-09-00-025",
+     "lat": 32.778562,
+     "lng": -79.868023
+    },
+    {
+     "case": null,
+     "tms": "532-01-00-057",
+     "title": "328 Bennett St.",
+     "address": null,
+     "kind": "Historic review",
+     "request": "Final Review for the demolition of a rear deck and addition of a covered porch and heated space on a historic primary structure.",
+     "status": null,
+     "property": "tms-532-01-00-057",
+     "lat": 32.786067,
+     "lng": -79.876308
+    },
+    {
+     "case": null,
+     "tms": "517-15-00-036",
+     "title": "232 Haddrell St.",
+     "address": null,
+     "kind": "Historic review",
+     "request": "Final Review for the alterations to a previously approved COA.",
+     "status": null,
+     "property": "tms-517-15-00-036",
+     "lat": 32.790311,
+     "lng": -79.882156
+    },
+    {
+     "case": null,
+     "tms": "532-09-00-024",
+     "title": "242 Middle St.",
+     "address": null,
+     "kind": "Historic review",
+     "request": "Preliminary Review for primary structure and accessory garage renovations and hardscapes.",
+     "status": null,
+     "property": "tms-532-09-00-024",
+     "lat": 32.778405,
+     "lng": -79.867894
+    },
+    {
+     "case": null,
+     "tms": "532-01-00-253",
+     "title": "507 Whilden St.",
+     "address": null,
+     "kind": "Historic review",
+     "request": "Final Review for the rebuild of an existing primary structure due to framing issues.",
+     "status": null,
+     "property": "tms-532-01-00-253",
+     "lat": 32.787369,
+     "lng": -79.87539
+    },
+    {
+     "case": null,
+     "tms": "532-09-00-008",
+     "title": "3 Pierates Cruze",
+     "address": null,
+     "kind": "Historic review",
+     "request": "Final Review for the addition of an attached shed and alterations to a previously approved COA.",
+     "status": null,
+     "property": "tms-532-09-00-008",
+     "lat": 32.778802,
+     "lng": -79.869966
+    },
+    {
+     "case": null,
+     "tms": "532-09-00-072",
+     "title": "728 Pitt St.",
+     "address": null,
+     "kind": "Historic review",
+     "request": "Final Review for the addition of an attached garage on a historic primary structure.",
+     "status": null,
+     "property": "tms-532-09-00-072",
+     "lat": 32.781257,
+     "lng": -79.869412
+    },
+    {
+     "case": null,
+     "tms": "532-01-00-051",
+     "title": "320 Morrison St.",
+     "address": null,
+     "kind": "Historic review",
+     "request": "Final Review for the demolition and construction of a new primary structure.",
+     "status": null,
+     "property": "tms-532-01-00-051",
+     "lat": 32.786963,
+     "lng": -79.874934
+    },
+    {
+     "case": null,
+     "tms": "517-15-00-131",
+     "title": "108 Beach St.",
+     "address": null,
+     "kind": "Historic review",
+     "request": "Preliminary Review for the construction of a new primary structure.",
+     "status": null,
+     "lat": 32.788247,
+     "lng": -79.884835
+    }
+   ]
+  }
+ ]
+}
