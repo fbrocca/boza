@@ -289,3 +289,5 @@ a { color: inherit; text-underline-offset: 3px; }
   .alerts-btn span { display: none; }
   .alerts-btn { width: 36px; padding: 0; height: 36px; border-radius: 999px; }
 }
+
+.pill-marker.design > span .dot { border-radius: 1px; }

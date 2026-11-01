@@ -9,6 +9,11 @@ Every property-specific zoning action in the Town of Mount Pleasant, SC since
   Planning Committee of Council, to the Town Council readings, and gets a
   final status (Adopted by Council, Denied by Council, Passed first reading, or
   recommendation only).
+- **Design review**: Historic District Preservation Commission (Old Village
+  certificates of appropriateness, demolitions, historic designations, staff
+  approvals) and Design Review Board (commercial and multi-family
+  architecture). These boards decide on their own; items rarely carry case
+  numbers, so each lot's items are grouped into one project timeline.
 
 Draw a boundary on the map (Draw button, then drag a freehand shape) to see only
 the cases inside it; the boundary is kept in the URL (`?area=`), so the link
@@ -25,9 +30,10 @@ correspondence, presentation).
 |---|---|
 | `index.html`, `app.js`, `style.css` | The map page. Static, no build step. Leaflet is vendored in `vendor/`. |
 | `minutes/` | All BOZA minutes PDFs (`YYYY-MM-DD.pdf`), with `index.csv` and a README listing. |
-| `sources/pc`, `sources/pcom`, `sources/council` | Text of every Planning Commission, Planning Committee and Town Council minutes (`YYYY-MM-DD-<id>.txt`). Only the text is kept because these PDFs total ~2 GB; the map links to the Town's copy. |
+| `sources/pc`, `sources/pcom`, `sources/council`, `sources/hdpc`, `sources/drb` | Text of every Planning Commission, Planning Committee, Town Council, Historic District Preservation Commission and Design Review Board minutes (`YYYY-MM-DD-<id>.txt`). Only the text is kept because these PDFs total ~2 GB; the map links to the Town's copy. |
 | `data/cases.json` | Every BOZA hearing extracted from the minutes. |
 | `data/planning.json` | Every Planning Commission case with its linked Committee and Council events. |
+| `data/design.json` | Every HDPC / DRB project, grouped by parcel, with its review timeline. |
 | `data/properties.json` | All cases grouped by parcel, with location and lot outline. What the map loads. |
 | `data/minutes-text.json` | Minutes text per event, fetched when someone opens it. |
 | `data/agenda-docs.json` | Links to case documents found in each BOZA and Planning Commission agenda, assigned to cases. Links only; the documents stay on the Town's site. |

@@ -9,10 +9,10 @@
 
   const CENTER = [32.8323, -79.8284];
   const GROUPS = [
-    { key: 'approved', label: 'Approved / adopted', test: (s) => /^(Approved|Adopted by Council)$/.test(s) },
+    { key: 'approved', label: 'Approved / adopted', test: (s) => /^(Approved|Adopted by Council|Approved by staff)$/.test(s) },
     { key: 'conditions', label: 'Approved with conditions', test: (s) => s === 'Approved with conditions' },
     { key: 'denied', label: 'Denied', test: (s) => /^(Denied|Denied by Council)$/.test(s) },
-    { key: 'pending', label: 'Pending / recommendation only', test: (s) => /^(Recommended approval|Recommended denial|Passed first reading|Deferred|No recommendation)$/.test(s) },
+    { key: 'pending', label: 'Pending / recommendation only', test: (s) => /^(Recommended approval|Recommended denial|Passed first reading|Deferred|No recommendation|Comments only)$/.test(s) },
     { key: 'withdrawn', label: 'Withdrawn', test: (s) => s === 'Withdrawn' },
     { key: 'other', label: 'Other / see minutes', test: () => true },
   ];
@@ -22,10 +22,12 @@
   // Timeline events carry free-text decisions ("First reading: denied").
   const eventTone = (d) => tone(/denied/i.test(d) ? 'denied' : /conditions/i.test(d) ? 'conditions'
     : /approv|adopt/i.test(d) && !/recommend/i.test(d) ? 'approved'
-    : /withdr/i.test(d) ? 'withdrawn' : /defer|recommend|pending/i.test(d) ? 'pending' : 'other');
-  const BOARD = { boza: 'Zoning Appeals', planning: 'Rezoning & planning' };
+    : /withdr/i.test(d) ? 'withdrawn' : /defer|recommend|pending|comments only/i.test(d) ? 'pending' : 'other');
+  const BOARD = { boza: 'Zoning Appeals', planning: 'Rezoning & planning', design: 'Design review' };
   const SHORT = { 'Annexation and zoning': 'Annexation', 'PD / development agreement amendment': 'PD amendment', 'Subdivision plat': 'Plat', 'Special exception': 'Special exc.' };
   const STATUS_HELP = {
+    'Comments only': 'A preliminary or conceptual review: the board gave comments but did not vote. A final review usually follows.',
+    'Approved by staff': 'A minor change approved by Town staff and reported to the board, without a board vote.',
     'Recommended approval': 'The Planning Commission recommended approval. No Town Council decision was found in the minutes.',
     'Recommended denial': 'The Planning Commission recommended denial. No Town Council decision was found in the minutes.',
     'Passed first reading': 'Town Council approved first reading. No later reading was found in the minutes.',
@@ -255,11 +257,13 @@
 
   $('legend').innerHTML = '<summary>Legend</summary><div class="legend-body">' + GROUPS.map((g) =>
     `<div><span class="dot" style="${tone(g.key)}"></span>${esc(g.label)}</div>`).join('') +
-    '<div class="legend-note">● zoning appeal &nbsp;◆ rezoning &amp; planning</div></div>';
+    '<div class="legend-note">● zoning appeal &nbsp;◆ rezoning &amp; planning &nbsp;■ design review</div></div>';
 
   function pinIcon(p, cases, state) {
     const c = (cases || p.cases)[0];
-    const label = c.case || SHORT[c.kind] || c.kind;
+    // Cases without a number (design review) are labelled by short address, e.g. "102 Pitt".
+    const short = (p.address.match(/^(\d+[A-Z]?(?:\s*&\s*\d+)?\s+\S+)/) || [])[1];
+    const label = c.case || short || SHORT[c.kind] || c.kind;
     const extra = p.cases.length > 1 ? ` +${p.cases.length - 1}` : '';
     return L.divIcon({
       className: `pill-marker ${c.board}${state ? ' ' + state : ''}`,
@@ -613,7 +617,7 @@
     fillKinds();
     const years = [...new Set(props.flatMap((p) => p.cases.flatMap((c) => c.events.map((e) => e.date.slice(0, 4)))))].sort().reverse();
     $('fYear').insertAdjacentHTML('beforeend', years.map((y) => `<option>${y}</option>`).join(''));
-    const nCases = meta.cases.boza + meta.cases.planning;
+    const nCases = meta.cases.boza + meta.cases.planning + (meta.cases.design || 0);
     $('stats').textContent = `${nCases.toLocaleString()} cases · ${meta.properties.toLocaleString()} properties · ${meta.first.slice(0, 4)}–${meta.last.slice(0, 4)}`;
     // A boundary shared in the URL: ?area=lat,lng;lat,lng;...
     const shared = (new URLSearchParams(location.search).get('area') || '').split(';')

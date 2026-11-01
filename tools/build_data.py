@@ -140,6 +140,56 @@ def planning_cases(cases):
     return out
 
 
+def design_cases(cases):
+    """HDPC / DRB projects (extract_design.py): decided by the board itself, no case numbers."""
+    unk = lambda d: d if d != "Unknown" else "See minutes"
+    return [{
+        "board": "design", "case": None, "kind": c["kind"], "request": c["request"],
+        "status": unk(c["status"]), "tms": c["tms"], "address": c["label"],
+        "events": [{"body": e["body"], "date": e["date"], "decision": unk(e["decision"]),
+                    "page": e["page"], "town": e["town"], "text": e["text"]} for e in c["events"]],
+    } for c in cases]
+
+
+TMS_ANY = re.compile(r"(?<!\d)(\d{3})-?(\d{2})-?(\d{2})-?(\d{3})(?!\d)")
+HOUSE = re.compile(r"(?<![\d-])(\d{1,5})\s+([A-Za-z]{3,})")
+
+
+GENERAL_DOC = re.compile(r"overlay|guideline|\bDG\b|parking|ordinance|\bcode\b|workshop|training|meeting|"
+                         r"update|discussion|policy|agenda|minutes|bylaws|calendar", re.I)
+
+
+def item_matches(doc, prop):
+    """A HDPC/DRB agenda document: does it belong to this property?
+
+    If the document's own name gives a TMS or a street address, that must match the
+    property. Otherwise the property must be the first one named in its agenda item
+    (items often list several properties, e.g. a consent list)."""
+    tms = {t.replace("-", "") for t in [prop.get("tms")] + prop.get("other_tms", []) if t}
+    m = re.match(r"(\d+)\s+(\w+)", prop.get("address", ""))
+    house = (m.group(1), m.group(2).lower()) if m else None
+    def same_house(h):
+        return bool(house) and h.group(1) == house[0] and h.group(2).lower()[:4] == house[1][:4]
+    label = doc.get("label", "")
+    lt = TMS_ANY.search(label)
+    if lt:
+        return "".join(lt.groups()) in tms
+    lh = HOUSE.search(label)
+    if lh:
+        return same_house(lh)
+    # No address or TMS in the document's name. HDPC discussion items attach general documents
+    # (guidelines, overlay district, parking) next to addresses, so only DRB project documents
+    # ("Starbucks", "Chase Bank SUB") are matched this way, and never obviously general ones.
+    if doc.get("body") != "drb" or GENERAL_DOC.search(label):
+        return False
+    item = doc.get("item", "")
+    it, ih = TMS_ANY.search(item), HOUSE.search(item)
+    first = min([x for x in (it, ih) if x], key=lambda x: x.start(), default=None)
+    if first is it and it:
+        return "".join(it.groups()) in tms
+    return bool(ih) and same_house(ih)
+
+
 CASE_IN_NAME = re.compile(r"\b(?:[AVSR]|SP)\s?[-–]\s?\d{1,3}\s?[-–]\s?\d{2,4}\b")
 DOC_GENERIC = set("""staff report reports application applications plan plans sketch presentation correspondence
 amendment request combined final draft document documents rezoning zoning case review update placeholder
@@ -173,10 +223,12 @@ def verified(doc, case, prop):
 def main(out_dir):
     hearings = load(os.path.join(out_dir, "cases.json"), [])
     planning = load(os.path.join(out_dir, "planning.json"), [])
+    design = load(os.path.join(out_dir, "design.json"), [])
     geo = load(os.path.join(out_dir, "geocode-cache.json"), {})
     parcels = load(os.path.join(out_dir, "parcels.json"), {})
     agenda_docs = load(os.path.join(out_dir, "agenda-docs.json"), {})
-    body_key = {"Board of Zoning Appeals": "boza", "Planning Commission": "pc"}
+    body_key = {"Board of Zoning Appeals": "boza", "Planning Commission": "pc",
+                "Historic District Preservation Commission": "hdpc", "Design Review Board": "drb"}
     overrides = {k: v for k, v in load(os.path.join(out_dir, "geocode-overrides.json"), {}).items()
                  if not k.startswith("_")}
     town = {}
@@ -184,7 +236,7 @@ def main(out_dir):
         for row in csv.DictReader(f):
             town[row["date"]] = row["source_minutes"]
 
-    cases = boza_cases(hearings, town) + planning_cases(planning)
+    cases = boza_cases(hearings, town) + planning_cases(planning) + design_cases(design)
     props = collections.OrderedDict()
     skipped = []
     for c in cases:
@@ -233,7 +285,10 @@ def main(out_dir):
                 e["id"] = f"{p['id']}~{c['board']}~{c['case'] or c['first']}~{k}"
                 docs = agenda_docs.get(f"{body_key.get(e['body'])}/{e['date']}", [])
                 mine = [d for d in docs if c["case"] and d["case"] == c["case"] and verified(d, c, p)]
-                wide = [d for d in docs if d["case"] is None]
+                if c["board"] == "design":
+                    bk = body_key.get(e["body"])
+                    mine = [d for d in docs if d.get("item") and item_matches({**d, "body": bk}, p)]
+                wide = [d for d in docs if d["case"] is None and not d.get("item")]
                 if mine or wide:
                     e["docs"] = ([{"t": retype(d), "u": d["url"], "l": d["label"]} for d in mine] +
                                  [{"t": d["type"], "u": d["url"], "l": d["label"], "all": 1} for d in wide])
@@ -248,7 +303,7 @@ def main(out_dir):
 
     n_events = collections.Counter(e["body"] for p in out for c in p["cases"] for e in c["events"])
     meta = {"properties": len(out), "mapped": stats["mapped"], "events_with_docs": stats["events_with_docs"],
-            "cases": {b: sum(1 for p in out for c in p["cases"] if c["board"] == b) for b in ("boza", "planning")},
+            "cases": {b: sum(1 for p in out for c in p["cases"] if c["board"] == b) for b in ("boza", "planning", "design")},
             "events": dict(n_events),
             "first": min(c["first"] for p in out for c in p["cases"]),
             "last": max(p["date"] for p in out)}
