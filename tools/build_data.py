@@ -76,6 +76,33 @@ def cap(text):
     return text if len(text) <= TEXT_CAP else text[:TEXT_CAP].rsplit(" ", 1)[0] + " …\n\n[Truncated. Open the PDF for the full minutes.]"
 
 
+BOZA_OUTCOME = {"approved": "Approved", "approved_with_conditions": "Approved with conditions", "denied": "Denied",
+                "withdrawn": "Withdrawn", "deferred": "Deferred", "upheld": "Upheld", "reversed": "Reversed"}
+COUNCIL_OUTCOME = {"adopted": "Adopted by Council", "denied": "Denied by Council",
+                   "first_reading_only": "Passed first reading", "withdrawn": "Withdrawn", "deferred": "Deferred"}
+PC_OUTCOME = {"recommended_approval": "Recommended approval", "recommended_denial": "Recommended denial",
+              "withdrawn": "Withdrawn", "deferred": "Deferred"}
+FACT_KEYS = ("relief", "magnitude", "vote", "key_factor", "hardship", "reasons_given", "self_created_raised",
+             "public_opposition", "public_support", "revised_or_reduced", "comp_plan", "quality")
+
+
+def apply_facts(c, f):
+    """Use the outcome read from the minutes (case-facts.json) when it is known."""
+    if not f:
+        return
+    if c["board"] == "boza":
+        st = BOZA_OUTCOME.get(f.get("outcome"))
+    else:
+        st = COUNCIL_OUTCOME.get(f.get("council_outcome")) or PC_OUTCOME.get(f.get("outcome"))
+    if st and st != c["status"]:
+        c["auto_status"] = c["status"]
+        c["status"] = st
+        if c["board"] == "boza" and c["events"]:
+            c["events"][-1]["decision"] = st
+    c["facts"] = {k: f[k] for k in FACT_KEYS if f.get(k) not in (None, [], "")}
+    c["reviewed"] = 1
+
+
 def boza_cases(hearings, town):
     """Group BOZA hearings by case number into cases with a timeline."""
     by_case = collections.defaultdict(list)
@@ -128,6 +155,7 @@ def planning_cases(cases):
     out = []
     for c in cases:
         out.append({
+            "fact_key": "pc:" + (c["case"] or c["events"][0]["date"]) + ":" + (c["tms"][0] if c["tms"] else ""),
             "board": "planning", "case": c["case"], "kind": c["kind"], "request": clean_request(c["request"], c["case"]),
             "status": c["status"] if c["status"] != "Unknown" else "See minutes",
             "tms": c["tms"], "address": c["label"],
@@ -236,7 +264,26 @@ def main(out_dir):
         for row in csv.DictReader(f):
             town[row["date"]] = row["source_minutes"]
 
+    stats = collections.Counter()
     cases = boza_cases(hearings, town) + planning_cases(planning) + design_cases(design)
+    facts = load(os.path.join(out_dir, "case-facts.json"), {})
+    zoning = load(os.path.join(out_dir, "zoning.json"), {})
+    boza_facts = collections.defaultdict(list)
+    for k, v in facts.items():
+        if k.startswith("boza:"):
+            boza_facts[k.split(":")[1]].append((k.split(":")[2], v))
+    for c in cases:
+        if c["board"] == "boza":
+            cands = boza_facts.get(c["case"], [])
+            last = max(e["date"] for e in c["events"])
+            f = next((v for d, v in cands if d == last), cands[0][1] if len(cands) == 1 else None)
+        else:
+            f = facts.get(c.pop("fact_key", None) or "")
+        apply_facts(c, f)
+        if c.get("reviewed"):
+            stats["reviewed"] += 1
+        if c.get("auto_status"):
+            stats["corrected"] += 1
     props = collections.OrderedDict()
     skipped = []
     for c in cases:
@@ -255,7 +302,6 @@ def main(out_dir):
         p["cases"].append(c)
 
     texts = {}
-    stats = collections.Counter()
     out = []
     for p in props.values():
         names = [n for n, _ in p.pop("names").most_common()]
@@ -276,6 +322,9 @@ def main(out_dir):
             stats["unmapped"] += 1
         if not p["other_tms"]:
             del p["other_tms"]
+        z = zoning.get(p["tms"]) if p["tms"] else None
+        if z:
+            p["zoning"] = {k: v for k, v in z.items() if v not in (None, [], False, "")}
         for c in p["cases"]:
             c.pop("tms"), c.pop("address")
             c["events"].sort(key=lambda e: e["date"])
@@ -303,6 +352,7 @@ def main(out_dir):
 
     n_events = collections.Counter(e["body"] for p in out for c in p["cases"] for e in c["events"])
     meta = {"properties": len(out), "mapped": stats["mapped"], "events_with_docs": stats["events_with_docs"],
+            "reviewed": stats["reviewed"], "corrected": stats["corrected"],
             "cases": {b: sum(1 for p in out for c in p["cases"] if c["board"] == b) for b in ("boza", "planning", "design")},
             "events": dict(n_events),
             "first": min(c["first"] for p in out for c in p["cases"]),

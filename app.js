@@ -9,7 +9,7 @@
 
   const CENTER = [32.8323, -79.8284];
   const GROUPS = [
-    { key: 'approved', label: 'Approved / adopted', test: (s) => /^(Approved|Adopted by Council|Approved by staff)$/.test(s) },
+    { key: 'approved', label: 'Approved / adopted', test: (s) => /^(Approved|Adopted by Council|Approved by staff|Reversed)$/.test(s) },
     { key: 'conditions', label: 'Approved with conditions', test: (s) => s === 'Approved with conditions' },
     { key: 'denied', label: 'Denied', test: (s) => /^(Denied|Denied by Council)$/.test(s) },
     { key: 'pending', label: 'Pending / recommendation only', test: (s) => /^(Recommended approval|Recommended denial|Passed first reading|Deferred|No recommendation|Comments only)$/.test(s) },
@@ -25,7 +25,15 @@
     : /withdr/i.test(d) ? 'withdrawn' : /defer|recommend|pending|comments only/i.test(d) ? 'pending' : 'other');
   const BOARD = { boza: 'Zoning Appeals', planning: 'Rezoning & planning', design: 'Design review' };
   const SHORT = { 'Annexation and zoning': 'Annexation', 'PD / development agreement amendment': 'PD amendment', 'Subdivision plat': 'Plat', 'Special exception': 'Special exc.' };
+  const RELIEF = {
+    front_setback: 'Front setback', side_setback: 'Side setback', rear_setback: 'Rear setback', multiple_setbacks: 'Several setbacks',
+    height: 'Height', lot_coverage_or_bar: 'Lot coverage / building area', tree_removal_or_protection: 'Tree removal / protection',
+    buffer: 'Buffer', parking: 'Parking', lot_size_density_subdivision: 'Lot size / density', accessory_structure: 'Accessory structure',
+    signage: 'Signage', use: 'Use', porch_or_design_standard: 'Porch / design standard', dock_or_marsh: 'Dock / marsh',
+  };
   const STATUS_HELP = {
+    'Reversed': 'Appeal granted: the board overturned the staff decision.',
+    'Upheld': 'Appeal denied: the board upheld the staff decision.',
     'Comments only': 'A preliminary or conceptual review: the board gave comments but did not vote. A final review usually follows.',
     'Approved by staff': 'A minor change approved by Town staff and reported to the board, without a board vote.',
     'Recommended approval': 'The Planning Commission recommended approval. No Town Council decision was found in the minutes.',
@@ -382,6 +390,28 @@
       ${pdf ? `<a class="btn btn-ghost btn-sm" href="${esc(pdf)}" target="_blank" rel="noopener">${ICON.ext}PDF p.${e.page}</a>` : ''}
       ${e.pdf && e.town ? `<a class="btn btn-ghost btn-sm" href="${esc(e.town)}" target="_blank" rel="noopener">${ICON.ext}Town's copy</a>` : ''}`;
   }
+  function factsHtml(c) {
+    const f = c.facts;
+    if (!f) return '';
+    const bits = [];
+    if (f.relief && RELIEF[f.relief]) bits.push(`<span class="badge badge-outline">${esc(RELIEF[f.relief])}</span>`);
+    if (f.magnitude) bits.push(`<span class="badge badge-outline">${esc(f.magnitude)}</span>`);
+    if (f.vote) bits.push(`<span class="badge badge-outline">Vote ${esc(f.vote)}</span>`);
+    return `${bits.length ? `<div class="facts">${bits.join('')}</div>` : ''}
+      ${f.key_factor ? `<p class="summary"><span class="ai-tag" title="Summarised from the minutes by AI and checked against them; the minutes are authoritative.">AI summary</span>${esc(f.key_factor)}</p>` : ''}`;
+  }
+
+  function zoningHtml(p) {
+    const z = p.zoning;
+    if (!z) return '';
+    const parts = [];
+    if (z.zoning) parts.push(`<a class="badge badge-outline" href="${esc(z.zoning_link || '#')}" target="_blank" rel="noopener" title="Zoning district (Town of Mount Pleasant)">Zoning ${esc(z.zoning.join(' / '))}${z.split ? ' (split)' : ''}</a>`);
+    for (const o of z.overlays || []) parts.push(`<a class="badge badge-outline" href="${esc(o.link || '#')}" target="_blank" rel="noopener" title="${esc(o.label || 'Overlay district')}">${esc(o.name)}${o.label ? ' · ' + esc(o.label) : ''}</a>`);
+    if (z.height) parts.push(`<span class="badge badge-outline" title="${esc(z.height_note || '')}">Height ${esc(z.height)}</span>`);
+    if (z.flu) parts.push(`<span class="badge badge-outline" title="Comprehensive Plan future land use">Plan: ${esc(z.flu)}</span>`);
+    return `<div class="zoning"><span class="zoning-label">Current zoning</span><div class="facts">${parts.join('')}</div></div>`;
+  }
+
   function caseCard(c, term) {
     const help = STATUS_HELP[c.status];
     return `
@@ -394,6 +424,7 @@
           <span class="badge" style="${statusTone(c.status)}"><span class="dot"></span>${esc(c.status)}</span>
         </div>
         ${c.request ? `<p class="request">${highlight(c.request, term)}</p>` : ''}
+        ${factsHtml(c)}
         ${help ? `<p class="note">${esc(help)}</p>` : ''}
         <ol class="timeline">
           ${c.events.map((e) => `
@@ -435,6 +466,7 @@
       </div>
       <button class="btn btn-outline btn-sm alerts-inline" type="button" data-alerts="property" data-addr="${esc(p.address)}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alert me about new cases near here</button>
       ${p.geo ? `<p class="geo-note">${esc(GEO_LABEL[p.geo] || p.geo)}</p>` : ''}
+      ${zoningHtml(p)}
       ${p.lat ? '' : '<p class="unmapped">This location could not be placed on the map: the minutes give no street number, or the parcel number has since been retired.</p>'}
       ${p.cases.map((c) => caseCard(c, term)).join('')}`;
     $('pane').scrollTop = 0;

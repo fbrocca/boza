@@ -25,6 +25,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from extract_cases import clean_lines, decide, reflow  # noqa: E402
+from event_check import belongs  # noqa: E402
 
 BODIES = {"pc": "Planning Commission", "pcom": "Planning Committee", "council": "Town Council"}
 BASE = "https://sc-mountpleasant2.civicplus.com/AgendaCenter/ViewFile/Minutes/"
@@ -458,6 +459,10 @@ def link(cases, comm, council):
             if c:
                 break
         if not c:
+            continue
+        # Fuzzy matches can attach another ordinance: require the Council text to name this case
+        # (case no., TMS, house number, project/PD name, or same street and acreage).
+        if not any(belongs(c["case"], c["tms"], c["request"], c["label"], it["title"] + " " + it["text"]) for it in g):
             continue
         for it in g:
             c["events"].append({"body": "Town Council", "date": it["date"],
