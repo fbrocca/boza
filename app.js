@@ -2,44 +2,52 @@
  * Data: data/properties.json  one entry per parcel; each has cases (BOZA or
  *                              planning), each case a timeline of events
  *       data/minutes-text.json minutes text per event, fetched on demand
+ * UI: shadcn/ui tokens and components (style.css), Airbnb-style list + map.
  */
 (function () {
   'use strict';
 
   const CENTER = [32.8323, -79.8284];
-  // Outcome groups: colour, legend label, and which statuses fall in each.
   const GROUPS = [
-    { key: 'approved', label: 'Approved / adopted', color: '--approved',
-      test: (s) => /^(Approved|Adopted by Council)$/.test(s) },
-    { key: 'conditions', label: 'Approved with conditions', color: '--conditions',
-      test: (s) => s === 'Approved with conditions' },
-    { key: 'denied', label: 'Denied', color: '--denied',
-      test: (s) => /^(Denied|Denied by Council)$/.test(s) },
-    { key: 'pending', label: 'Pending / recommendation only', color: '--deferred',
-      test: (s) => /^(Recommended approval|Recommended denial|Passed first reading|Deferred|No recommendation)$/.test(s) },
-    { key: 'withdrawn', label: 'Withdrawn', color: '--withdrawn', test: (s) => s === 'Withdrawn' },
-    { key: 'other', label: 'Other / see minutes', color: '--other', test: () => true },
+    { key: 'approved', label: 'Approved / adopted', test: (s) => /^(Approved|Adopted by Council)$/.test(s) },
+    { key: 'conditions', label: 'Approved with conditions', test: (s) => s === 'Approved with conditions' },
+    { key: 'denied', label: 'Denied', test: (s) => /^(Denied|Denied by Council)$/.test(s) },
+    { key: 'pending', label: 'Pending / recommendation only', test: (s) => /^(Recommended approval|Recommended denial|Passed first reading|Deferred|No recommendation)$/.test(s) },
+    { key: 'withdrawn', label: 'Withdrawn', test: (s) => s === 'Withdrawn' },
+    { key: 'other', label: 'Other / see minutes', test: () => true },
   ];
   const groupOf = (status) => GROUPS.find((g) => g.test(status));
-  const colorVar = (status) => `var(${groupOf(status).color})`;
+  const tone = (key) => `--c:var(--${key});--cb:var(--${key}-bg)`;
+  const statusTone = (s) => tone(groupOf(s).key);
+  // Timeline events carry free-text decisions ("First reading: denied").
+  const eventTone = (d) => tone(/denied/i.test(d) ? 'denied' : /conditions/i.test(d) ? 'conditions'
+    : /approv|adopt/i.test(d) && !/recommend/i.test(d) ? 'approved'
+    : /withdr/i.test(d) ? 'withdrawn' : /defer|recommend|pending/i.test(d) ? 'pending' : 'other');
   const BOARD = { boza: 'Zoning Appeals', planning: 'Rezoning & planning' };
+  const SHORT = { 'Annexation and zoning': 'Annexation', 'PD / development agreement amendment': 'PD amendment', 'Subdivision plat': 'Plat', 'Special exception': 'Special exc.' };
   const STATUS_HELP = {
     'Recommended approval': 'The Planning Commission recommended approval. No Town Council decision was found in the minutes.',
     'Recommended denial': 'The Planning Commission recommended denial. No Town Council decision was found in the minutes.',
     'Passed first reading': 'Town Council approved first reading. No later reading was found in the minutes.',
   };
   const GEO_LABEL = {
-    'parcel': 'Pin and outline: county parcel record',
-    'address point': 'Pin: county address point',
-    'address point (TMS in minutes did not match)': 'Pin: county address point (the TMS in the minutes points elsewhere)',
-    'street estimate': 'Pin: approximate, estimated along the street',
-    'street estimate (TMS in minutes did not match)': 'Pin: approximate, estimated along the street',
-    'manual': 'Pin: placed by hand',
+    'parcel': 'Pin and outline from the county parcel record',
+    'address point': 'Pin from the county address point',
+    'address point (TMS in minutes did not match)': 'Pin from the county address point (the TMS in the minutes points elsewhere)',
+    'street estimate': 'Approximate pin, estimated along the street',
+    'street estimate (TMS in minutes did not match)': 'Approximate pin, estimated along the street',
+    'manual': 'Pin placed by hand',
+  };
+  const ICON = {
+    ext: '<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    doc: '<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Zm0 0v5h5M9 13h6M9 17h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    text: '<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   };
 
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  const isMobile = () => matchMedia('(max-width: 760px)').matches;
 
   let props = [];
   const byId = new Map();
@@ -49,12 +57,61 @@
   let shown = [];
   let board = '';
 
+  // ---------- Lot thumbnails: satellite tiles + parcel outline, in one SVG ----------
+  const TILE = 256;
+  function project(lat, lng, z) {
+    const n = TILE * 2 ** z;
+    const s = Math.sin(lat * Math.PI / 180);
+    return [(lng + 180) / 360 * n, (0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI)) * n];
+  }
+  function lotSvg(p, W, H) {
+    if (!p.lat) return '';
+    let z = 18;
+    let cx, cy;
+    if (p.rings) {
+      const pts = p.rings.flat();
+      const xs19 = pts.map((q) => project(q[0], q[1], 19));
+      const bw = Math.max(...xs19.map((q) => q[0])) - Math.min(...xs19.map((q) => q[0]));
+      const bh = Math.max(...xs19.map((q) => q[1])) - Math.min(...xs19.map((q) => q[1]));
+      const scale = Math.max(bw / (W * 0.62), bh / (H * 0.62), 1);
+      z = Math.max(13, Math.min(18, 19 - Math.ceil(Math.log2(scale))));  // Esri imagery is complete to z18
+      const px = pts.map((q) => project(q[0], q[1], z));
+      cx = (Math.max(...px.map((q) => q[0])) + Math.min(...px.map((q) => q[0]))) / 2;
+      cy = (Math.max(...px.map((q) => q[1])) + Math.min(...px.map((q) => q[1]))) / 2;
+    } else {
+      [cx, cy] = project(p.lat, p.lng, z);
+    }
+    const x0 = cx - W / 2, y0 = cy - H / 2;
+    let imgs = '';
+    for (let tx = Math.floor(x0 / TILE); tx <= Math.floor((x0 + W) / TILE); tx++) {
+      for (let ty = Math.floor(y0 / TILE); ty <= Math.floor((y0 + H) / TILE); ty++) {
+        imgs += `<image href="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${ty}/${tx}" x="${tx * TILE}" y="${ty * TILE}" width="${TILE}" height="${TILE}"/>`;
+      }
+    }
+    const shape = p.rings
+      ? p.rings.map((r) => `<polygon points="${r.map((q) => project(q[0], q[1], z).map((v) => v.toFixed(1)).join(',')).join(' ')}" fill="rgba(255,255,255,.16)" stroke="#fff" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`).join('')
+      : `<circle cx="${cx}" cy="${cy}" r="7" fill="#ef4444" stroke="#fff" stroke-width="2.5"/>`;
+    return `<svg viewBox="${x0.toFixed(1)} ${y0.toFixed(1)} ${W} ${H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Satellite view of ${esc(p.address)}">${imgs}${shape}</svg>`;
+  }
+  const thumbObserver = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
+    for (const en of entries) {
+      if (!en.isIntersecting) continue;
+      const el = en.target;
+      thumbObserver.unobserve(el);
+      const p = byId.get(el.dataset.thumb);
+      if (p) el.insertAdjacentHTML('afterbegin', lotSvg(p, 330, 220));
+    }
+  }, { rootMargin: '400px 0px' }) : null;
+  function thumbHtml(p, extra = '') {
+    const ph = p.lat ? '' : '<div class="ph">No map location<br>in the record</div>';
+    return `<div class="thumb" data-thumb="${esc(p.id)}">${ph}${extra}</div>`;
+  }
+
   // ---------- Map ----------
   const map = L.map('map', { zoomControl: false }).setView(CENTER, 12);
   L.control.zoom({ position: 'topright' }).addTo(map);
   const streets = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
   const satellite = L.layerGroup([
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -66,43 +123,46 @@
   ]);
   L.control.layers({ 'Map': streets, 'Satellite': satellite }, null, { position: 'topright' }).addTo(map);
   const cluster = L.markerClusterGroup({
-    showCoverageOnHover: false, maxClusterRadius: 40, spiderfyOnMaxZoom: true, disableClusteringAtZoom: 17,
+    showCoverageOnHover: false, maxClusterRadius: 45, spiderfyOnMaxZoom: true, disableClusteringAtZoom: 16,
     iconCreateFunction: (c) => {
       const n = c.getChildCount();
-      const s = n < 10 ? 32 : n < 50 ? 38 : 46;
+      const s = n < 10 ? 30 : n < 50 ? 36 : 44;
       return L.divIcon({ html: `<div>${n}</div>`, className: 'cluster', iconSize: [s, s] });
     },
   });
   map.addLayer(cluster);
   const outline = L.layerGroup().addTo(map);
 
-  $('legend').innerHTML = GROUPS.map((g) =>
-    `<div><span class="dot" style="--c:var(${g.color})"></span>${esc(g.label)}</div>`).join('') +
-    '<div class="legend-note">Colour = latest case &middot; circle = zoning appeal &middot; diamond = rezoning &amp; planning</div>';
+  $('legend').innerHTML = '<summary>Legend</summary><div class="legend-body">' + GROUPS.map((g) =>
+    `<div><span class="dot" style="${tone(g.key)}"></span>${esc(g.label)}</div>`).join('') +
+    '<div class="legend-note">● zoning appeal &nbsp;◆ rezoning &amp; planning</div></div>';
 
-  function pinIcon(p, active, cases) {
-    const latest = (cases || p.cases)[0];
-    const multi = p.cases.length > 1 ? ' multi' : '';
-    const ring = latest.board === 'planning' ? ' planning' : '';
+  function pinIcon(p, cases, state) {
+    const c = (cases || p.cases)[0];
+    const label = c.case || SHORT[c.kind] || c.kind;
+    const extra = p.cases.length > 1 ? ` +${p.cases.length - 1}` : '';
     return L.divIcon({
-      className: `pin${multi}${ring}${active ? ' active' : ''}`,
-      html: `<span style="--c:${colorVar(latest.status)}"></span>`,
-      iconSize: multi ? [22, 22] : [18, 18],
+      className: `pill-marker ${c.board}${state ? ' ' + state : ''}`,
+      html: `<span><span class="dot" style="${statusTone(c.status)}"></span>${esc(label)}${extra}</span>`,
+      iconSize: [0, 0],
     });
+  }
+  function markState(id, cls, on) {
+    const m = markers.get(id);
+    if (!m) return;
+    const el = m.getElement();
+    if (el) {
+      el.classList.toggle(cls, on);
+    }
   }
 
   // ---------- Filtering ----------
   function filters() {
     return {
-      q: $('q').value.trim().toLowerCase(),
-      board,
-      group: $('fDecision').value,
-      kind: $('fKind').value,
-      year: $('fYear').value,
-      inView: $('fInView').checked,
+      q: $('q').value.trim().toLowerCase(), board,
+      group: $('fDecision').value, kind: $('fKind').value, year: $('fYear').value, inView: $('fInView').checked,
     };
   }
-
   function caseMatches(c, f) {
     if (f.board && c.board !== f.board) return false;
     if (f.group && groupOf(c.status).key !== f.group) return false;
@@ -110,7 +170,6 @@
     if (f.year && !c.events.some((e) => e.date.startsWith(f.year))) return false;
     return true;
   }
-
   function apply() {
     const f = filters();
     const terms = f.q.split(/\s+/).filter(Boolean);
@@ -126,47 +185,51 @@
     cluster.clearLayers();
     cluster.addLayers(shown.filter((s) => s.p.lat).map((s) => {
       const m = markers.get(s.p.id);
-      m.setIcon(pinIcon(s.p, s.p.id === activeId, s.cases));
+      m.setIcon(pinIcon(s.p, s.cases, s.p.id === activeId ? 'active' : ''));
       return m;
     }));
+    for (const id of ['fDecision', 'fKind', 'fYear']) $(id).classList.toggle('on', !!$(id).value);
+    $('reset').hidden = !(f.group || f.kind || f.year || f.inView || f.board || f.q);
     renderList();
     const nc = shown.reduce((a, s) => a + s.cases.length, 0);
-    $('count').textContent = `${shown.length} ${shown.length === 1 ? 'property' : 'properties'}, ${nc} ${nc === 1 ? 'case' : 'cases'}`;
+    $('count').textContent = `${shown.length.toLocaleString()} ${shown.length === 1 ? 'property' : 'properties'} · ${nc.toLocaleString()} ${nc === 1 ? 'case' : 'cases'}`;
   }
 
+  const LIMIT = 300;
   function renderList() {
     const el = $('results');
     if (!shown.length) {
-      el.innerHTML = '<li class="empty">No cases match. Clear the search or filters.</li>';
+      el.innerHTML = '<li class="empty">No cases match. Try clearing the search or a filter.</li>';
       return;
     }
-    el.innerHTML = shown.slice(0, 400).map(({ p, cases }) => {
+    el.innerHTML = shown.slice(0, LIMIT).map(({ p, cases }) => {
       const c = cases[0];
       const n = p.cases.length;
-      return `<li><button type="button" data-id="${esc(p.id)}">
-        <span class="dot" style="--c:${colorVar(c.status)}"></span>
-        <span class="addr">${esc(p.address)}${n > 1 ? `<span class="tag">${n} cases</span>` : ''}${p.lat ? '' : '<span class="tag">not on map</span>'}</span>
-        <span class="when">${fmtDate(c.date)}</span>
-        <span class="line2">${c.case ? esc(c.case) + ' &middot; ' : ''}${esc(c.kind)} &middot; ${esc(c.status)}${c.request ? ' &middot; ' + esc(c.request) : ''}</span>
+      return `<li><button type="button" class="prop" data-id="${esc(p.id)}">
+        ${thumbHtml(p, n > 1 ? `<span class="count">${n} cases</span>` : '')}
+        <span class="prop-body">
+          <span class="eyebrow"><span>${esc(c.kind)}</span><span>·</span><span>${esc(BOARD[c.board])}</span></span>
+          <span class="prop-title">${esc(p.address)}</span>
+          ${c.request ? `<span class="prop-req">${esc(c.request)}</span>` : ''}
+          <span class="prop-foot">
+            <span class="badge" style="${statusTone(c.status)}"><span class="dot"></span>${esc(c.status)}</span>
+            <span class="prop-date">${c.case ? `<span class="muted">${esc(c.case)} · </span>` : ''}${fmtDate(c.date)}</span>
+          </span>
+        </span>
       </button></li>`;
-    }).join('') + (shown.length > 400 ? `<li class="empty">Showing the 400 most recent. Search or filter to narrow.</li>` : '');
+    }).join('') + (shown.length > LIMIT ? `<li class="empty">Showing the ${LIMIT} most recent. Search, filter or zoom the map to narrow.</li>` : '');
+    if (thumbObserver) el.querySelectorAll('[data-thumb]').forEach((t) => { if (byId.get(t.dataset.thumb)?.lat) thumbObserver.observe(t); });
   }
 
   // ---------- Detail ----------
   function setActive(id) {
-    const prev = activeId;
+    if (activeId) markState(activeId, 'active', false);
     activeId = id;
-    for (const pid of [prev, id]) {
-      if (pid && markers.has(pid)) {
-        const s = shown.find((x) => x.p.id === pid);
-        markers.get(pid).setIcon(pinIcon(byId.get(pid), pid === id, s && s.cases));
-      }
-    }
+    if (id) markState(id, 'active', true);
     outline.clearLayers();
     const p = id && byId.get(id);
     if (p && p.rings) {
-      const accent = getComputedStyle(document.documentElement).getPropertyValue('--focus').trim();
-      L.polygon(p.rings, { color: accent, weight: 2, fillOpacity: 0.12, interactive: false }).addTo(outline);
+      L.polygon(p.rings, { color: '#09090b', weight: 2.5, fillColor: '#09090b', fillOpacity: 0.1, interactive: false }).addTo(outline);
     }
   }
 
@@ -177,37 +240,37 @@
       const name = d.all ? `${d.t} (whole meeting)` : d.t;
       n[name] = (n[name] || 0) + 1;
       const label = n[name] > 1 ? `${name} ${n[name]}` : name;
-      return `<a class="btn small doc" href="${esc(d.u)}" target="_blank" rel="noopener" title="${esc(d.l)}">${esc(label)}</a>`;
+      return `<a class="btn btn-outline btn-sm" href="${esc(d.u)}" target="_blank" rel="noopener" title="${esc(d.l)}">${ICON.doc}${esc(label)}</a>`;
     }).join('');
   }
-
   function eventLinks(e) {
     const pdf = e.pdf ? `${e.pdf}#page=${e.page}` : e.town ? `${e.town}#page=${e.page}` : null;
     return `${docLinks(e)}
-      <button class="btn small" type="button" data-excerpt="${esc(e.id)}" aria-expanded="false">Minutes</button>
-      ${pdf ? `<a class="btn small" href="${esc(pdf)}" target="_blank" rel="noopener">PDF p.${e.page}</a>` : ''}
-      ${e.pdf && e.town ? `<a class="btn small" href="${esc(e.town)}" target="_blank" rel="noopener">Town's copy</a>` : ''}`;
+      <button class="btn btn-secondary btn-sm" type="button" data-excerpt="${esc(e.id)}" aria-expanded="false">${ICON.text}<span>Minutes</span></button>
+      ${pdf ? `<a class="btn btn-ghost btn-sm" href="${esc(pdf)}" target="_blank" rel="noopener">${ICON.ext}PDF p.${e.page}</a>` : ''}
+      ${e.pdf && e.town ? `<a class="btn btn-ghost btn-sm" href="${esc(e.town)}" target="_blank" rel="noopener">${ICON.ext}Town's copy</a>` : ''}`;
   }
-
   function caseCard(c, term) {
     const help = STATUS_HELP[c.status];
     return `
-      <article class="case-card">
+      <article class="card case-card">
         <div class="case-top">
-          <span class="case-id">${c.case ? esc(c.case) + ' &middot; ' : ''}${esc(c.kind)}</span>
-          <span class="badge" style="--c:${colorVar(c.status)}"><span class="dot"></span>${esc(c.status)}</span>
+          <div>
+            <div class="case-id">${c.case ? `<span class="mono">${esc(c.case)}</span> · ` : ''}${esc(c.kind)}</div>
+            <div class="case-sub">${esc(BOARD[c.board])}</div>
+          </div>
+          <span class="badge" style="${statusTone(c.status)}"><span class="dot"></span>${esc(c.status)}</span>
         </div>
-        <div class="board-tag">${esc(BOARD[c.board])}</div>
         ${c.request ? `<p class="request">${highlight(c.request, term)}</p>` : ''}
         ${help ? `<p class="note">${esc(help)}</p>` : ''}
         <ol class="timeline">
           ${c.events.map((e) => `
-            <li>
+            <li style="${eventTone(e.decision)}">
               <div class="tl-head">
+                <span class="tl-body">${esc(e.body)}${e.ord ? ` <span class="muted">· Ord. ${esc(e.ord)}</span>` : ''}</span>
                 <span class="tl-date">${fmtDate(e.date)}</span>
-                <span class="tl-body">${esc(e.body)}${e.ord ? ` &middot; Ord. ${esc(e.ord)}` : ''}</span>
               </div>
-              <div class="tl-decision">${esc(e.decision)}${e.item ? ` (${esc(e.item)})` : ''}</div>
+              <div class="tl-decision">${esc(e.decision)}${e.item ? ` <span class="muted">(${esc(e.item)})</span>` : ''}</div>
               ${e.note ? `<p class="note">${esc(e.note)}</p>` : ''}
               <div class="actions">${eventLinks(e)}</div>
               <div class="excerpt" id="ex-${esc(e.id)}" hidden></div>
@@ -219,36 +282,40 @@
   function openProperty(id, { fly = true } = {}) {
     const p = byId.get(id);
     if (!p) return;
+    map.closePopup();
     setActive(id);
     $('listView').hidden = true;
     $('detailView').hidden = false;
+    document.body.classList.remove('show-map');
+    syncMapToggle();
     const term = filters().q;
     const tms = [p.tms, ...(p.other_tms || [])].filter(Boolean);
     $('detail').innerHTML = `
+      ${p.lat ? `<div class="detail-hero">${lotSvg(p, 660, 290)}</div>` : ''}
       <h2>${esc(p.address)}</h2>
       ${p.name ? `<p class="aka">${esc(p.name)}</p>` : ''}
-      <p class="meta">${tms.length ? `TMS ${tms.map(esc).join(', ')} &middot; ` : ''}${p.acres ? `${p.acres} acres &middot; ` : ''}${p.cases.length} ${p.cases.length === 1 ? 'case' : 'cases'}
-        ${p.lat ? ` &middot; <a href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}" target="_blank" rel="noopener">Google Maps</a>` : ''}
-        ${p.geo ? `<br>${esc(GEO_LABEL[p.geo] || p.geo)}` : ''}</p>
-      ${p.lat ? '' : '<p class="unmapped-note">This location could not be placed on the map: the minutes give no street number, or the parcel number has since been retired.</p>'}
+      <div class="facts">
+        ${tms.map((t) => `<span class="badge badge-outline">TMS ${esc(t)}</span>`).join('')}
+        ${p.acres ? `<span class="badge badge-outline">${p.acres} acres</span>` : ''}
+        <span class="badge badge-outline">${p.cases.length} ${p.cases.length === 1 ? 'case' : 'cases'}</span>
+        ${p.lat ? `<a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}" target="_blank" rel="noopener">${ICON.ext}Google Maps</a>` : ''}
+      </div>
+      ${p.geo ? `<p class="geo-note">${esc(GEO_LABEL[p.geo] || p.geo)}</p>` : ''}
+      ${p.lat ? '' : '<p class="unmapped">This location could not be placed on the map: the minutes give no street number, or the parcel number has since been retired.</p>'}
       ${p.cases.map((c) => caseCard(c, term)).join('')}`;
-    $('detail').scrollTop = 0;
+    $('pane').scrollTop = 0;
     if (fly && p.lat) {
-      const sheet = isMobile() ? panel.getBoundingClientRect().height : 0;
       const bounds = p.rings ? L.latLngBounds(p.rings.flat()) : L.latLng(p.lat, p.lng).toBounds(120);
-      map.flyToBounds(bounds, { maxZoom: 18, paddingTopLeft: [40, 40], paddingBottomRight: [40, 40 + sheet], duration: 0.6 });
+      map.flyToBounds(bounds, { maxZoom: 18, padding: [60, 60], duration: 0.6 });
     }
     history.replaceState(null, '', '#' + encodeURIComponent(id));
-    expandPanel();
   }
-
   function closeDetail() {
     setActive(null);
     $('detailView').hidden = true;
     $('listView').hidden = false;
     history.replaceState(null, '', location.pathname + location.search);
   }
-
   function highlight(text, term) {
     let out = esc(text);
     for (const t of (term || '').split(/\s+/).filter((x) => x.length > 2)) {
@@ -256,43 +323,64 @@
     }
     return out;
   }
-
   async function toggleExcerpt(btn) {
     const id = btn.dataset.excerpt;
     const box = document.getElementById('ex-' + id);
+    const label = btn.querySelector('span');
     if (!box.hidden) {
-      box.hidden = true; btn.setAttribute('aria-expanded', 'false'); btn.textContent = 'Minutes';
+      box.hidden = true; btn.setAttribute('aria-expanded', 'false'); label.textContent = 'Minutes';
       return;
     }
     if (!texts) {
-      btn.textContent = 'Loading…';
+      label.textContent = 'Loading…';
       try {
         texts = await (await fetch('data/minutes-text.json')).json();
       } catch (e) {
-        btn.textContent = 'Could not load. Use the PDF link.';
+        label.textContent = 'Could not load';
         return;
       }
     }
     const t = texts[id];
     box.innerHTML = t ? highlight(t, filters().q) : 'No discussion was recorded for this item. See the PDF.';
-    box.hidden = false; btn.setAttribute('aria-expanded', 'true'); btn.textContent = 'Hide minutes';
+    box.hidden = false; btn.setAttribute('aria-expanded', 'true'); label.textContent = 'Hide minutes';
   }
 
-  // ---------- Mobile bottom sheet ----------
-  const panel = $('panel');
-  const isMobile = () => matchMedia('(max-width: 760px)').matches;
-  function expandPanel() { if (isMobile()) panel.classList.remove('collapsed'); }
-  document.querySelector('.panel-head').addEventListener('click', () => {
-    if (!isMobile()) return;
-    if (panel.classList.contains('collapsed')) panel.classList.remove('collapsed');
-    else if (panel.classList.contains('expanded')) panel.classList.replace('expanded', 'collapsed');
-    else panel.classList.add('expanded');
+  // ---------- Map preview card ----------
+  function preview(p, latlng) {
+    const s = shown.find((x) => x.p.id === p.id);
+    const c = (s ? s.cases : p.cases)[0];
+    const html = `
+      <div class="thumb">${lotSvg(p, 280, 140)}${p.cases.length > 1 ? `<span class="count">${p.cases.length} cases</span>` : ''}</div>
+      <div class="preview-body">
+        <span class="eyebrow">${esc(c.kind)} · ${esc(BOARD[c.board])}</span>
+        <span class="preview-title">${esc(p.address)}</span>
+        <span><span class="badge" style="${statusTone(c.status)}"><span class="dot"></span>${esc(c.status)}</span>
+          <span class="muted small">&nbsp;${c.case ? esc(c.case) + ' · ' : ''}${fmtDate(c.date)}</span></span>
+        <button class="btn btn-primary btn-sm" type="button" data-open="${esc(p.id)}">View case history</button>
+      </div>`;
+    L.popup({ className: 'preview', offset: [0, -10], maxWidth: 300, autoPanPadding: [40, 40] })
+      .setLatLng(latlng).setContent(html).openOn(map);
+  }
+  map.getContainer().addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-open]');
+    if (b) openProperty(b.dataset.open, { fly: false });
   });
-  map.on('dragstart', () => { if (isMobile() && $('detailView').hidden) panel.classList.add('collapsed'); });
+
+  // ---------- Mobile list / map toggle ----------
+  function syncMapToggle() {
+    const on = document.body.classList.contains('show-map');
+    $('mapToggle').setAttribute('aria-pressed', String(on));
+    $('mapToggle').querySelector('span').textContent = on ? 'List' : 'Map';
+  }
+  $('mapToggle').addEventListener('click', () => {
+    document.body.classList.toggle('show-map');
+    syncMapToggle();
+    setTimeout(() => map.invalidateSize(), 50);
+  });
 
   // ---------- Events ----------
   let t;
-  $('q').addEventListener('input', () => { clearTimeout(t); t = setTimeout(apply, 120); });
+  $('q').addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { if (!$('detailView').hidden) closeDetail(); apply(); }, 150); });
   ['fDecision', 'fKind', 'fYear', 'fInView'].forEach((id) => $(id).addEventListener('change', apply));
   $('fBoard').addEventListener('click', (e) => {
     const b = e.target.closest('button[data-v]');
@@ -302,26 +390,41 @@
     fillKinds();
     apply();
   });
+  $('reset').addEventListener('click', () => {
+    $('q').value = ''; $('fDecision').value = ''; $('fKind').value = ''; $('fYear').value = ''; $('fInView').checked = false;
+    board = '';
+    for (const x of $('fBoard').querySelectorAll('button')) x.setAttribute('aria-checked', String(x.dataset.v === ''));
+    fillKinds();
+    apply();
+  });
   map.on('moveend', () => { if ($('fInView').checked) apply(); });
-  $('results').addEventListener('click', (e) => {
+  const results = $('results');
+  results.addEventListener('click', (e) => {
     const b = e.target.closest('button[data-id]');
     if (b) openProperty(b.dataset.id);
   });
+  results.addEventListener('mouseover', (e) => {
+    const b = e.target.closest('button[data-id]');
+    if (b && b.dataset.id !== results._hl) {
+      if (results._hl) markState(results._hl, 'hl', false);
+      results._hl = b.dataset.id;
+      markState(b.dataset.id, 'hl', true);
+    }
+  });
+  results.addEventListener('mouseleave', () => { if (results._hl) markState(results._hl, 'hl', false); results._hl = null; });
   $('detail').addEventListener('click', (e) => {
     const b = e.target.closest('button[data-excerpt]');
     if (b) toggleExcerpt(b);
   });
   $('back').addEventListener('click', closeDetail);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !$('detailView').hidden) closeDetail();
-  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('detailView').hidden) closeDetail(); });
 
   function fillKinds() {
     const cur = $('fKind').value;
     const counts = new Map();
     for (const p of props) for (const c of p.cases) if (!board || c.board === board) counts.set(c.kind, (counts.get(c.kind) || 0) + 1);
     const kinds = [...counts.keys()].sort((a, b) => counts.get(b) - counts.get(a));
-    $('fKind').innerHTML = '<option value="">All</option>' + kinds.map((k) => `<option${k === cur ? ' selected' : ''}>${esc(k)}</option>`).join('');
+    $('fKind').innerHTML = '<option value="">Type of case</option>' + kinds.map((k) => `<option${k === cur ? ' selected' : ''}>${esc(k)}</option>`).join('');
   }
 
   // ---------- Load ----------
@@ -333,10 +436,13 @@
         ...p.cases.flatMap((c) => [c.case, c.request, c.kind, c.status, ...c.events.map((e) => e.ord)])]
         .filter(Boolean).join(' ').toLowerCase();
       if (p.lat) {
-        const m = L.marker([p.lat, p.lng], { icon: pinIcon(p, false), keyboard: true, title: p.address });
-        const c = p.cases[0];
-        m.bindTooltip(`<b>${esc(p.address)}</b><br>${c.case ? esc(c.case) + ' · ' : ''}${esc(c.kind)} · ${esc(c.status)}${p.cases.length > 1 ? `<br>${p.cases.length} cases` : ''}`, { direction: 'top', offset: [0, -8] });
-        m.on('click', () => openProperty(p.id, { fly: false }));
+        const m = L.marker([p.lat, p.lng], { icon: pinIcon(p), keyboard: true, title: p.address, riseOnHover: true });
+        m.on('click', (e) => { setActive(p.id); preview(p, e.latlng); });
+        m.on('mouseover', () => {
+          const card = results.querySelector(`button[data-id="${CSS.escape(p.id)}"]`);
+          if (card) card.classList.add('hl');
+        });
+        m.on('mouseout', () => results.querySelectorAll('.prop.hl').forEach((x) => x.classList.remove('hl')));
         markers.set(p.id, m);
       }
     }
@@ -345,7 +451,7 @@
     const years = [...new Set(props.flatMap((p) => p.cases.flatMap((c) => c.events.map((e) => e.date.slice(0, 4)))))].sort().reverse();
     $('fYear').insertAdjacentHTML('beforeend', years.map((y) => `<option>${y}</option>`).join(''));
     const nCases = meta.cases.boza + meta.cases.planning;
-    $('stats').innerHTML = `<b>${nCases}</b> cases &middot; <b>${meta.properties}</b> properties &middot; ${meta.first.slice(0, 4)}&ndash;${meta.last.slice(0, 4)} &middot; ${meta.mapped} on map`;
+    $('stats').textContent = `${nCases.toLocaleString()} cases · ${meta.properties.toLocaleString()} properties · ${meta.first.slice(0, 4)}–${meta.last.slice(0, 4)}`;
     apply();
     const mapped = props.filter((p) => p.lat);
     if (mapped.length) map.fitBounds(L.latLngBounds(mapped.map((p) => [p.lat, p.lng])).pad(0.05), { maxZoom: 14 });

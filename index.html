@@ -4,69 +4,85 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mount Pleasant Zoning Map</title>
-<meta name="description" content="Every variance, appeal, rezoning, annexation and sketch plan heard in Mount Pleasant, SC since 2017, on a map, with each step from Planning Commission to Town Council and links to the minutes.">
+<meta name="description" content="Every variance, appeal, rezoning, annexation and sketch plan heard in Mount Pleasant, SC since 2017, on a map, with each step from Planning Commission to Town Council, the minutes, and the case documents.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="vendor/markercluster/MarkerCluster.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="app">
-  <aside class="panel" id="panel" aria-label="Cases">
-    <header class="panel-head">
-      <div class="grip" aria-hidden="true"></div>
-      <h1>Mount Pleasant Zoning Map</h1>
-      <p class="sub">Zoning Appeals &middot; Planning Commission &middot; Town Council</p>
-      <p class="stats" id="stats">Loading cases&hellip;</p>
-    </header>
+<header class="topbar">
+  <a class="brand" href="./" aria-label="Mount Pleasant Zoning Map, home">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" fill="currentColor"/></svg>
+    <span>Zoning Map</span>
+  </a>
+  <label class="searchbar">
+    <span class="sr">Search</span>
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m21 21-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="q" type="search" placeholder="Search address, case no. (R-12-26), TMS" autocomplete="off">
+  </label>
+  <div class="topbar-right">
+    <span class="muted small" id="stats">Loading&hellip;</span>
+  </div>
+</header>
 
-    <section id="listView" class="view">
-      <div class="controls">
-        <label class="search">
-          <span class="sr">Search</span>
-          <input id="q" type="search" placeholder="Address, case no. (R-12-26), TMS, or keyword" autocomplete="off">
-        </label>
-        <div class="segmented" role="radiogroup" aria-label="Board" id="fBoard">
-          <button type="button" role="radio" aria-checked="true" data-v="">All</button>
+<div class="layout" id="layout">
+  <section class="pane" id="pane" aria-label="Cases">
+    <div id="listView">
+      <div class="pane-head">
+        <p class="muted small" id="count">&nbsp;</p>
+        <h1>Zoning cases in Mount Pleasant</h1>
+        <div class="toggle-group" role="radiogroup" aria-label="Board" id="fBoard">
+          <button type="button" role="radio" aria-checked="true" data-v="">All boards</button>
           <button type="button" role="radio" aria-checked="false" data-v="boza">Zoning Appeals</button>
           <button type="button" role="radio" aria-checked="false" data-v="planning">Rezoning &amp; planning</button>
         </div>
-        <div class="filters">
-          <label><span>Outcome</span>
-            <select id="fDecision"><option value="">All</option></select>
+        <div class="pills">
+          <label class="pill-select"><span class="sr">Outcome</span>
+            <select id="fDecision"><option value="">Outcome</option></select>
           </label>
-          <label><span>Type</span>
-            <select id="fKind"><option value="">All</option></select>
+          <label class="pill-select"><span class="sr">Type</span>
+            <select id="fKind"><option value="">Type of case</option></select>
           </label>
-          <label><span>Year</span>
-            <select id="fYear"><option value="">All</option></select>
+          <label class="pill-select"><span class="sr">Year</span>
+            <select id="fYear"><option value="">Year</option></select>
           </label>
-        </div>
-        <div class="list-meta">
-          <span id="count"></span>
-          <label class="inview"><input type="checkbox" id="fInView"> Only what's on the map</label>
+          <label class="pill-check"><input type="checkbox" id="fInView"><span>In map area</span></label>
+          <button type="button" class="pill-reset" id="reset" hidden>Clear</button>
         </div>
       </div>
-      <ol class="results" id="results"></ol>
-    </section>
+      <ol class="cards" id="results"></ol>
+    </div>
 
-    <section id="detailView" class="view" hidden>
-      <button class="back" id="back" type="button">&larr; All properties</button>
+    <div id="detailView" hidden>
+      <div class="detail-bar">
+        <button class="btn btn-ghost" id="back" type="button">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m15 18-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          All properties
+        </button>
+      </div>
       <div id="detail"></div>
-    </section>
+    </div>
 
-    <footer class="panel-foot">
+    <footer class="pane-foot muted small">
       Extracted automatically from the Town's
       <a href="https://sc-mountpleasant2.civicplus.com/AgendaCenter" target="_blank" rel="noopener">official minutes</a>
-      (<a href="https://github.com/fbrocca/boza">how</a>). Outcomes are inferred from the recorded motions;
-      the minutes are authoritative.
+      (<a href="https://github.com/fbrocca/boza">method</a>). Outcomes are inferred from recorded motions; the minutes are authoritative.
     </footer>
-  </aside>
+  </section>
 
-  <main class="map-wrap">
-    <div id="map" role="region" aria-label="Map of Mount Pleasant"></div>
-    <div class="legend" id="legend" aria-label="Legend"></div>
-  </main>
+  <section class="mapwrap" aria-label="Map">
+    <div id="map"></div>
+    <details class="legend card" id="legend"></details>
+  </section>
 </div>
+
+<button class="btn btn-primary map-toggle" id="mapToggle" type="button" aria-pressed="false">
+  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  <span>Map</span>
+</button>
 
 <script src="vendor/leaflet/leaflet.js"></script>
 <script src="vendor/markercluster/leaflet.markercluster.js"></script>
