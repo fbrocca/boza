@@ -332,6 +332,7 @@
     $('reset').hidden = !(f.group || f.kind || f.year || f.inView || f.board || f.q || area);
     renderList();
     const nc = shown.reduce((a, s) => a + s.cases.length, 0);
+    $('paneShowTxt').textContent = `Show list (${nc.toLocaleString()} ${nc === 1 ? 'case' : 'cases'})`;
     $('count').textContent = `${shown.length.toLocaleString()} ${shown.length === 1 ? 'property' : 'properties'} · ${nc.toLocaleString()} ${nc === 1 ? 'case' : 'cases'}${area ? ' inside your boundary' : ''}${minorHidden ? ` · ${minorHidden} minor staff approvals hidden (Type → Staff approval)` : ''}`;
   }
 
@@ -449,6 +450,7 @@
     track('open-property', p.address);
     map.closePopup();
     setActive(id);
+    paneOpenIfClosed();
     $('listView').hidden = true;
     $('detailView').hidden = false;
     document.body.classList.remove('show-map');
@@ -535,6 +537,30 @@
     if (b) openProperty(b.dataset.open, { fly: false });
   });
 
+  // ---------- Desktop: collapse the list so the map goes full screen ----------
+  // First visit starts map-only; after that the last choice is remembered (per browser).
+  const PANE_KEY = 'boza.pane';
+  const store = { get() { try { return localStorage.getItem(PANE_KEY); } catch (e) { return null; } },
+                  set(v) { try { localStorage.setItem(PANE_KEY, v); } catch (e) { /* storage optional */ } } };
+  function setPane(open, { remember = true } = {}) {
+    document.body.classList.toggle('pane-closed', !open);
+    $('paneHide').hidden = !open;
+    $('paneShow').hidden = open;
+    if (remember) store.set(open ? 'open' : 'closed');
+    // Keep the cases that were on screen in view when the map changes width.
+    const seen = map.getBounds(), z = map.getZoom();
+    const pts = [...byId.values()].filter((p) => p.lat && seen.contains([p.lat, p.lng])).map((p) => [p.lat, p.lng]);
+    setTimeout(() => {
+      map.invalidateSize({ pan: false });
+      if (remember && pts.length) map.fitBounds(L.latLngBounds(pts), { padding: [30, 30], maxZoom: open ? z : z + 1, animate: false });
+    }, 60);
+  }
+  const savedPane = store.get();
+  setPane(savedPane === 'open', { remember: false });
+  $('paneHide').addEventListener('click', () => { setPane(false); track('pane/hide', 'Hid list (full map)'); });
+  $('paneShow').addEventListener('click', () => { setPane(true); track('pane/show', 'Showed list'); });
+  const paneOpenIfClosed = () => { if (document.body.classList.contains('pane-closed')) setPane(true); };
+
   // ---------- Mobile list / map toggle ----------
   function syncMapToggle() {
     const on = document.body.classList.contains('show-map');
@@ -550,7 +576,7 @@
 
   // ---------- Events ----------
   let t;
-  $('q').addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { if (!$('detailView').hidden) closeDetail(); apply(); }, 150); });
+  $('q').addEventListener('input', () => { paneOpenIfClosed(); clearTimeout(t); t = setTimeout(() => { if (!$('detailView').hidden) closeDetail(); apply(); }, 150); });
   ['fDecision', 'fKind', 'fYear', 'fInView'].forEach((id) => $(id).addEventListener('change', () => {
     apply();
     track('filter/' + id.replace(/^f/, '').toLowerCase(), 'Used filter: ' + id.replace(/^f/, ''));
@@ -674,7 +700,12 @@
       setArea(shared);
     } else {
       apply();
-      if (mapped.length) map.fitBounds(L.latLngBounds(mapped.map((p) => [p.lat, p.lng])).pad(0.05), { maxZoom: 14 });
+      if (mapped.length) {
+        // Fit to where cases cluster: drop the outer 2% on each axis so a few far-out parcels don't zoom the town out.
+        const q = (a, f) => a[Math.min(a.length - 1, Math.floor(f * a.length))];
+        const la = mapped.map((p) => p.lat).sort((a, b) => a - b), ln = mapped.map((p) => p.lng).sort((a, b) => a - b);
+        map.fitBounds([[q(la, 0.02), q(ln, 0.02)], [q(la, 0.98), q(ln, 0.98)]], { padding: [30, 30], maxZoom: 14 });
+      }
     }
     const hash = decodeURIComponent(location.hash.slice(1));
     if (hash && byId.has(hash)) openProperty(hash);
