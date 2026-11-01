@@ -260,3 +260,11 @@ a { color: inherit; text-underline-offset: 3px; }
   .legend { display: none; }
   .map-toggle { display: inline-flex; position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 1100; height: 44px; padding: 0 20px; border-radius: 999px; box-shadow: var(--shadow-lg); }
 }
+
+/* Draw a boundary */
+.area-ctl { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.area-ctl .btn { box-shadow: var(--shadow-sm); }
+.draw-hint { padding: 6px 12px; font-size: 13px; font-weight: 500; border-radius: 999px; }
+.leaflet-container.drawing { cursor: crosshair; touch-action: none; }
+.leaflet-container.drawing .leaflet-marker-pane,
+.leaflet-container.drawing .leaflet-popup-pane { pointer-events: none; }
