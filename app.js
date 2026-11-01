@@ -133,6 +133,117 @@
   map.addLayer(cluster);
   const outline = L.layerGroup().addTo(map);
 
+  // ---------- Draw a boundary (Redfin-style freehand) ----------
+  let area = null;         // [[lat, lng], ...] or null
+  let areaLayer = null;
+  let drawing = false;
+  const areaCtl = L.control({ position: 'topleft' });
+  areaCtl.onAdd = () => {
+    const el = L.DomUtil.create('div', 'area-ctl');
+    L.DomEvent.disableClickPropagation(el);
+    L.DomEvent.disableScrollPropagation(el);
+    return el;
+  };
+  areaCtl.addTo(map);
+  const PENCIL = '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function renderAreaCtl() {
+    const el = areaCtl.getContainer();
+    if (drawing) {
+      el.innerHTML = `<div class="draw-hint card">Drag to draw around an area</div>
+        <button class="btn btn-outline btn-sm" type="button" data-area="cancel">Cancel</button>`;
+    } else if (area) {
+      el.innerHTML = `<button class="btn btn-primary btn-sm" type="button" data-area="remove">✕&nbsp;Remove boundary</button>
+        <button class="btn btn-outline btn-sm" type="button" data-area="draw">${PENCIL}Redraw</button>`;
+    } else {
+      el.innerHTML = `<button class="btn btn-outline btn-sm" type="button" data-area="draw">${PENCIL}Draw</button>`;
+    }
+  }
+  function insideArea(lat, lng, poly) {
+    let hit = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const [yi, xi] = poly[i], [yj, xj] = poly[j];
+      if ((yi > lat) !== (yj > lat) && lng < (xj - xi) * (lat - yi) / (yj - yi) + xi) hit = !hit;
+    }
+    return hit;
+  }
+  function areaUrl() {
+    const u = new URL(location.href);
+    if (area) u.searchParams.set('area', area.map(([a, b]) => `${a.toFixed(5)},${b.toFixed(5)}`).join(';'));
+    else u.searchParams.delete('area');
+    history.replaceState(null, '', u.pathname + u.search + u.hash);
+  }
+  function setArea(pts, { fit = true } = {}) {
+    if (areaLayer) map.removeLayer(areaLayer);
+    area = pts;
+    areaLayer = pts ? L.polygon(pts, { color: '#2563eb', weight: 2.5, fillColor: '#2563eb', fillOpacity: 0.08, dashArray: null, interactive: false }).addTo(map) : null;
+    if (pts && fit) map.fitBounds(areaLayer.getBounds(), { padding: [40, 40] });
+    renderAreaCtl();
+    areaUrl();
+    if (props.length) apply();
+  }
+  function startDrawing() {
+    if (!$('detailView').hidden) closeDetail();
+    map.closePopup();
+    drawing = true;
+    map.dragging.disable();
+    map.doubleClickZoom.disable();
+    map.boxZoom.disable();
+    map.getContainer().classList.add('drawing');
+    renderAreaCtl();
+  }
+  function stopDrawing() {
+    drawing = false;
+    map.dragging.enable();
+    map.doubleClickZoom.enable();
+    map.boxZoom.enable();
+    map.getContainer().classList.remove('drawing');
+    renderAreaCtl();
+  }
+  // Freehand stroke with pointer events (mouse, pen and touch).
+  (function () {
+    const box = map.getContainer();
+    let pts = null, line = null, lastPx = null;
+    box.addEventListener('pointerdown', (e) => {
+      if (!drawing || e.target.closest('.leaflet-control')) return;
+      e.preventDefault();
+      box.setPointerCapture(e.pointerId);
+      const ll = map.mouseEventToLatLng(e);
+      pts = [ll];
+      lastPx = [e.clientX, e.clientY];
+      line = L.polyline(pts, { color: '#2563eb', weight: 3, interactive: false }).addTo(map);
+    });
+    box.addEventListener('pointermove', (e) => {
+      if (!drawing || !pts) return;
+      if (Math.hypot(e.clientX - lastPx[0], e.clientY - lastPx[1]) < 4) return;
+      lastPx = [e.clientX, e.clientY];
+      pts.push(map.mouseEventToLatLng(e));
+      line.setLatLngs(pts);
+    });
+    const finish = () => {
+      if (!drawing || !pts) return;
+      map.removeLayer(line);
+      const raw = pts;
+      pts = null; line = null;
+      stopDrawing();
+      if (raw.length < 3) return;
+      // Thin the stroke to at most ~80 vertices so the shareable URL stays short.
+      const step = Math.max(1, Math.ceil(raw.length / 80));
+      const thin = raw.filter((_, i) => i % step === 0).map((ll) => [ll.lat, ll.lng]);
+      if (thin.length >= 3) setArea(thin, { fit: false });
+    };
+    box.addEventListener('pointerup', finish);
+    box.addEventListener('pointercancel', finish);
+  })();
+  areaCtl.getContainer().addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-area]');
+    if (!b) return;
+    const a = b.dataset.area;
+    if (a === 'draw') startDrawing();
+    else if (a === 'cancel') stopDrawing();
+    else if (a === 'remove') setArea(null);
+  });
+  renderAreaCtl();
+
   $('legend').innerHTML = '<summary>Legend</summary><div class="legend-body">' + GROUPS.map((g) =>
     `<div><span class="dot" style="${tone(g.key)}"></span>${esc(g.label)}</div>`).join('') +
     '<div class="legend-note">● zoning appeal &nbsp;◆ rezoning &amp; planning</div></div>';
@@ -180,6 +291,7 @@
       if (!cs.length) continue;
       if (terms.length && !terms.every((t) => p._search.includes(t))) continue;
       if (f.inView && !(p.lat && bounds.contains([p.lat, p.lng]))) continue;
+      if (area && !(p.lat && insideArea(p.lat, p.lng, area))) continue;
       shown.push({ p, cases: cs });
     }
     cluster.clearLayers();
@@ -189,10 +301,10 @@
       return m;
     }));
     for (const id of ['fDecision', 'fKind', 'fYear']) $(id).classList.toggle('on', !!$(id).value);
-    $('reset').hidden = !(f.group || f.kind || f.year || f.inView || f.board || f.q);
+    $('reset').hidden = !(f.group || f.kind || f.year || f.inView || f.board || f.q || area);
     renderList();
     const nc = shown.reduce((a, s) => a + s.cases.length, 0);
-    $('count').textContent = `${shown.length.toLocaleString()} ${shown.length === 1 ? 'property' : 'properties'} · ${nc.toLocaleString()} ${nc === 1 ? 'case' : 'cases'}`;
+    $('count').textContent = `${shown.length.toLocaleString()} ${shown.length === 1 ? 'property' : 'properties'} · ${nc.toLocaleString()} ${nc === 1 ? 'case' : 'cases'}${area ? ' inside your boundary' : ''}`;
   }
 
   const LIMIT = 300;
@@ -395,6 +507,7 @@
     board = '';
     for (const x of $('fBoard').querySelectorAll('button')) x.setAttribute('aria-checked', String(x.dataset.v === ''));
     fillKinds();
+    if (area) setArea(null);
     apply();
   });
   map.on('moveend', () => { if ($('fInView').checked) apply(); });
@@ -417,7 +530,11 @@
     if (b) toggleExcerpt(b);
   });
   $('back').addEventListener('click', closeDetail);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('detailView').hidden) closeDetail(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (drawing) stopDrawing();
+    else if (!$('detailView').hidden) closeDetail();
+  });
 
   function fillKinds() {
     const cur = $('fKind').value;
@@ -452,9 +569,16 @@
     $('fYear').insertAdjacentHTML('beforeend', years.map((y) => `<option>${y}</option>`).join(''));
     const nCases = meta.cases.boza + meta.cases.planning;
     $('stats').textContent = `${nCases.toLocaleString()} cases · ${meta.properties.toLocaleString()} properties · ${meta.first.slice(0, 4)}–${meta.last.slice(0, 4)}`;
-    apply();
+    // A boundary shared in the URL: ?area=lat,lng;lat,lng;...
+    const shared = (new URLSearchParams(location.search).get('area') || '').split(';')
+      .map((s) => s.split(',').map(Number)).filter((q) => q.length === 2 && q.every(Number.isFinite));
     const mapped = props.filter((p) => p.lat);
-    if (mapped.length) map.fitBounds(L.latLngBounds(mapped.map((p) => [p.lat, p.lng])).pad(0.05), { maxZoom: 14 });
+    if (shared.length >= 3) {
+      setArea(shared);
+    } else {
+      apply();
+      if (mapped.length) map.fitBounds(L.latLngBounds(mapped.map((p) => [p.lat, p.lng])).pad(0.05), { maxZoom: 14 });
+    }
     const hash = decodeURIComponent(location.hash.slice(1));
     if (hash && byId.has(hash)) openProperty(hash);
   }).catch((e) => {

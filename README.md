@@ -10,7 +10,9 @@ Every property-specific zoning action in the Town of Mount Pleasant, SC since
   final status (Adopted by Council, Denied by Council, Passed first reading, or
   recommendation only).
 
-Click a property to see every case on it, with a timeline of each step, the
+Draw a boundary on the map (Draw button, then drag a freehand shape) to see only
+the cases inside it; the boundary is kept in the URL (`?area=`), so the link
+can be shared. Click a property to see every case on it, with a timeline of each step, the
 minutes text, a link to the exact page of the minutes PDF, and links to the
 case documents the Town published with the agenda (application, staff report,
 correspondence, presentation).
