@@ -134,7 +134,9 @@
   ]);
   L.control.layers({ 'Map': streets, 'Satellite': satellite }, null, { position: 'topright' }).addTo(map);
   const cluster = L.markerClusterGroup({
-    showCoverageOnHover: false, maxClusterRadius: 45, spiderfyOnMaxZoom: true, disableClusteringAtZoom: 16,
+    // Group widely at city scale, tighter near street level, none from zoom 18.
+    showCoverageOnHover: false, spiderfyOnMaxZoom: true, disableClusteringAtZoom: 18,
+    maxClusterRadius: (z) => (z < 14 ? 70 : z < 16 ? 50 : z < 17 ? 35 : 22),
     iconCreateFunction: (c) => {
       const n = c.getChildCount();
       const s = n < 10 ? 30 : n < 50 ? 36 : 44;
@@ -267,7 +269,7 @@
     const extra = p.cases.length > 1 ? ` +${p.cases.length - 1}` : '';
     return L.divIcon({
       className: `pill-marker ${c.board}${state ? ' ' + state : ''}`,
-      html: `<span><span class="dot" style="${statusTone(c.status)}"></span>${esc(label)}${extra}</span>`,
+      html: `<span><span class="dot" style="${statusTone(c.status)}"></span><span class="lbl">${esc(label)}${extra}</span></span>`,
       iconSize: [0, 0],
     });
   }
@@ -299,12 +301,17 @@
     const terms = f.q.split(/\s+/).filter(Boolean);
     const bounds = map.getBounds();
     shown = [];
+    // Minor staff approvals (a new roof, a fence) are hidden unless asked for by Type or search.
+    const hideMinor = f.kind !== 'Staff approval' && !terms.length;
+    let minorHidden = 0;
     for (const p of props) {
-      const cs = p.cases.filter((c) => caseMatches(c, f));
-      if (!cs.length) continue;
+      const all = p.cases.filter((c) => caseMatches(c, f));
+      if (!all.length) continue;
       if (terms.length && !terms.every((t) => p._search.includes(t))) continue;
       if (f.inView && !(p.lat && bounds.contains([p.lat, p.lng]))) continue;
       if (area && !(p.lat && insideArea(p.lat, p.lng, area))) continue;
+      const cs = hideMinor ? all.filter((c) => c.kind !== 'Staff approval') : all;
+      if (!cs.length) { minorHidden++; continue; }
       shown.push({ p, cases: cs });
     }
     cluster.clearLayers();
@@ -317,7 +324,7 @@
     $('reset').hidden = !(f.group || f.kind || f.year || f.inView || f.board || f.q || area);
     renderList();
     const nc = shown.reduce((a, s) => a + s.cases.length, 0);
-    $('count').textContent = `${shown.length.toLocaleString()} ${shown.length === 1 ? 'property' : 'properties'} · ${nc.toLocaleString()} ${nc === 1 ? 'case' : 'cases'}${area ? ' inside your boundary' : ''}`;
+    $('count').textContent = `${shown.length.toLocaleString()} ${shown.length === 1 ? 'property' : 'properties'} · ${nc.toLocaleString()} ${nc === 1 ? 'case' : 'cases'}${area ? ' inside your boundary' : ''}${minorHidden ? ` · ${minorHidden} minor staff approvals hidden (Type → Staff approval)` : ''}`;
   }
 
   const LIMIT = 300;
@@ -534,6 +541,10 @@
     apply();
   });
   map.on('moveend', () => { if ($('fInView').checked) apply(); });
+  // Dots when zoomed out; case-number / address labels from zoom 18 (a block or two on screen).
+  const syncLabels = () => map.getContainer().classList.toggle('show-labels', map.getZoom() >= 18);
+  map.on('zoomend', syncLabels);
+  syncLabels();
   const results = $('results');
   results.addEventListener('click', (e) => {
     const b = e.target.closest('button[data-id]');
@@ -606,9 +617,11 @@
         const m = L.marker([p.lat, p.lng], { icon: pinIcon(p), keyboard: true, title: p.address, riseOnHover: true });
         m.on('click', (e) => { setActive(p.id); preview(p, e.latlng); });
         m.on('mouseover', () => {
+          markState(p.id, 'hl', true);
           const card = results.querySelector(`button[data-id="${CSS.escape(p.id)}"]`);
           if (card) card.classList.add('hl');
         });
+        m.on('mouseout', () => markState(p.id, 'hl', false));
         m.on('mouseout', () => results.querySelectorAll('.prop.hl').forEach((x) => x.classList.remove('hl')));
         markers.set(p.id, m);
       }
