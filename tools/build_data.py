@@ -7,6 +7,7 @@ Reads   data/cases.json       Board of Zoning Appeals hearings (extract_cases.py
                               (extract_planning.py)
         data/parcels.json, data/geocode-cache.json, data/geocode-overrides.json
         minutes/index.csv     links to the Town's copy of BOZA minutes
+        data/agenda-docs.json case documents linked from each agenda (agenda_docs.py)
 Writes  data/properties.json  one entry per parcel, each with its cases and
                               each case with its timeline of events
         data/minutes-text.json minutes text per event, loaded on demand
@@ -139,11 +140,43 @@ def planning_cases(cases):
     return out
 
 
+CASE_IN_NAME = re.compile(r"\b(?:[AVSR]|SP)\s?[-–]\s?\d{1,3}\s?[-–]\s?\d{2,4}\b")
+DOC_GENERIC = set("""staff report reports application applications plan plans sketch presentation correspondence
+amendment request combined final draft document documents rezoning zoning case review update placeholder
+road street drive lane avenue boulevard court highway north south circle parcel parcels planning commission
+board appeals boza submittal letter letters comments written exhibit narrative proposed public hearing
+with from this that page pages copy revised""".split())
+
+
+def doc_words(text):
+    return {w for w in re.findall(r"[a-z]{4,}", text.lower().replace("’", "'"))} - DOC_GENERIC
+
+
+def retype(doc):
+    """Same rules as agenda_docs.doc_type, applied to links cached before a rule changed."""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from agenda_docs import doc_type
+    return doc_type(doc["label"]) if doc["type"] in ("Document", "Correspondence") else doc["type"]
+
+
+def verified(doc, case, prop):
+    """Keep a document link only when its assignment can be checked."""
+    if doc["case"] is None:
+        return True  # meeting-wide staff report, named only by board and date
+    if CASE_IN_NAME.search(doc["url"].rsplit("/", 1)[-1].replace(" ", "-")) or CASE_IN_NAME.search(doc["label"].replace(" ", "-")):
+        return True  # the document is named after the case
+    # Assigned by position on the agenda: only if its name mentions this property.
+    subject = doc_words(" ".join([prop["address"], prop.get("name", "")]))
+    return bool(doc_words(doc["label"]) & subject)
+
+
 def main(out_dir):
     hearings = load(os.path.join(out_dir, "cases.json"), [])
     planning = load(os.path.join(out_dir, "planning.json"), [])
     geo = load(os.path.join(out_dir, "geocode-cache.json"), {})
     parcels = load(os.path.join(out_dir, "parcels.json"), {})
+    agenda_docs = load(os.path.join(out_dir, "agenda-docs.json"), {})
+    body_key = {"Board of Zoning Appeals": "boza", "Planning Commission": "pc"}
     overrides = {k: v for k, v in load(os.path.join(out_dir, "geocode-overrides.json"), {}).items()
                  if not k.startswith("_")}
     town = {}
@@ -198,6 +231,13 @@ def main(out_dir):
             c["first"] = c["events"][0]["date"]
             for k, e in enumerate(c["events"]):
                 e["id"] = f"{p['id']}~{c['board']}~{c['case'] or c['first']}~{k}"
+                docs = agenda_docs.get(f"{body_key.get(e['body'])}/{e['date']}", [])
+                mine = [d for d in docs if c["case"] and d["case"] == c["case"] and verified(d, c, p)]
+                wide = [d for d in docs if d["case"] is None]
+                if mine or wide:
+                    e["docs"] = ([{"t": retype(d), "u": d["url"], "l": d["label"]} for d in mine] +
+                                 [{"t": d["type"], "u": d["url"], "l": d["label"], "all": 1} for d in wide])
+                    stats["events_with_docs"] += 1
                 texts[e["id"]] = cap(e.pop("text") or "")
                 for f in [f for f, v in e.items() if v in (None, "")]:
                     del e[f]
@@ -207,7 +247,7 @@ def main(out_dir):
     out.sort(key=lambda p: p["date"], reverse=True)
 
     n_events = collections.Counter(e["body"] for p in out for c in p["cases"] for e in c["events"])
-    meta = {"properties": len(out), "mapped": stats["mapped"],
+    meta = {"properties": len(out), "mapped": stats["mapped"], "events_with_docs": stats["events_with_docs"],
             "cases": {b: sum(1 for p in out for c in p["cases"] if c["board"] == b) for b in ("boza", "planning")},
             "events": dict(n_events),
             "first": min(c["first"] for p in out for c in p["cases"]),
