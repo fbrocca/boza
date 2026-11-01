@@ -170,9 +170,20 @@
     }
   }
 
+  function docLinks(e) {
+    if (!e.docs) return '';
+    const n = {};
+    return e.docs.map((d) => {
+      const name = d.all ? `${d.t} (whole meeting)` : d.t;
+      n[name] = (n[name] || 0) + 1;
+      const label = n[name] > 1 ? `${name} ${n[name]}` : name;
+      return `<a class="btn small doc" href="${esc(d.u)}" target="_blank" rel="noopener" title="${esc(d.l)}">${esc(label)}</a>`;
+    }).join('');
+  }
+
   function eventLinks(e) {
     const pdf = e.pdf ? `${e.pdf}#page=${e.page}` : e.town ? `${e.town}#page=${e.page}` : null;
-    return `
+    return `${docLinks(e)}
       <button class="btn small" type="button" data-excerpt="${esc(e.id)}" aria-expanded="false">Minutes</button>
       ${pdf ? `<a class="btn small" href="${esc(pdf)}" target="_blank" rel="noopener">PDF p.${e.page}</a>` : ''}
       ${e.pdf && e.town ? `<a class="btn small" href="${esc(e.town)}" target="_blank" rel="noopener">Town's copy</a>` : ''}`;

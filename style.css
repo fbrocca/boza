@@ -187,3 +187,6 @@ h1 { font-size: 20px; margin: 0; letter-spacing: -.01em; }
 .legend-note { margin-top: 2px; color: var(--muted); }
 .pin.planning span { border-radius: 4px; transform: rotate(45deg) scale(.9); }
 .pin.planning.active span { transform: rotate(45deg) scale(1.15); }
+
+.btn.doc { background: var(--surface); border-color: var(--accent); color: var(--accent); }
+.btn.doc::before { content: "\2197\00a0"; }

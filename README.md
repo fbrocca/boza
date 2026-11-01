@@ -11,7 +11,9 @@ Every property-specific zoning action in the Town of Mount Pleasant, SC since
   recommendation only).
 
 Click a property to see every case on it, with a timeline of each step, the
-minutes text, and a link to the exact page of the minutes PDF.
+minutes text, a link to the exact page of the minutes PDF, and links to the
+case documents the Town published with the agenda (application, staff report,
+correspondence, presentation).
 
 **Site:** https://fbrocca.github.io/boza/
 
@@ -26,6 +28,7 @@ minutes text, and a link to the exact page of the minutes PDF.
 | `data/planning.json` | Every Planning Commission case with its linked Committee and Council events. |
 | `data/properties.json` | All cases grouped by parcel, with location and lot outline. What the map loads. |
 | `data/minutes-text.json` | Minutes text per event, fetched when someone opens it. |
+| `data/agenda-docs.json` | Links to case documents found in each BOZA and Planning Commission agenda, assigned to cases. Links only; the documents stay on the Town's site. |
 | `data/parcels.json`, `data/geocode-cache.json` | Cached county parcel and address lookups. |
 | `data/geocode-overrides.json` | Hand-placed pins for locations that can't be found automatically. |
 | `tools/` | The pipeline (below). |
@@ -34,6 +37,7 @@ minutes text, and a link to the exact page of the minutes PDF.
 
 ```bash
 python3 tools/fetch_minutes.py   # download new minutes from the Town's Agenda Center
+python3 tools/agenda_docs.py     # read new agendas for links to case documents
 tools/build.sh --geocode         # extract cases, look up parcels/addresses, rebuild data/
 ```
 
@@ -59,6 +63,17 @@ tools/build.sh --geocode         # extract cases, look up parcels/addresses, reb
    minutes), then the Census estimate.
 
 Needs `pdftotext` (poppler-utils) and Python 3. No third-party packages.
+
+### Case documents
+
+`agenda_docs.py` reads each agenda's hyperlinks (`pdftohtml -xml`) and assigns
+each document to a case: by the case number in the document's file name, else
+in the link text, else the case number inside the same agenda item. A staff
+report named only by board and date covers the whole meeting and is shown on
+every case that night. Links in items with no case number (street names, text
+amendments) and general links (bylaws, code, GIS) are dropped. The map links to
+the Town's copy; nothing is downloaded, stored or extracted from the documents,
+including applicant contact details.
 
 ## Automation
 

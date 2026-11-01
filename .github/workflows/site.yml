@@ -28,6 +28,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: python3 tools/fetch_minutes.py
+      - run: python3 tools/agenda_docs.py
       - run: tools/build.sh --geocode
       - name: Commit changes
         run: |
