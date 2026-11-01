@@ -24,6 +24,19 @@ correspondence, presentation).
 
 **Site:** https://fbrocca.github.io/boza/
 
+## Plan a request (`plan.html`)
+
+Enter an address (or TMS) and what you want to do. The page looks up the lot live
+(Charleston County address and parcel services, Town of Mount Pleasant zoning
+services), then shows: current zoning, overlays, height limit and Comprehensive
+Plan designation; the lot's case history and cases within 500 ft; which
+application is likely needed (variance vs rezoning vs subdivision, plus Historic
+District / Design Review Board review where an overlay or district applies); how
+comparable requests fared, with sample sizes; and how to strengthen an
+application, each point backed by counts from `data/case-facts.json` and links to
+real cases and their application documents. Nothing is scored or predicted, and
+nothing entered is stored.
+
 ## What's here
 
 | Path | What |
@@ -39,6 +52,7 @@ correspondence, presentation).
 | `data/agenda-docs.json` | Links to case documents found in each BOZA and Planning Commission agenda, assigned to cases. Links only; the documents stay on the Town's site. |
 | `data/parcels.json`, `data/geocode-cache.json` | Cached county parcel and address lookups. |
 | `data/zoning.json` | Zoning district, overlay districts, height limit and Comprehensive Plan future land use per parcel, from the Town's map server (`tools/zoning.py`). |
+| `data/case-facts.sqlite` | The same facts as one SQLite table, for ad-hoc queries. |
 | `data/case-facts.json` | Structured facts for 684 BOZA and rezoning cases, read from the minutes with an AI-assisted coding sheet and checked against them: type of relief, size of request, arguments made, opposition, vote, stated reasons, outcome, and a one-line summary. Where a fact sheet states the outcome, it replaces the automatic guess on the map. New cases need coding (see below). |
 | `data/geocode-overrides.json` | Hand-placed pins for locations that can't be found automatically. |
 | `tools/` | The pipeline (below). |

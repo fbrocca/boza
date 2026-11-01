@@ -82,8 +82,9 @@ COUNCIL_OUTCOME = {"adopted": "Adopted by Council", "denied": "Denied by Council
                    "first_reading_only": "Passed first reading", "withdrawn": "Withdrawn", "deferred": "Deferred"}
 PC_OUTCOME = {"recommended_approval": "Recommended approval", "recommended_denial": "Recommended denial",
               "withdrawn": "Withdrawn", "deferred": "Deferred"}
-FACT_KEYS = ("relief", "magnitude", "vote", "key_factor", "hardship", "reasons_given", "self_created_raised",
-             "public_opposition", "public_support", "revised_or_reduced", "comp_plan", "quality")
+FACT_KEYS = ("type", "relief", "magnitude", "magnitude_pct", "vote", "key_factor", "evidence", "hardship", "reasons_given",
+             "self_created_raised", "public_opposition", "public_support", "revised_or_reduced", "comp_plan",
+             "zone_from", "zone_to", "quality")
 
 
 def apply_facts(c, f):
