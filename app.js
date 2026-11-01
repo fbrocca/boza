@@ -49,6 +49,15 @@
   const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
   const isMobile = () => matchMedia('(max-width: 760px)').matches;
 
+  // ---------- Usage analytics (GoatCounter events; no cookies, no search text) ----------
+  function track(name, title) {
+    const send = () => window.goatcounter.count({ path: name, title: title || name, event: true });
+    if (window.goatcounter && window.goatcounter.count) send();
+    else window.addEventListener('load', () => { if (window.goatcounter && window.goatcounter.count) send(); }, { once: true });
+  }
+  const tester = new URLSearchParams(location.search).get('t');
+  if (tester && /^[\w-]{1,30}$/.test(tester)) track('tester/' + tester.toLowerCase(), 'Tester link: ' + tester);
+
   let props = [];
   const byId = new Map();
   const markers = new Map();
@@ -229,7 +238,7 @@
       // Thin the stroke to at most ~80 vertices so the shareable URL stays short.
       const step = Math.max(1, Math.ceil(raw.length / 80));
       const thin = raw.filter((_, i) => i % step === 0).map((ll) => [ll.lat, ll.lng]);
-      if (thin.length >= 3) setArea(thin, { fit: false });
+      if (thin.length >= 3) { setArea(thin, { fit: false }); track('draw-boundary', 'Drew a boundary'); }
     };
     box.addEventListener('pointerup', finish);
     box.addEventListener('pointercancel', finish);
@@ -394,6 +403,7 @@
   function openProperty(id, { fly = true } = {}) {
     const p = byId.get(id);
     if (!p) return;
+    track('open-property', p.address);
     map.closePopup();
     setActive(id);
     $('listView').hidden = true;
@@ -455,6 +465,7 @@
     const t = texts[id];
     box.innerHTML = t ? highlight(t, filters().q) : 'No discussion was recorded for this item. See the PDF.';
     box.hidden = false; btn.setAttribute('aria-expanded', 'true'); label.textContent = 'Hide minutes';
+    track('minutes', 'Read minutes text');
   }
 
   // ---------- Map preview card ----------
@@ -486,6 +497,7 @@
   }
   $('mapToggle').addEventListener('click', () => {
     document.body.classList.toggle('show-map');
+    if (document.body.classList.contains('show-map')) track('mobile-map', 'Opened map on phone');
     syncMapToggle();
     setTimeout(() => map.invalidateSize(), 50);
   });
@@ -493,11 +505,17 @@
   // ---------- Events ----------
   let t;
   $('q').addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { if (!$('detailView').hidden) closeDetail(); apply(); }, 150); });
-  ['fDecision', 'fKind', 'fYear', 'fInView'].forEach((id) => $(id).addEventListener('change', apply));
+  ['fDecision', 'fKind', 'fYear', 'fInView'].forEach((id) => $(id).addEventListener('change', () => {
+    apply();
+    track('filter/' + id.replace(/^f/, '').toLowerCase(), 'Used filter: ' + id.replace(/^f/, ''));
+  }));
+  let searched = false;
+  $('q').addEventListener('change', () => { if (!searched && $('q').value.trim()) { searched = true; track('search', 'Searched'); } });
   $('fBoard').addEventListener('click', (e) => {
     const b = e.target.closest('button[data-v]');
     if (!b) return;
     board = b.dataset.v;
+    track('filter/board', 'Used filter: board');
     for (const x of $('fBoard').querySelectorAll('button')) x.setAttribute('aria-checked', String(x === b));
     fillKinds();
     apply();
@@ -528,6 +546,11 @@
   $('detail').addEventListener('click', (e) => {
     const b = e.target.closest('button[data-excerpt]');
     if (b) toggleExcerpt(b);
+    const a = e.target.closest('a[href]');
+    if (a) {
+      if (/DocumentCenter/.test(a.href)) track('doc/' + (a.textContent.trim().split(' (')[0].toLowerCase().replace(/\s+\d+$/, '').replace(/\s+/g, '-') || 'document'), 'Opened ' + a.textContent.trim());
+      else if (/#page=/.test(a.href)) track('pdf', 'Opened minutes PDF');
+    }
   });
   $('back').addEventListener('click', closeDetail);
   document.addEventListener('keydown', (e) => {
