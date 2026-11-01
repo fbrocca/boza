@@ -538,7 +538,7 @@
   });
 
   // ---------- Desktop: collapse the list so the map goes full screen ----------
-  // First visit starts map-only; after that the last choice is remembered (per browser).
+  // List and map start side by side; if the visitor collapses the list, that choice is remembered (per browser).
   const PANE_KEY = 'boza.pane';
   const store = { get() { try { return localStorage.getItem(PANE_KEY); } catch (e) { return null; } },
                   set(v) { try { localStorage.setItem(PANE_KEY, v); } catch (e) { /* storage optional */ } } };
@@ -556,7 +556,7 @@
     }, 60);
   }
   const savedPane = store.get();
-  setPane(savedPane === 'open', { remember: false });
+  setPane(savedPane !== 'closed', { remember: false });
   $('paneHide').addEventListener('click', () => { setPane(false); track('pane/hide', 'Hid list (full map)'); });
   $('paneShow').addEventListener('click', () => { setPane(true); track('pane/show', 'Showed list'); });
   const paneOpenIfClosed = () => { if (document.body.classList.contains('pane-closed')) setPane(true); };
