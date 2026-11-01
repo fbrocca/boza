@@ -268,3 +268,24 @@ a { color: inherit; text-underline-offset: 3px; }
 .leaflet-container.drawing { cursor: crosshair; touch-action: none; }
 .leaflet-container.drawing .leaflet-marker-pane,
 .leaflet-container.drawing .leaflet-popup-pane { pointer-events: none; }
+
+/* Alerts (demand test) + shadcn Dialog / Input / Label */
+.topbar-right { display: flex; align-items: center; gap: 14px; }
+.alerts-inline { margin: 4px 0 14px; }
+.dialog { width: min(440px, calc(100vw - 32px)); padding: 24px; border: 1px solid var(--border); color: var(--foreground); box-shadow: var(--shadow-lg); }
+.dialog::backdrop { background: rgb(0 0 0 / .5); }
+.dialog h2 { margin: 6px 0 6px; font-size: 18px; letter-spacing: -.01em; }
+.dialog p { margin: 0 0 12px; }
+.dialog-close { position: absolute; right: 10px; top: 10px; }
+.dialog-icon { width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; background: var(--muted); font-weight: 700; }
+.dialog-form { display: grid; gap: 8px; margin-top: 4px; }
+.label { font-size: 14px; font-weight: 500; }
+.input { height: 38px; padding: 0 12px; border-radius: var(--radius); border: 1px solid var(--input); background: transparent; color: var(--foreground); font: inherit; box-shadow: var(--shadow-xs); }
+.input:focus-visible { outline: 2px solid var(--ring); outline-offset: 0; }
+@media (max-width: 760px) {
+  .topbar { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .topbar-right { display: flex; }
+  #stats { display: none; }
+  .alerts-btn span { display: none; }
+  .alerts-btn { width: 36px; padding: 0; height: 36px; border-radius: 999px; }
+}

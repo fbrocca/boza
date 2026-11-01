@@ -422,6 +422,7 @@
         <span class="badge badge-outline">${p.cases.length} ${p.cases.length === 1 ? 'case' : 'cases'}</span>
         ${p.lat ? `<a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}" target="_blank" rel="noopener">${ICON.ext}Google Maps</a>` : ''}
       </div>
+      <button class="btn btn-outline btn-sm alerts-inline" type="button" data-alerts="property" data-addr="${esc(p.address)}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alert me about new cases near here</button>
       ${p.geo ? `<p class="geo-note">${esc(GEO_LABEL[p.geo] || p.geo)}</p>` : ''}
       ${p.lat ? '' : '<p class="unmapped">This location could not be placed on the map: the minutes give no street number, or the parcel number has since been retired.</p>'}
       ${p.cases.map((c) => caseCard(c, term)).join('')}`;
@@ -553,6 +554,28 @@
     }
   });
   $('back').addEventListener('click', closeDetail);
+
+  // ---------- Alerts: demand test ("fake door"). Nothing typed is stored or sent. ----------
+  const dlg = $('alertsDlg');
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-alerts]');
+    if (!b) return;
+    $('alertsAsk').hidden = false;
+    $('alertsThanks').hidden = true;
+    $('alertsAddr').value = b.dataset.addr || '';
+    track('alerts/open-' + b.dataset.alerts, 'Opened alerts (' + b.dataset.alerts + ')');
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+    setTimeout(() => $('alertsAddr').focus(), 30);
+  });
+  $('alertsForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!$('alertsAddr').value.trim()) return;
+    track('alerts/continue', 'Entered an address for alerts');
+    $('alertsAddr').value = '';
+    $('alertsAsk').hidden = true;
+    $('alertsThanks').hidden = false;
+  });
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });  // click on backdrop
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (drawing) stopDrawing();

@@ -25,6 +25,7 @@
   </label>
   <div class="topbar-right">
     <span class="muted small" id="stats">Loading&hellip;</span>
+    <button class="btn btn-outline btn-sm alerts-btn" type="button" data-alerts="topbar"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Get alerts</span></button>
   </div>
 </header>
 
@@ -78,6 +79,27 @@
     <details class="legend card" id="legend"></details>
   </section>
 </div>
+
+<dialog class="dialog card" id="alertsDlg" aria-labelledby="alertsTitle">
+  <form method="dialog" class="dialog-close"><button class="btn btn-ghost btn-sm" aria-label="Close">✕</button></form>
+  <div id="alertsAsk">
+    <div class="dialog-icon"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h2 id="alertsTitle">Get zoning alerts near you</h2>
+    <p class="muted">Get an email when a new zoning case (variance, rezoning, subdivision) is filed within 500&nbsp;ft of your property, before the hearing, so you have time to weigh in.</p>
+    <form id="alertsForm" class="dialog-form">
+      <label for="alertsAddr" class="label">Your address</label>
+      <input class="input" id="alertsAddr" type="text" placeholder="e.g. 100 Ann Edwards Lane" autocomplete="off" required>
+      <button class="btn btn-primary" type="submit">Continue</button>
+    </form>
+  </div>
+  <div id="alertsThanks" hidden>
+    <div class="dialog-icon">✓</div>
+    <h2>Thanks for your interest</h2>
+    <p>Alerts aren't live yet. We're checking whether people want this before building it, and your click counts as a vote.</p>
+    <p class="muted small">Nothing you typed was saved or sent anywhere.</p>
+    <form method="dialog"><button class="btn btn-primary" style="width:100%">Back to the map</button></form>
+  </div>
+</dialog>
 
 <button class="btn btn-primary map-toggle" id="mapToggle" type="button" aria-pressed="false">
   <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
