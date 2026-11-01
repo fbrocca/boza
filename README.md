@@ -37,6 +37,16 @@ application, each point backed by counts from `data/case-facts.json` and links t
 real cases and their application documents. Nothing is scored or predicted, and
 nothing entered is stored.
 
+The "What the current code requires" panel reads `data/code-standards.json`,
+transcribed by hand from Zoning Code Chapter 156 as rewritten in 2025 (adopted
+1-14-25, effective 5-1-25, amendments through 4-17-26): district lot, setback,
+coverage, height and density standards; accessory building limits (§ 156.424);
+NP-OD and OV-HD overlay rules (§ 156.203, § 156.218); and the 20% setback
+reduction for nonconforming lots (§ 156.1525). It compares the user's request to
+the requirement and flags when most comparables were decided under the old code.
+PD and some special districts are not tabulated. Update the JSON when the code
+is amended.
+
 ## What's here
 
 | Path | What |

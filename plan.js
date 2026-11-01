@@ -162,6 +162,92 @@
     return `<svg viewBox="${x0.toFixed(1)} ${y0.toFixed(1)} ${W} ${H}" preserveAspectRatio="xMidYMid slice">${imgs}${shape}</svg>`;
   }
 
+  // ---------- current code (Chapter 156, effective May 1, 2025) ----------
+  let code = null;
+  async function loadCode() {
+    if (!code) code = await (await fetch('data/code-standards.json')).json();
+    return code;
+  }
+  const RELIEF_KEY = { front_setback: 'front', side_setback: 'side', rear_setback: 'rear', height: 'height', lot_coverage_or_bar: 'coverage', accessory_structure: 'accessory' };
+  const ft = (v) => (typeof v === 'number' ? `${v} ft` : esc(v));
+  const sf = (v) => `${Math.round(v).toLocaleString('en-US')} sq ft`;
+  const sec = (s) => `<span class="muted">§ ${esc(s)}</span>`;
+
+  function codeSection(lot, z, relief, size, std) {
+    const raw = z.zoning[0] || '';
+    const key = std.aliases[raw] || raw;
+    const d = std.districts[key];
+    const ov = Object.fromEntries(z.overlays.map((o) => [o.name, o.label || true]));
+    const want = RELIEF_KEY[relief];
+    const lotSf = lot.acres ? lot.acres * 43560 : null;
+    const notes = [];
+    if (!d) {
+      const msg = std.not_tabulated[key] || std.not_tabulated.default;
+      return `<section class="card block">
+        <h2>What the current code requires</h2>
+        <p>${esc(msg)}</p>
+        ${z.height ? `<p class="hint">Building Height Plan Map for this lot: ${esc(z.height)}.</p>` : ''}
+      </section>`;
+    }
+    const row = (k, label, val, s) => `<tr class="${k === want ? 'hl' : ''}"><th>${label}</th><td>${val}</td><td>${s || sec(d.sec)}</td></tr>`;
+    const rows = [];
+    if (d.lot_area_sf) rows.push(row('lot', 'Minimum lot area', `${sf(d.lot_area_sf)}${lotSf ? ` <span class="muted">(this lot ≈ ${sf(lotSf)})</span>` : ''}`));
+    if (d.lot_width) rows.push(row('width', 'Minimum lot width', ft(d.lot_width)));
+    rows.push(row('front', 'Front setback', ft(d.front)));
+    rows.push(row('side', 'Side setback', `${ft(d.side)}${d.side_combined ? `, ${d.side_combined} ft both sides combined` : ''}${d.side_corner ? `, ${d.side_corner} ft on a corner side` : ''}`));
+    rows.push(row('rear', 'Rear setback', ft(d.rear)));
+    if (d.coverage_pct) rows.push(row('coverage', 'Building coverage (max)', `${d.coverage_pct}%${lotSf ? ` <span class="muted">(≈ ${sf(lotSf * d.coverage_pct / 100)} here)</span>` : ''}`));
+    if (d.coverage_sf) rows.push(row('coverage', 'Building coverage (max)', sf(d.coverage_sf)));
+    if (d.gfa_max_sf) rows.push(row('gfa', 'Building floor area (max)', sf(d.gfa_max_sf)));
+    rows.push(row('height', 'Height (max)', `${d.height} ft, ${d.height_sfha} ft in a flood zone${z.height ? `<br><span class="muted">Building Height Plan Map for this lot: ${esc(z.height)}. The map governs where it differs.</span>` : ''}`));
+    if (d.density) rows.push(row('density', 'Density (max)', esc(d.density)));
+    const a = std.accessory;
+    rows.push(row('accessory', 'Accessory building', `${a.side} ft side, ${a.rear} ft rear, ${a.height} ft tall${d.acc_footprint ? `, ${sf(d.acc_footprint)} footprint` : ', no footprint cap if coverage is met'}`, sec(a.sec)));
+
+    // Overlays that change the numbers above.
+    const np = ov['NP-OD'];
+    const resi = /^(R-[1-4]|RR|CC|TH|RM|RC-[12])$/.test(key);
+    if (np && !resi) {
+      notes.push(`<b>Neighborhood Preservation Overlay (${esc(np === true ? 'NP-OD' : np)})</b> ${sec(std.np_od.sec)}: its house-size rules (2½ stories${np === 'Old Mount Pleasant' ? ', building area ratio up to 50% of the lot, max 5,500 sq ft, 40% impervious' : ''}) are written for residential districts. They don't bind this ${esc(key)} lot today, but would apply if it were rezoned residential.`);
+    } else if (np) {
+      const porch = std.np_od.porch_front[np]?.[key];
+      notes.push(`<b>Neighborhood Preservation Overlay (${esc(np === true ? 'NP-OD' : np)})</b> ${sec(std.np_od.sec)}: houses are limited to 2½ stories.${porch ? ` Unenclosed porches, stoops and balconies may come to <b>${porch} ft</b> from the front line; the rest of the house keeps the ${ft(d.front)} setback.` : ''}${np === 'Old Mount Pleasant' ? ` Building area ratio (house plus accessory buildings over 144 sq ft, garage counted) up to 50% of the lot${lotSf ? ` (≈ ${sf(Math.min(5500, Math.max(lotSf * 0.5, ['R-1', 'R-2'].includes(key) ? 2500 : 1800)))} here)` : ''}, never above 5,500 sq ft; impervious surface up to 40%; any part of an accessory building over 18 ft needs 10 ft side and rear setbacks.` : ''} Nonconforming lots here don't get the 20% front setback reduction.`);
+    }
+    if (ov['OV-HD']) {
+      notes.push(`<b>Old Village Historic District</b> ${sec('156.218')}: principal-building setbacks are set by the Historic District Preservation Commission during its review, based on the pattern of historic buildings nearby. <b>For a setback on the house, ask staff whether this goes to the HDPC rather than the Board of Zoning Appeals.</b> Also: 60 ft street frontage, impervious surface up to 40%, building area ratio up to 50%${lotSf ? ` (≈ ${sf(Math.min(5500, Math.max(lotSf * 0.5, 2500)))} here)` : ''} with at least 10% of it porches, max 5,500 sq ft. Accessory buildings: 10 ft side and rear (the HDPC cannot reduce these), at most 29 ft or the height of the house, behind the house.`);
+    }
+
+    // Nonconforming lot: up to 20% setback reduction without a variance.
+    const small = lotSf && d.lot_area_sf && lotSf < d.lot_area_sf * 0.98;
+    const isSetback = ['front', 'side', 'rear'].includes(want) || relief === 'multiple_setbacks';
+    if (small) {
+      notes.push(`<b>This lot looks smaller than the district minimum</b> (≈ ${sf(lotSf)} vs ${sf(d.lot_area_sf)}, from county GIS acreage). If it is a legal nonconforming lot, its setbacks may be reduced by up to 20% <b>without a variance</b> ${sec('156.1525')}. A variance is needed only beyond that.${ov['NP-OD'] ? ' In the NP-OD the front setback is excluded.' : ''}`);
+    }
+
+    // Requested vs required.
+    let cmp = '';
+    if (isSetback && want && typeof d[want] === 'number' && size.ask && size.unit === 'ft') {
+      const reqd = d[want], left = Math.max(0, reqd - size.ask), pct = Math.round(100 * size.ask / reqd);
+      cmp = `<div class="callout">You'd build <b>${size.ask} ft</b> into the <b>${reqd} ft</b> ${want} setback, leaving ${left} ft: a ${pct}% reduction.`;
+      if (size.req && size.req !== reqd) cmp += ` You entered a ${size.req} ft requirement; the current table says ${reqd} ft. Check which applies (a recorded plat, PD or overlay can differ).`;
+      if (small && pct <= std.nonconforming_reduction_pct && !(want === 'front' && ov['NP-OD'])) cmp += ` <b>That's within the 20% a nonconforming lot may use without a variance.</b> Ask the Zoning Administrator before applying.`;
+      cmp += '</div>';
+    } else if (want === 'height' && size.ask && size.unit === 'ft') {
+      cmp = `<div class="callout">You'd exceed the ${d.height} ft limit by <b>${size.ask} ft</b> (${Math.round(100 * size.ask / d.height)}%). In a flood zone the limit is ${d.height_sfha} ft${z.height ? '; check the Building Height Plan Map value above' : ''}.</div>`;
+    } else if (want === 'coverage' && size.ask && size.unit === '%' && d.coverage_pct) {
+      cmp = `<div class="callout">Coverage limit is ${d.coverage_pct}%. You entered ${size.ask}%${size.req ? ` of a ${size.req}% requirement` : ''}; confirm whether that's the amount over the limit or the total.</div>`;
+    }
+
+    return `<section class="card block">
+      <h2>What the current code requires</h2>
+      <p class="muted">${esc(key)} district, Zoning Code Chapter 156 as rewritten in 2025 (effective May 1, 2025).${z.zoning.length > 1 ? ` This lot is split-zoned (${esc(z.zoning.join(' / '))}); showing ${esc(key)}.` : ''}${d.dwelling ? ` Figures for a ${esc(d.dwelling)}.` : ''}${d.extra ? ' ' + esc(d.extra) : ''}</p>
+      ${cmp}
+      <table class="code-table"><tbody>${rows.join('')}</tbody></table>
+      ${notes.map((n) => `<p class="callout">${n}</p>`).join('')}
+      <p class="hint">Transcribed from the code; the Town's reading governs. A denied variance can't be refiled for 12 months unless the Board finds changed facts (§ 156.1298). A rezoning Council denies can't be refiled on the same parcel for 12 months unless Council accepts a petition showing conditions changed (§ 156.1163).</p>
+    </section>`;
+  }
+
   // ---------- sections ----------
   function lotSection(lot, z, here, near) {
     const zz = z.zoning.length ? z.zoning.join(' / ') : 'not found';
@@ -256,6 +342,7 @@
         <div class="stat"><b>${rl.pct ?? '–'}%</b><span>within ~1¼ mi: ${rl.txt} ${smallN(rl)}</span></div>
         <div class="stat"><b>${rr.pct ?? '–'}%</b><span>since 2021: ${rr.txt} ${smallN(rr)}</span></div>
       </div>
+      ${(() => { const old = decided.filter((x) => x.c.date < '2025-05-01').length; return old ? `<p class="hint">${old} of these ${decided.length} decisions came before the current zoning code took effect (May 1, 2025). They were judged against the old dimensional rules; compare what was asked to today's requirement above, not to the old one.</p>` : ''; })()}
       <h3>Most similar past cases</h3>
       <ul class="comps">${top.map((x) => {
         const docs = (x.c.events || []).flatMap((e) => e.docs || []).filter((d) => !d.all && /Application|Staff report/.test(d.t)).slice(0, 2);
@@ -367,7 +454,7 @@
     $('go').disabled = true;
     track('plan/submit', 'Plan: ' + relief);
     try {
-      const rows = await loadCases();
+      const [rows, std] = await Promise.all([loadCases(), loadCode()]);
       const lot = await findLot(addr, rows);
       if (!lot) {
         $('out').innerHTML = '<div class="card block"><h2>Address not found</h2><p>Try the street number and name only (e.g. "100 Ann Edwards Lane"), or enter the parcel number (TMS, e.g. 532-01-00-147). Only Mount Pleasant properties can be looked up.</p></div>';
@@ -389,7 +476,7 @@
       const comps = isUse || relief === 'lot_size_density_subdivision'
         ? pool.map((x) => ({ ...x, dist: distM(lot, x.p), score: 0 })).sort((a, b) => a.dist - b.dist)
         : pickComparables(pool, lot, z, relief, userPct);
-      $('out').innerHTML = lotSection(lot, z, here, near) + pathSection(relief, z, stats) + compSection(comps, relief, isUse || relief === 'lot_size_density_subdivision') +
+      $('out').innerHTML = lotSection(lot, z, here, near) + codeSection(lot, z, relief, { ask, req, unit: $('sizeUnit').value }, std) + pathSection(relief, z, stats) + compSection(comps, relief, isUse || relief === 'lot_size_density_subdivision') +
         `<section class="card block"><h2>How to strengthen your application</h2>
           <p class="muted">Patterns from past Mount Pleasant cases, not a prediction. Each line shows how many cases it rests on.</p>
           <ol class="tips">${isUse || relief === 'lot_size_density_subdivision' ? rezoningTips(R, z, near) : varianceTips(V, comps, relief, userPct, near)}</ol>

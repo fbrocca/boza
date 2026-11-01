@@ -63,3 +63,12 @@ select.input { height: 38px; }
   .lot { grid-template-columns: 1fr; }
   .topbar { grid-template-columns: auto 1fr auto; }
 }
+
+.code-table { width: 100%; border-collapse: collapse; margin: 12px 0 4px; font-size: 14px; }
+.code-table th { text-align: left; font-weight: 500; color: var(--muted-foreground); padding: 7px 12px 7px 0; width: 34%; vertical-align: top; }
+.code-table td { padding: 7px 8px 7px 0; vertical-align: top; }
+.code-table td:last-child { font-size: 12px; white-space: nowrap; text-align: right; }
+.code-table tr + tr { border-top: 1px solid var(--border); }
+.code-table tr.hl { background: var(--pending-bg); }
+.code-table tr.hl th { color: var(--foreground); font-weight: 600; }
+@media (max-width: 760px) { .code-table td:last-child { display: none; } .code-table th { width: 42%; } }
