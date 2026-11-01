@@ -77,6 +77,8 @@
   </section>
 
   <section class="mapwrap" aria-label="Map">
+    <button class="btn btn-outline btn-sm pane-btn" id="paneHide" type="button" aria-controls="pane" title="Hide the list and show the map full screen"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m15 18-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full map</span></button>
+    <button class="btn btn-primary btn-sm pane-btn" id="paneShow" type="button" aria-controls="pane" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="paneShowTxt">Show list</span></button>
     <div id="map"></div>
     <details class="legend card" id="legend"></details>
   </section>
