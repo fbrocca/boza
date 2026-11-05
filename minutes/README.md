@@ -1,6 +1,6 @@
 # Board of Zoning Appeals minutes
 
-104 sets of minutes from the Town of Mount Pleasant, SC [Agenda Center](https://sc-mountpleasant2.civicplus.com/AgendaCenter), 2017 to 2026. Updated 2026-10-31.
+104 sets of minutes from the Town of Mount Pleasant, SC [Agenda Center](https://sc-mountpleasant2.civicplus.com/AgendaCenter), 2017 to 2026. Updated 2026-11-05.
 
 Files are named by meeting date. Machine-readable index: [`index.csv`](index.csv). Canceled meetings have no minutes.
 
