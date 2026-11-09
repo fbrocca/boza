@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03",
+ "updated": "2026-11-09",
  "meetings": [
   {
    "body": "hdpc",
@@ -118,6 +118,28 @@
      "status": null,
      "lat": 32.788247,
      "lng": -79.884835
+    }
+   ]
+  },
+  {
+   "body": "council",
+   "label": "Town Council",
+   "date": "2026-11-10",
+   "time": "6:00pm",
+   "agenda": "https://sc-mountpleasant2.civicplus.com/AgendaCenter/ViewFile/Agenda/_11102026-2295",
+   "title": "Tuesday, November 10, 2026 Town Council Meeting Amended Agenda",
+   "deadline": null,
+   "email": null,
+   "public_comment": true,
+   "items": [
+    {
+     "case": null,
+     "tms": null,
+     "title": "Consent Agenda Items A. Final Reading: An Ordinance providing for the annexation of a 1.95-acre parcel located at 663 Faulkner Drive, depicted on a plat recorded by the Charleston County ROD Office in Plat Book ED, Page 46. (Ord. No. 26055) Planning Committee recommended approval. B. Final Reading: An Ordinance providing for the annexation of a 0.84-acre parcel located at 1268 Porchers Bluff Road, depicted on a plat recorded by the Charleston County ROD Office in Plat Book DA, Page 118. (Ord. No. 26057) Planning Committee recommended approval.",
+     "address": null,
+     "kind": "Ordinance",
+     "request": "",
+     "status": null
     }
    ]
   }
