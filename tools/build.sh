@@ -22,5 +22,6 @@ if [[ "${1:-}" == "--geocode" ]]; then
   python3 -I "$here/parcels.py" "$data/parcels.json" "$data/cases.json" "$data/planning.json" "$data/design.json"
   python3 -I "$here/geocode.py" "$data/geocode-cache.json" "$data/cases.json" "$data/planning.json" "$data/design.json"
   python3 -I "$here/zoning.py" "$data/zoning.json" "$data/parcels.json"
+  python3 -I "$here/sales.py" "$data/sales.json" "$data/parcels.json" || echo "sales lookup failed; using the previous data/sales.json"
 fi
 python3 -I "$here/build_data.py" "$data"

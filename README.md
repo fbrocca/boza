@@ -51,6 +51,19 @@ outcome, cases by type, a map, and recent decisions. `tools/hood_pages.py` write
 one static page per neighborhood at deploy (`n/<slug>/`), so shared links preview
 with the neighborhood's name.
 
+## Sales (`tools/sales.py`)
+
+The most recent recorded transfer and the county appraisal for each parcel, from
+Charleston County's ProVal parcel map service (assessor's table joined to
+parcels): price, sale and recorded dates, deed book-page, land / building /
+total appraisal, property class. Owner names and mailing addresses in the same
+table are not kept. Transfers under $1,000 (trusts, family, correction deeds)
+are flagged nominal and never shown as a price. Refreshed in full by
+`tools/build.sh --geocode`. Property pages show "Last sold"; the Plan page
+queries the same service live for sales within ¼ mile in the last 3 years, same
+property class. Only the latest transfer per parcel is in this service; the
+county's record-card site has history back to 1991 (not used yet).
+
 ## Report an error, calendar, how to comment (`shared.js`)
 
 Property and neighborhood pages have a "Report an error" form. There is no

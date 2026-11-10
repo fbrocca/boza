@@ -269,6 +269,7 @@ def main(out_dir):
     cases = boza_cases(hearings, town) + planning_cases(planning) + design_cases(design)
     facts = load(os.path.join(out_dir, "case-facts.json"), {})
     zoning = load(os.path.join(out_dir, "zoning.json"), {})
+    sales = load(os.path.join(out_dir, "sales.json"), {})
     boza_facts = collections.defaultdict(list)
     for k, v in facts.items():
         if k.startswith("boza:"):
@@ -326,6 +327,9 @@ def main(out_dir):
         z = zoning.get(p["tms"]) if p["tms"] else None
         if z:
             p["zoning"] = {k: v for k, v in z.items() if v not in (None, [], False, "")}
+        sale = sales.get(p["tms"]) if p["tms"] else None
+        if sale:  # last recorded transfer + county appraisal (tools/sales.py)
+            p["sale"] = {k: sale[k] for k in ("price", "date", "deed", "land", "building", "appraisal", "nominal") if k in sale}
         for c in p["cases"]:
             c.pop("tms"), c.pop("address")
             c["events"].sort(key=lambda e: e["date"])
