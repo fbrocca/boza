@@ -421,8 +421,23 @@
       ? `Last transfer ${when}, no market price recorded`
       : `Last sold <b>${money(s.price)}</b> in ${when}`;
     const appr = s.appraisal ? ` · County appraisal ${money(s.appraisal)}${s.building ? ` (land ${money(s.land)})` : ''}` : '';
+    // A market sale within 3 years after an approval on this lot: state the timing, nothing more.
+    let timing = '';
+    if (!s.nominal && s.price) {
+      const ok = /^(Approved|Approved with conditions|Adopted by Council|Reversed)$/;
+      const prior = p.cases.filter((c) => ok.test(c.status) && c.kind !== 'Staff approval' && c.date < s.date)
+        .sort((a, b) => (a.date < b.date ? 1 : -1))[0];
+      if (prior) {
+        const m = (+s.date.slice(0, 4) - +prior.date.slice(0, 4)) * 12 + (+s.date.slice(5, 7) - +prior.date.slice(5, 7));
+        const verb = prior.status === 'Adopted by Council' ? 'adopted' : 'approved';
+        const mon = new Date(prior.date + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+        if (m <= 36) timing = `<br><span class="muted">Sold ${m <= 0 ? 'the same month' : `${m} month${m === 1 ? '' : 's'}`} after the ${esc(prior.kind.toLowerCase())}${prior.case ? ' (' + esc(prior.case) + ')' : ''} was ${verb} in ${mon}.</span>`;
+      }
+    }
+    const earlier = (s.earlier || []).filter((h) => h[1] >= 1000)
+      .map((h) => `${new Date(h[0] + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short' })} ${money(h[1])}`);
     return `<p class="sale-line">${sold}${s.deed ? ` <span class="muted">· deed ${esc(s.deed)}</span>` : ''}${appr}
-      <span class="muted small sale-info" title="Charleston County records. The appraisal is the county's value for property tax, not a market estimate. Only the most recent transfer is published.">ⓘ</span></p>`;
+      <span class="muted small sale-info" title="Charleston County records. The appraisal is the county's value for property tax, not a market estimate. Earlier sales appear as they are recorded, from November 2026.">ⓘ</span>${timing}${earlier.length ? `<br><span class="muted">Earlier sales recorded: ${earlier.join(' · ')}</span>` : ''}</p>`;
   }
 
   function zoningHtml(p) {

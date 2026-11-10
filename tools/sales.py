@@ -50,6 +50,10 @@ def day(ms):
 def main(out_path, parcels_path):
     tms = sorted(t for t, v in json.load(open(parcels_path)).items() if v)
     out, failed = {}, 0
+    try:  # every transfer seen on earlier runs, so a history builds up month by month
+        prev = json.load(open(out_path))
+    except (OSError, ValueError):
+        prev = {}
     for i in range(0, len(tms), 80):
         pids = [t.replace("-", "") for t in tms[i:i + 80]]
         feats = get({"where": QUAL["PID"] + " IN (" + ",".join(f"'{p}'" for p in pids) + ")",
@@ -71,9 +75,15 @@ def main(out_path, parcels_path):
                 "class": (a.get("CLASS_CODE") or "").strip() or None,
             }
             rec["nominal"] = rec["price"] is not None and rec["price"] < NOMINAL
+            seen = {tuple(h) for h in prev.get(t, {}).get("history", [])}
+            if rec["date"]:
+                seen.add((rec["date"], rec["price"], rec["deed"]))
+            rec["history"] = sorted([list(h) for h in seen], key=lambda h: h[0])
             out[t] = {k: v for k, v in rec.items() if v not in (None, "")}
     if failed and not out:
         sys.exit("sales: county service unavailable; keeping the previous file")
+    for t, v in prev.items():  # parcels not returned this run keep what we had
+        out.setdefault(t, v)
     json.dump(dict(sorted(out.items())), open(out_path, "w"), indent=1)
     market = sum(1 for v in out.values() if v.get("price") and not v.get("nominal"))
     print(f"sales: {len(out)}/{len(tms)} parcels; {market} with a market price; {failed} not looked up")

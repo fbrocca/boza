@@ -63,6 +63,21 @@ def is_street(s):
     return bool(s) and bool(re.match(r"^[1-9]\d*", s))
 
 
+JUNK_NAME = re.compile(r"^\W*(summary|request|staff report|agenda item)\b|\(TMS\b", re.I)
+
+
+def name_from_request(req):
+    """A readable name for a parcel with no street address, from its request text:
+    "Summary: Request to Amend Carolina Park PD, ..." -> "Carolina Park PD"."""
+    r = re.sub(r"^\W*summary:\s*", "", req or "", flags=re.I)
+    r = re.sub(r"^request to (?:amend|rezone|annex|create)\s+(?:the\s+)?", "", r, flags=re.I)
+    m = re.search(r"\b((?:[A-Z][\w'&.]*\s+){1,5}PD)\b", r)
+    if m:
+        return m.group(1).strip()
+    first = re.split(r"[,.;:]", r, maxsplit=1)[0].strip()
+    return first[:60] if first and not re.match(r"(?i)request\b", first) else ""
+
+
 def clean_request(req, case):
     """Drop the case number, TMS list and 'PUBLIC HEARING' that repeat the card header."""
     req = re.sub(r"\b(?:R|SP)\s?-\s?\d{1,3}\s?-\s?\d{2,4}\b[\s.,:—–-]*", "", req)
@@ -306,10 +321,15 @@ def main(out_dir):
     texts = {}
     out = []
     for p in props.values():
-        names = [n for n, _ in p.pop("names").most_common()]
+        # Labels lifted from the minutes can be headings ("Summary", "Request for one year
+        # extension of ... (TMS 556"): never use those as a name.
+        names = [n for n, _ in p.pop("names").most_common() if not JUNK_NAME.search(n)]
         street = next((n for n in names if is_street(n)), None)
         par = parcels.get(p["tms"]) if p["tms"] else None
         rev = re.sub(r"^0+\s+", "", (par or {}).get("address") or "")
+        if not names and not street and not rev:
+            n = next((x for x in (name_from_request(c.get("request")) for c in p["cases"]) if x), "")
+            names = [n] if n else []
         p["address"] = street or rev or (names[0] if names else "") or f"TMS {p['tms']}"
         if names and names[0] != p["address"] and not is_street(names[0]):
             p["name"] = names[0]
@@ -330,6 +350,9 @@ def main(out_dir):
         sale = sales.get(p["tms"]) if p["tms"] else None
         if sale:  # last recorded transfer + county appraisal (tools/sales.py)
             p["sale"] = {k: sale[k] for k in ("price", "date", "deed", "land", "building", "appraisal", "nominal") if k in sale}
+            earlier = [h for h in sale.get("history", []) if h[0] != sale.get("date")]
+            if earlier:  # transfers seen on earlier monthly runs
+                p["sale"]["earlier"] = earlier
         for c in p["cases"]:
             c.pop("tms"), c.pop("address")
             c["events"].sort(key=lambda e: e["date"])

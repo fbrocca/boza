@@ -61,8 +61,13 @@ table are not kept. Transfers under $1,000 (trusts, family, correction deeds)
 are flagged nominal and never shown as a price. Refreshed in full by
 `tools/build.sh --geocode`. Property pages show "Last sold"; the Plan page
 queries the same service live for sales within ¼ mile in the last 3 years, same
-property class. Only the latest transfer per parcel is in this service; the
-county's record-card site has history back to 1991 (not used yet).
+property class. Only the latest transfer per parcel is in this service, so each
+monthly run adds what it sees to a per-parcel `history`: a sales history builds
+up from November 2026. Property pages note when a market sale followed an
+approval on the lot within 3 years. The county Auditor's record-card site has
+transfers for 1991 to October 2011 only (not used: no zoning cases that early);
+the county public-access portal, which covers later years, disallows automated
+access by Claude in its robots.txt and is not used.
 
 ## Report an error, calendar, how to comment (`shared.js`)
 
