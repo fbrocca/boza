@@ -51,7 +51,7 @@ BOILER = re.compile(r"^(call to order|roll call|approval of|public comment|gener
 NOISE = re.compile(r"^(staff\s*report|public correspondence|correspondence|extension request|"
                    r"consent motion approved|approved|denied|deferred|withdrawn( by staff)?)$", re.I)
 STATUS = re.compile(r"\b(WITHDRAWN(?: BY STAFF)?|REQUEST FOR DEFERRAL|DEFERRED)\b", re.I)
-ZONING = re.compile(r"zoning|rezon|planned development|\bPD\b|annex|sketch plan|land use|chapter 156|"
+ZONING = re.compile(r"zoning|\bzone\b|rezon|planned development|\bPD\b|annex|sketch plan|land use|chapter 156|"
                     r"subdivision|density|\b[RV]-\d{1,3}-\d{2}", re.I)
 TIME = re.compile(r"\b(\d{1,2}:\d{2}\s*[ap]\.?\s*m\.?)", re.I)
 DEADLINE = re.compile(r"(?:no later than|received after)\s+(?:the end of business,?\s*)?(?:[\d:]+\s*[AP]\.?M\.?,?\s*)?"
@@ -92,8 +92,12 @@ def clean(s):
     return re.sub(r"\s+", " ", s.replace("ﬀ", "ff").replace("ﬁ", "fi").replace("ﬂ", "fl")).strip(" ,–-")
 
 
-def blocks(text):
-    """Split the agenda into numbered / lettered items, remembering the lettered section each sits in."""
+SUBMARK = re.compile(r"^\s*(?:([A-Z])\.|\((\d{1,2})\))\s+(\S.*)$")  # Council: "A. Final Reading", "(1) First Reading"
+
+
+def blocks(text, nested=False):
+    """Split the agenda into numbered / lettered items, remembering the lettered section each sits in.
+    nested=True (Council and committee agendas): capital letters and (1) mark items, not sections."""
     out, cur, sect = [], None, ""
     for ln in text.splitlines():
         if STOP.search(ln):
@@ -102,6 +106,12 @@ def blocks(text):
             cur = None
             continue
         if not ln.strip() or JUNK.search(ln):
+            continue
+        sm = SUBMARK.match(ln) if nested else None
+        if sm:
+            if cur:
+                out.append(cur)
+            cur = {"section": sect, "lines": [clean(sm.group(3))]}
             continue
         s = SECTION.match(ln)
         if s and not MARK.match(ln):
@@ -239,7 +249,7 @@ def main():
             text = section(full, header)
             if text is None:
                 continue
-            items = [it for it in (parse_item(b, key) for b in blocks(text)) if it]
+            items = [it for it in (parse_item(b, key) for b in blocks(text, nested=key in ("pcom", "council"))) if it]
             if not items:
                 continue
             dl = DEADLINE.search(full)

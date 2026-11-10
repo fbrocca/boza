@@ -24,10 +24,9 @@
     <input id="q" type="search" placeholder="Search address, case no. (R-12-26), TMS" autocomplete="off">
   </label>
   <div class="topbar-right">
-    <span class="muted small" id="stats">Loading&hellip;</span>
-    <a class="btn btn-outline btn-sm plan-btn" href="n/">Neighborhoods</a>
+    <span class="sr" id="stats">Loading&hellip;</span>
     <a class="btn btn-primary btn-sm plan-btn" href="plan.html">Plan a request</a>
-    <button class="btn btn-outline btn-sm alerts-btn" type="button" data-alerts="topbar"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Get alerts</span></button>
+    <button class="btn btn-outline btn-sm alerts-btn icon-only" type="button" data-alerts="topbar" aria-label="Get alerts" title="Get alerts about new cases near you"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Get alerts</span></button>
   </div>
 </header>
 
@@ -35,17 +34,33 @@
   <section class="pane" id="pane" aria-label="Cases">
     <div id="listView">
       <div class="pane-head">
-        <p class="muted small" id="count">&nbsp;</p>
-        <h1>Zoning cases in Mount Pleasant</h1>
-        <p class="hood-nav"><a href="n/">Browse by neighborhood →</a></p>
-        <details class="upcoming card" id="upcoming" aria-label="Coming up at Town meetings" open hidden></details>
+        <h1 class="sr">Zoning cases in Mount Pleasant</h1>
+        <div class="tabs" role="tablist" aria-label="View">
+          <button type="button" role="tab" id="tabSoon" data-tab="soon" aria-selected="false" hidden>Coming up <span class="tab-n" id="soonN"></span></button>
+          <button type="button" role="tab" id="tabCases" data-tab="cases" aria-selected="true">Cases</button>
+          <button type="button" role="tab" id="tabHoods" data-tab="hoods" aria-selected="false">Neighborhoods</button>
+        </div>
+      </div>
+      <div class="tabpanel" id="panelSoon" role="tabpanel" hidden>
+        <div class="upcoming" id="upcoming" hidden></div>
+      </div>
+      <div class="tabpanel" id="panelHoods" role="tabpanel" hidden>
+        <div class="hoods-panel" id="hoodsPanel"><p class="muted">Loading…</p></div>
+      </div>
+      <div class="tabpanel" id="panelCases" role="tabpanel">
+      <div class="cases-head">
         <div class="toggle-group" role="radiogroup" aria-label="Board" id="fBoard">
           <button type="button" role="radio" aria-checked="true" data-v="">All boards</button>
           <button type="button" role="radio" aria-checked="false" data-v="boza">Zoning Appeals</button>
           <button type="button" role="radio" aria-checked="false" data-v="planning">Rezoning &amp; planning</button>
           <button type="button" role="radio" aria-checked="false" data-v="design">Design review</button>
         </div>
-        <div class="pills">
+        <div class="cases-bar">
+          <p class="muted small" id="count">&nbsp;</p>
+          <button type="button" class="btn btn-outline btn-sm filters-btn" id="filtersBtn" aria-expanded="false" aria-controls="filterPanel">
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M3 5h18M6 12h12M10 19h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Filters<span class="tab-n" id="filtersN" hidden></span></button>
+        </div>
+        <div class="pills" id="filterPanel" hidden>
           <label class="pill-select"><span class="sr">Outcome</span>
             <select id="fDecision"><option value="">Outcome</option></select>
           </label>
@@ -56,10 +71,12 @@
             <select id="fYear"><option value="">Year</option></select>
           </label>
           <label class="pill-check"><input type="checkbox" id="fInView"><span>In map area</span></label>
+          <button type="button" class="pill-check pill-btn" id="drawBtn">Draw an area on the map</button>
           <button type="button" class="pill-reset" id="reset" hidden>Clear</button>
         </div>
       </div>
       <ol class="cards" id="results"></ol>
+      </div>
     </div>
 
     <div id="detailView" hidden>

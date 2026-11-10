@@ -33,8 +33,9 @@ Review, and writes `data/upcoming.json`: meeting date and time, comment
 deadline and address where the agenda gives them, and each zoning item (case
 number, address / TMS, request). Committee and Council agendas keep only
 zoning-related items. Items are pinned from our own properties (same case or
-TMS) or the county parcel layer. The map shows a "Coming up" panel above the
-list, blue date pins, and an "On the agenda" note on the property page.
+TMS) or the county parcel layer. The map shows a "Coming up" tab (opened by
+default when agendas are posted), blue date pins, and an "On the agenda" note on
+the property page.
 
 ## Neighborhoods (`n/`)
 
