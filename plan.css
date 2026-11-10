@@ -72,3 +72,7 @@ select.input { height: 38px; }
 .code-table tr.hl { background: var(--pending-bg); }
 .code-table tr.hl th { color: var(--foreground); font-weight: 600; }
 @media (max-width: 760px) { .code-table td:last-child { display: none; } .code-table th { width: 42%; } }
+.sales { width: 100%; border-collapse: collapse; font-size: 14px; margin: 8px 0 10px; }
+.sales th { text-align: left; font-weight: 500; color: var(--muted-foreground); border-bottom: 1px solid var(--border); padding: 5px 6px; }
+.sales td { border-bottom: 1px solid var(--border); padding: 5px 6px; }
+.sales .n { text-align: right; font-variant-numeric: tabular-nums; }

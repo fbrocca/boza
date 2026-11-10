@@ -249,6 +249,49 @@
   }
 
   // ---------- sections ----------
+  // ---------- sales: this lot's last sale and recent sales nearby (Charleston County) ----------
+  const PARCELMAP = `${COUNTY}/ProVal/ParcelMap/MapServer/0/query`;
+  const F = (f) => (f === 'PID' || f === 'ACRES_CAL' ? 'SDE.P_POLY_PARCEL.' : 'SDE.CAMA.') + f;
+  const SALE_FIELDS = ['PID', 'PROP_ST_NO', 'PROP_ST_NAME', 'SALE_PRICE', 'DOC_DATE', 'DEED_BOOK_PAGE', 'ACRES_CAL', 'CLASS_CODE', 'APPRAISAL', 'LAND_APPR', 'IMP_APPR'].map(F).join(',');
+  const NEAR_M = 400, SINCE_YEARS = 3;
+  const flat = (f) => Object.fromEntries(Object.entries(f.attributes).map(([k, v]) => [k.split('.').pop(), typeof v === 'string' ? v.trim() : v]));
+  const titleCase = (s) => String(s || '').toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+  const usd = (v) => (v >= 1e6 ? '$' + (Math.round(v / 1e4) / 100) + 'M' : '$' + Math.round(v).toLocaleString('en-US'));
+  const isoDay = (ms) => new Date(ms).toISOString().slice(0, 10);
+  async function salesNear(lot) {
+    if (!lot.tms) return null;
+    const pid = lot.tms.replace(/-/g, '');
+    const own = (await arc(PARCELMAP, { where: `${F('PID')}='${pid}'`, outFields: SALE_FIELDS, returnGeometry: false })).features.map(flat)[0] || null;
+    const fam = own && own.CLASS_CODE ? own.CLASS_CODE[0] : null; // 1 = residential, 5 = commercial, 9 = vacant/other
+    const since = new Date(); since.setFullYear(since.getFullYear() - SINCE_YEARS);
+    const where = [`${F('SALE_PRICE')} >= 1000`, `${F('DOC_DATE')} >= DATE '${since.toISOString().slice(0, 10)}'`, `${F('PID')} <> '${pid}'`]
+      .concat(fam ? [`${F('CLASS_CODE')} LIKE '${fam}%'`] : []).join(' AND ');
+    const near = (await arc(PARCELMAP, { where, geometry: `${lot.lng},${lot.lat}`, geometryType: 'esriGeometryPoint', inSR: 4326,
+      spatialRel: 'esriSpatialRelIntersects', distance: NEAR_M, units: 'esriSRUnit_Meter', outFields: SALE_FIELDS, returnGeometry: false })).features.map(flat);
+    near.sort((a, b) => b.DOC_DATE - a.DOC_DATE);
+    return { own, near, fam };
+  }
+  function salesSection(s) {
+    if (!s) return '';
+    const o = s.own;
+    const ownLine = !o ? '' : (o.SALE_PRICE >= 1000
+      ? `This lot last sold for <b>${usd(o.SALE_PRICE)}</b> on ${fmtDate(isoDay(o.DOC_DATE))}${o.DEED_BOOK_PAGE ? ` (deed ${esc(o.DEED_BOOK_PAGE)})` : ''}.`
+      : `This lot's last recorded transfer (${o.DOC_DATE ? fmtDate(isoDay(o.DOC_DATE)) : 'date unknown'}) shows no market price.`)
+      + (o && o.APPRAISAL ? ` County appraisal: ${usd(o.APPRAISAL)}${o.IMP_APPR ? ` (land ${usd(o.LAND_APPR)})` : ''}.` : '');
+    const kind = { 1: 'residential', 5: 'commercial', 9: 'vacant or other' }[s.fam] || 'all';
+    const prices = s.near.map((x) => x.SALE_PRICE).sort((a, b) => a - b);
+    const med = median(prices);
+    return `<section class="card block">
+      <h2>What property around here sold for</h2>
+      ${ownLine ? `<p>${ownLine}</p>` : ''}
+      ${s.near.length ? `<p class="muted">${s.near.length} ${kind} ${s.near.length === 1 ? 'sale' : 'sales'} recorded within ¼ mile in the last ${SINCE_YEARS} years; median <b>${usd(med)}</b>${s.near.length < 8 ? ' <span class="small-n">small sample</span>' : ''}.</p>
+      <table class="sales"><tr><th>Address</th><th>Sold</th><th>Date</th><th class="n">Acres</th></tr>
+        ${s.near.slice(0, 10).map((x) => `<tr><td>${esc([x.PROP_ST_NO, titleCase(x.PROP_ST_NAME)].filter(Boolean).join(' ') || 'n/a')}</td><td>${usd(x.SALE_PRICE)}</td><td>${fmtDate(isoDay(x.DOC_DATE))}</td><td class="n">${x.ACRES_CAL ? x.ACRES_CAL.toFixed(2) : ''}</td></tr>`).join('')}
+      </table>` : `<p class="muted">No ${kind} sales with a recorded price within ¼ mile in the last ${SINCE_YEARS} years.</p>`}
+      <p class="hint">Charleston County records: the most recent recorded transfer per parcel, so earlier sales of the same lot aren't shown. Transfers under $1,000 (trusts, family, corrections) are excluded. The appraisal is the county's tax value, not a market estimate. Prices include buildings, so they can't show what a variance or rezoning is worth on its own.</p>
+    </section>`;
+  }
+
   function lotSection(lot, z, here, near) {
     const zz = z.zoning.length ? z.zoning.join(' / ') : 'not found';
     const ov = z.overlays.map((o) => `${esc(o.name)}${o.label ? ' (' + esc(o.label) + ')' : ''}`).join(', ') || 'none';
@@ -460,7 +503,7 @@
         $('out').innerHTML = '<div class="card block"><h2>Address not found</h2><p>Try the street number and name only (e.g. "100 Ann Edwards Lane"), or enter the parcel number (TMS, e.g. 532-01-00-147). Only Mount Pleasant properties can be looked up.</p></div>';
         return;
       }
-      const z = await zoningOf(lot);
+      const [z, sales] = await Promise.all([zoningOf(lot), salesNear(lot).catch(() => null)]);
       const here = rows.filter((x) => lot.tms && x.p.tms === lot.tms);
       const near = rows.filter((x) => x.p.lat && distM(lot, x.p) <= 152 && !(lot.tms && x.p.tms === lot.tms));
       const isUse = relief === 'use';
@@ -476,7 +519,7 @@
       const comps = isUse || relief === 'lot_size_density_subdivision'
         ? pool.map((x) => ({ ...x, dist: distM(lot, x.p), score: 0 })).sort((a, b) => a.dist - b.dist)
         : pickComparables(pool, lot, z, relief, userPct);
-      $('out').innerHTML = lotSection(lot, z, here, near) + codeSection(lot, z, relief, { ask, req, unit: $('sizeUnit').value }, std) + pathSection(relief, z, stats) + compSection(comps, relief, isUse || relief === 'lot_size_density_subdivision') +
+      $('out').innerHTML = lotSection(lot, z, here, near) + salesSection(sales) + codeSection(lot, z, relief, { ask, req, unit: $('sizeUnit').value }, std) + pathSection(relief, z, stats) + compSection(comps, relief, isUse || relief === 'lot_size_density_subdivision') +
         `<section class="card block"><h2>How to strengthen your application</h2>
           <p class="muted">Patterns from past Mount Pleasant cases, not a prediction. Each line shows how many cases it rests on.</p>
           <ol class="tips">${isUse || relief === 'lot_size_density_subdivision' ? rezoningTips(R, z, near) : varianceTips(V, comps, relief, userPct, near)}</ol>

@@ -421,3 +421,5 @@ ul.up-pop { list-style: none; }
   #panelSoon, #panelHoods { padding: 12px 16px 24px; }
 }
 #filterPanel[hidden] { display: none; }
+.sale-line { font-size: 14px; margin: 10px 0 0; }
+.sale-info { cursor: help; }

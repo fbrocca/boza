@@ -407,6 +407,24 @@
       ${f.evidence && f.evidence.length ? `<details class="evidence"><summary>From the minutes</summary>${f.evidence.map((q) => `<blockquote>“${esc(q)}”</blockquote>`).join('')}</details>` : ''}`;
   }
 
+  /* Last recorded transfer and county appraisal (tools/sales.py). Nominal transfers
+     (trust, family, correction deeds under $1,000) are never shown as a price. */
+  function money(v) {
+    if (v >= 1e6) return '$' + (Math.round(v / 1e4) / 100) + 'M';
+    return '$' + Math.round(v).toLocaleString('en-US');
+  }
+  function saleHtml(p) {
+    const s = p.sale;
+    if (!s || !s.date) return '';
+    const when = new Date(s.date + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+    const sold = s.nominal || !s.price
+      ? `Last transfer ${when}, no market price recorded`
+      : `Last sold <b>${money(s.price)}</b> in ${when}`;
+    const appr = s.appraisal ? ` · County appraisal ${money(s.appraisal)}${s.building ? ` (land ${money(s.land)})` : ''}` : '';
+    return `<p class="sale-line">${sold}${s.deed ? ` <span class="muted">· deed ${esc(s.deed)}</span>` : ''}${appr}
+      <span class="muted small sale-info" title="Charleston County records. The appraisal is the county's value for property tax, not a market estimate. Only the most recent transfer is published.">ⓘ</span></p>`;
+  }
+
   function zoningHtml(p) {
     const z = p.zoning;
     if (!z) return '';
@@ -471,6 +489,7 @@
         <span class="badge badge-outline">${p.cases.length} ${p.cases.length === 1 ? 'case' : 'cases'}</span>
         ${p.lat ? `<a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}" target="_blank" rel="noopener">${ICON.ext}Google Maps</a>` : ''}
       </div>
+      ${saleHtml(p)}
       ${agendaBanner(p)}
       ${p.lat ? '' : '<p class="unmapped">This location could not be placed on the map: the minutes give no street number, or the parcel number has since been retired.</p>'}
       ${p.cases.map((c) => caseCard(c, term)).join('')}
