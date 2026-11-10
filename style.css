@@ -373,8 +373,6 @@ a.badge:hover { background: var(--accent); }
 ul.up-pop { list-style: none; }
 .up-pop a { color: var(--foreground); }
 .up-cal[open], .up-how[open] { flex-basis: 100%; }
-.hood-nav { margin: -4px 0 0; font-size: 13.5px; }
-.hood-nav a { color: var(--foreground); }
 #stats { white-space: nowrap; }
 @media (max-width: 1360px) { #stats { display: none; } }
 
