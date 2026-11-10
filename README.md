@@ -36,6 +36,29 @@ zoning-related items. Items are pinned from our own properties (same case or
 TMS) or the county parcel layer. The map shows a "Coming up" panel above the
 list, blue date pins, and an "On the agenda" note on the property page.
 
+## Neighborhoods (`n/`)
+
+`tools/neighborhoods.py` assigns every mapped property to a neighborhood using the
+Town's GIS: the Old Village Historic District, the five Neighborhood Preservation
+Overlay neighborhoods, the 959 subdivisions with recorded plats, then the
+mixed-use and Ten Mile overlays (first match wins; the rest are "Other areas").
+It writes `data/neighborhoods.json` (names, counts, assignment) and
+`data/neighborhood-shapes.json` (simplified boundaries). Neighborhoods with 3+
+cases get a page: what's coming up there (with calendar and how to comment),
+approval rates against the town-wide figure with sample sizes, cases per year by
+outcome, cases by type, a map, and recent decisions. `tools/hood_pages.py` writes
+one static page per neighborhood at deploy (`n/<slug>/`), so shared links preview
+with the neighborhood's name.
+
+## Report an error, calendar, how to comment (`shared.js`)
+
+Property and neighborhood pages have a "Report an error" form. There is no
+backend: reports are recorded as private GoatCounter events (`report/<property>`,
+with the visitor's text in the title), visible only on the GoatCounter dashboard.
+Reports from browsers that block GoatCounter are not sent, and the visitor is told
+so. Coming-up meetings offer Google Calendar and .ics links and the ways to
+comment that the agenda states (written deadline and address, public comment).
+
 ## Plan a request (`plan.html`)
 
 Enter an address (or TMS) and what you want to do. The page looks up the lot live

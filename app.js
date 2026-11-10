@@ -468,13 +468,15 @@
         <span class="badge badge-outline">${p.cases.length} ${p.cases.length === 1 ? 'case' : 'cases'}</span>
         ${p.lat ? `<a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}" target="_blank" rel="noopener">${ICON.ext}Google Maps</a>` : ''}
       </div>
+      ${hoodLink(p)}
       ${agendaBanner(p)}
       <a class="btn btn-primary btn-sm alerts-inline" href="plan.html?address=${encodeURIComponent(p.address)}">Planning a request here?</a>
       <button class="btn btn-outline btn-sm alerts-inline" type="button" data-alerts="property" data-addr="${esc(p.address)}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alert me about new cases near here</button>
       ${p.geo ? `<p class="geo-note">${esc(GEO_LABEL[p.geo] || p.geo)}</p>` : ''}
       ${zoningHtml(p)}
       ${p.lat ? '' : '<p class="unmapped">This location could not be placed on the map: the minutes give no street number, or the parcel number has since been retired.</p>'}
-      ${p.cases.map((c) => caseCard(c, term)).join('')}`;
+      ${p.cases.map((c) => caseCard(c, term)).join('')}
+      <p class="report-row">Something wrong on this page? <button type="button" class="linklike" data-report="${esc(p.id)}" data-report-label="${esc(p.address)}">Report an error</button></p>`;
     $('pane').scrollTop = 0;
     if (fly && p.lat) {
       const bounds = p.rings ? L.latLngBounds(p.rings.flat()) : L.latLng(p.lat, p.lng).toBounds(120);
@@ -733,6 +735,7 @@
             ${m.deadline ? `<span>Written comments by <b>${esc(m.deadline)}</b>${m.email ? ` to <a href="mailto:${esc(m.email)}">${esc(m.email)}</a>` : ''}</span>` : (m.public_comment ? '<span>Public comment is on the agenda</span>' : '')}
             <a href="${esc(m.agenda)}" target="_blank" rel="noopener" data-track="upcoming/agenda">Agenda (PDF)</a>
           </div>
+          ${window.MPShared ? window.MPShared.meetingActions(m) : ''}
         </div>`;
       }).join('')}`;
     el.hidden = false;
@@ -753,10 +756,6 @@
     const b = e.target.closest('.up-item');
     if (b) { const m = upcomingMeets[+b.dataset.m]; showSoon(m, m.items[+b.dataset.i]); }
   });
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[data-track]');
-    if (a) track(a.dataset.track, a.textContent.trim());
-  });
   function agendaBanner(p) {
     const s = soonByProp.get(p.id);
     if (!s) return '';
@@ -766,6 +765,21 @@
       ${m.deadline ? `Written comments by ${esc(m.deadline)}${m.email ? ` to <a href="mailto:${esc(m.email)}">${esc(m.email)}</a>` : ''}.` : ''}
       <a href="${esc(m.agenda)}" target="_blank" rel="noopener" data-track="upcoming/agenda">Agenda (PDF)</a></div>`;
   }
+  // ---------- Neighborhoods ----------
+  let hoods = null; // {assign: {propId: slug}, bySlug: {slug: hood}}
+  fetch('data/neighborhoods.json').then((r) => r.json()).then((d) => {
+    hoods = { assign: d.assign, bySlug: Object.fromEntries(d.hoods.map((h) => [h.slug, h])) };
+    const cur = activeId && byId.get(activeId);
+    const slot = document.querySelector('#detail .hood-slot');
+    if (cur && slot) slot.outerHTML = hoodLink(cur);
+  }).catch(() => { /* optional */ });
+  function hoodLink(p) {
+    if (!hoods) return '<span class="hood-slot"></span>';
+    const h = hoods.bySlug[hoods.assign[p.id]];
+    if (!h) return '';
+    return `<p class="hood-link">Neighborhood: ${h.page ? `<a href="n/${esc(h.slug)}/" data-track="hood/from-property">${esc(h.name)}</a> <span class="muted">· ${h.cases} cases</span>` : esc(h.name)}</p>`;
+  }
+
   function loadUpcoming() {
     fetch('data/upcoming.json').then((r) => (r.ok ? r.json() : { meetings: [] }))
       .then((d) => { upcoming = d.meetings || []; renderUpcoming(); })

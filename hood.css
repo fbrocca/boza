@@ -1,0 +1,56 @@
+/* Neighborhood pages (tokens and primitives from style.css) */
+body.hood-page { height: auto; }
+.hood { max-width: 960px; margin: 0 auto; padding: 28px 24px 24px; display: grid; gap: 20px; }
+.hood h1 { margin: 4px 0 6px; font-size: 32px; letter-spacing: -.03em; line-height: 1.15; }
+.hood h2 { margin: 0 0 6px; font-size: 18px; letter-spacing: -.02em; display: flex; align-items: center; gap: 8px; }
+.hood .eyebrow { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted-foreground); }
+.hood .block { padding: 20px; }
+.hood .loading { padding: 40px; text-align: center; color: var(--muted-foreground); }
+.h-head .muted { margin: 0 0 12px; max-width: 720px; }
+.h-share { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.h-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.h-tile { border: 1px solid var(--border); border-radius: calc(var(--radius) + 2px); padding: 14px 16px; display: grid; gap: 2px; background: var(--card); }
+.h-tile b { font-size: 28px; letter-spacing: -.02em; line-height: 1.1; }
+.h-tile span { font-size: 13px; }
+.h-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted-foreground); margin: 6px 0 4px; }
+.h-legend .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+.sw.approved, .seg.approved { background: var(--approved); fill: var(--approved); }
+.sw.denied, .seg.denied { background: var(--denied); fill: var(--denied); }
+.sw.other, .seg.other { background: #a1a1aa; fill: #a1a1aa; }
+.h-chart { width: 100%; height: auto; display: block; }
+.h-chart .grid { stroke: var(--border); stroke-width: 1; }
+.h-chart .ax { font: 11px "Geist", system-ui, sans-serif; fill: var(--muted-foreground); }
+.h-chart .val { font: 600 11px "Geist", system-ui, sans-serif; fill: var(--foreground); }
+.h-chart .seg:hover { opacity: .8; }
+.h-table summary { font-size: 12.5px; color: var(--muted-foreground); cursor: pointer; margin-top: 6px; }
+.h-table table, .h-types { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 6px; }
+.h-table th, .h-table td, .h-types th, .h-types td { text-align: left; padding: 6px 6px; border-bottom: 1px solid var(--border); }
+.h-types th { color: var(--muted-foreground); font-weight: 500; }
+.h-types .n { text-align: right; font-variant-numeric: tabular-nums; }
+.h-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.h-map { height: 320px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+.h-recent { list-style: none; margin: 0; padding: 0; }
+.h-recent li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 10px 0; border-top: 1px solid var(--border); }
+.h-recent li a { color: var(--foreground); text-decoration: none; }
+.h-recent li a:hover { text-decoration: underline; }
+.h-recent .badge { justify-self: end; }
+.h-recent .h-date { justify-self: end; }
+.h-recent .h-req { grid-column: 1 / -1; color: var(--muted-foreground); }
+.badge.h-approved { --c: var(--approved); --cb: var(--approved-bg); }
+.badge.h-denied { --c: var(--denied); --cb: var(--denied-bg); }
+.badge.h-other { --c: var(--withdrawn); --cb: var(--withdrawn-bg); }
+.h-soon { border-color: var(--soon); }
+.h-soon-items { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 8px; font-size: 14px; }
+.h-index { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.h-card { display: grid; gap: 3px; padding: 14px 16px; border: 1px solid var(--border); border-radius: calc(var(--radius) + 2px); color: var(--foreground); text-decoration: none; background: var(--card); }
+.h-card:hover { border-color: var(--ring); box-shadow: var(--shadow-sm); }
+#hq { max-width: 360px; margin-top: 4px; }
+.hood-foot { max-width: 960px; margin: 0 auto; padding: 16px 24px 40px; border-top: 1px solid var(--border); }
+@media (max-width: 760px) {
+  .hood { padding: 20px 16px; }
+  .hood h1 { font-size: 26px; }
+  .h-grid { grid-template-columns: 1fr; }
+  .h-recent li { grid-template-columns: 1fr; }
+  .h-recent .badge, .h-recent .h-date { justify-self: start; }
+  .topbar { grid-template-columns: auto 1fr auto; }
+}
