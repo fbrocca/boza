@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--HEAD-->
+<title>Mount Pleasant zoning by neighborhood</title>
+<meta name="description" content="Zoning cases in Mount Pleasant, SC, by neighborhood: what's been filed, what's coming up, and what was decided since 2017.">
+<!--/HEAD-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="hood.css">
+</head>
+<body class="hood-page">
+<header class="topbar">
+  <a class="brand" href="./" aria-label="Zoning Map, home">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" fill="currentColor"/></svg>
+    <span>Zoning Map</span>
+  </a>
+  <div></div>
+  <div class="topbar-right">
+    <a class="btn btn-ghost btn-sm" href="n/">All neighborhoods</a>
+    <a class="btn btn-outline btn-sm" href="./">Map</a>
+  </div>
+</header>
+<main class="hood" id="hood"><div class="loading">Loading…</div></main>
+<footer class="hood-foot muted small">
+  Built from the Town of Mount Pleasant's public minutes and agendas, 2017–2026. Neighborhood boundaries from the Town's GIS
+  (subdivisions with recorded plats, the Old Village Historic District and the Neighborhood Preservation Overlay).
+  Outcomes were read from the minutes with AI assistance and checked against them; the minutes are authoritative. Not legal advice.
+</footer>
+<!--HOOD-->
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="shared.js"></script>
+<script src="hood.js"></script>
+<script>window.goatcounter = { path: function () { return location.pathname; } };</script>
+<script data-goatcounter="https://fbrocca.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>
