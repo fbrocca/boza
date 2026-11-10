@@ -15,11 +15,74 @@
     {
      "case": null,
      "tms": null,
-     "title": "Consent Agenda Items A. Final Reading: An Ordinance providing for the annexation of a 1.95-acre parcel located at 663 Faulkner Drive, depicted on a plat recorded by the Charleston County ROD Office in Plat Book ED, Page 46. (Ord. No. 26055) Planning Committee recommended approval. B. Final Reading: An Ordinance providing for the annexation of a 0.84-acre parcel located at 1268 Porchers Bluff Road, depicted on a plat recorded by the Charleston County ROD Office in Plat Book DA, Page 118. (Ord. No. 26057) Planning Committee recommended approval.",
+     "title": "Final Reading: An Ordinance providing for the annexation of a 1.95-acre parcel located at 663 Faulkner Drive, depicted on a plat recorded by the Charleston County ROD Office in Plat Book ED, Page 46. (Ord. No. 26055) Planning Committee recommended approval.",
      "address": null,
      "kind": "Ordinance",
      "request": "",
      "status": null
+    },
+    {
+     "case": null,
+     "tms": null,
+     "title": "Final Reading: An Ordinance providing for the annexation of a 0.84-acre parcel located at 1268 Porchers Bluff Road, depicted on a plat recorded by the Charleston County ROD Office in Plat Book DA, Page 118. (Ord. No. 26057) Planning Committee recommended approval.",
+     "address": null,
+     "kind": "Ordinance",
+     "request": "",
+     "status": null
+    },
+    {
+     "case": null,
+     "tms": null,
+     "title": "Final Reading: An Ordinance to zone R-1, Residential District a 0.84-acre parcel located at 1268 Porchers Bluff Road. (Ord. No. 26058) Planning Commission recommended approval. Planning Committee recommended approval.",
+     "address": null,
+     "kind": "Ordinance",
+     "request": "",
+     "status": null,
+     "property": "tms-560-12-00-054",
+     "lat": 32.80823,
+     "lng": -79.834223
+    },
+    {
+     "case": null,
+     "tms": null,
+     "title": "First Reading: An Ordinance providing for an amendment to the Belle Hall Planned Development District Ordinance by adding Commercial Recreation as an additional permitted use for an approximately 6.86 acre parcel of land located at 496 La Mesa Road. (Ord. No. 26061) Planning Commission recommended approval; Planning Committee recommended approval.",
+     "address": null,
+     "kind": "Ordinance",
+     "request": "",
+     "status": null,
+     "property": "tms-560-12-00-054",
+     "lat": 32.80823,
+     "lng": -79.834223
+    },
+    {
+     "case": null,
+     "tms": null,
+     "title": "First Reading: An Ordinance to amend Section 156.1592 o the Mount Pleasant Code of Ordinances pertaining to conflicts between the Zoning Map Designation and the Comprehensive Plan Future Land Use Map designation. (Ord. No. 26062)",
+     "address": null,
+     "kind": "Ordinance",
+     "request": "",
+     "status": null
+    },
+    {
+     "case": null,
+     "tms": null,
+     "title": "Final Reading: An Ordinance providing for the annexation of two parcels forming an aggregate of 0.99-acre parcels located at 1437 and 1439 Venning Road, depicted on a plat recorded by the Charleston County ROD Office in Plat Book EB, Page 772. (Ord. No. 26042) Planning Committee recommended approval. The applicant has requested deferral.",
+     "address": null,
+     "kind": "Ordinance",
+     "request": "",
+     "status": null
+    },
+    {
+     "case": null,
+     "tms": null,
+     "title": "Final Reading: An Ordinance to zone R-1, Residential District, two parcels forming an aggregate of 0.99-acre parcels located at 1437 and 1439 Venning Road. (Ord. No. 26043) Planning Commission recommended approval. Planning Committee recommended approval. The applicant has requested deferral.",
+     "address": null,
+     "kind": "Ordinance",
+     "request": "",
+     "status": null,
+     "property": "tms-560-12-00-054",
+     "lat": 32.80823,
+     "lng": -79.834223
     }
    ]
   }

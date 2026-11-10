@@ -131,6 +131,15 @@ def items(src):
                 if SKIP.match(header) and not re.match(r"staff approval", header, re.I):
                     section = header.lower()
                     continue
+                bullets = bullet_items(header, body)
+                if bullets:  # "Staff approvals: ➢ 609 Pitt St ... ➢ 108 Beach St ...": one item each
+                    for chunk in bullets:
+                        ctms = tms_in(chunk, header=True)
+                        out.append({"body": body_name, "date": date, "town": url, "page": page,
+                                    "tms": ctms, "address": address_in(chunk), "kind": "Staff approval",
+                                    "request": clean_request(chunk), "decision": "Approved by staff",
+                                    "text": reflow(chunk)})
+                    continue
                 tms = tms_in(header, header=True) or tms_in(body[:300])
                 addr = address_in(header)
                 if not tms and not re.match(r"^\d", addr):
@@ -139,10 +148,7 @@ def items(src):
                 pos = text.find(header[:25])
                 in_staff = any(a <= pos < b for a, b in ranges) if pos >= 0 else False
                 staff = (section.startswith("staff approval") or in_staff) and not re.search(r"\bmoved\b", body)
-                req = re.sub(r"\s+", " ", header)
-                req = re.sub(r",?\s*(?:Survey(?: Card)?\s*\d*\s*/?\s*(?:Non-)?Historic|No Survey Card\s*/?\s*(?:Non-)?Historic)\s*[–—-]?", " ", req, flags=re.I)
-                req = re.sub(r"\(?\s*TMS\s*(?:No\.?|#)?\s*:?\s*[\d\s-]{10,16}\)?[.,]?", " ", req)
-                req = re.sub(r"\s+", " ", req).strip(" ,.–—-")
+                req = clean_request(header)
                 it = {"body": body_name, "date": date, "town": url, "page": page,
                       "tms": tms, "address": addr, "kind": "Staff approval" if staff else kind_of(header),
                       "request": req,
@@ -162,6 +168,44 @@ def items(src):
     return out
 
 
+BULLET = re.compile(r"[➢•▪●]|(?:(?<=\S)\s[-–—]\s(?=\d{1,5}\s+[A-Z]))")
+
+
+def clean_request(text):
+    req = re.sub(r"\s+", " ", text)
+    req = re.sub(r",?\s*(?:Survey(?: Card)?\s*\d*\s*/?\s*(?:Non-)?Historic|No Survey(?: Card)?\s*/?\s*(?:Non-)?Historic)\s*[–—-]?", " ", req, flags=re.I)
+    req = re.sub(r"\(?\s*TMS\s*(?:No\.?|#)?\s*:?\s*[\d\s-]{10,16}\)?[.,]?", " ", req)
+    req = re.sub(r"^Staff Approvals?:?\s*", "", req, flags=re.I)
+    return re.sub(r"\s+", " ", req).strip(" ,.–—-")
+
+
+def bullet_items(header, body):
+    """A staff-approval list written as bullets, one property each. Returns the chunks, or []."""
+    if not re.search(r"staff\s+(?:level\s+)?approvals?", header + " " + body[:200], re.I):
+        return []
+    flat = re.sub(r"\s+", " ", header + " " + body)
+    flat = re.sub(r"^.*?staff\s+(?:level\s+)?approvals?[^➢•▪●\d]*", "", flat, count=1, flags=re.I)
+    chunks = [c.strip(" ,.;–—-") for c in BULLET.split(flat)]
+    chunks = [re.sub(r"\s*(?:Historic District Preservation Commission|[IVX]+\.\s.*)$", "", c) for c in chunks]
+    chunks = [c for c in chunks if re.match(r"^\d{1,5}\s+\S", c)]
+    return chunks if len(chunks) >= 2 else []
+
+
+def split_by_house(its):
+    """One parcel can carry two addresses (318 and 320 Morrison): keep them apart.
+    Items without a house number join the address with the nearest date."""
+    num = lambda it: (re.match(r"^(\d{1,5})\b", it["address"]) or [None, None])[1]
+    nums = {num(it) for it in its} - {None}
+    if len(nums) < 2:
+        return [its]
+    parts = {n: [it for it in its if num(it) == n] for n in nums}
+    for it in its:
+        if num(it) is None:
+            best = min(nums, key=lambda n: min(abs(days(it["date"], x["date"])) for x in parts[n]))
+            parts[best].append(it)
+    return list(parts.values())
+
+
 def days(a, b):
     return (datetime.date.fromisoformat(b) - datetime.date.fromisoformat(a)).days
 
@@ -172,7 +216,7 @@ def main(src):
         key = it["tms"][0] if it["tms"] else re.sub(r"[^a-z0-9]+", "-", it["address"].lower())
         groups[key].append(it)
     cases = []
-    for its in groups.values():
+    for its in [part for g in groups.values() for part in split_by_house(g)]:
         its.sort(key=lambda x: x["date"])
         project = [its[0]]
         for it in its[1:]:

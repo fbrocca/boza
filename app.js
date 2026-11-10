@@ -176,7 +176,7 @@
       el.innerHTML = `<button class="btn btn-primary btn-sm" type="button" data-area="remove">✕&nbsp;Remove boundary</button>
         <button class="btn btn-outline btn-sm" type="button" data-area="draw">${PENCIL}Redraw</button>`;
     } else {
-      el.innerHTML = `<button class="btn btn-outline btn-sm" type="button" data-area="draw">${PENCIL}Draw</button>`;
+      el.innerHTML = ''; // the entry point is "Draw an area on the map" in Filters
     }
   }
   function insideArea(lat, lng, poly) {
@@ -331,10 +331,13 @@
     }));
     for (const id of ['fDecision', 'fKind', 'fYear']) $(id).classList.toggle('on', !!$(id).value);
     $('reset').hidden = !(f.group || f.kind || f.year || f.inView || f.board || f.q || area);
+    const nf = [f.group, f.kind, f.year, f.inView, area].filter(Boolean).length;
+    $('filtersN').hidden = !nf;
+    $('filtersN').textContent = nf;
     renderList();
     const nc = shown.reduce((a, s) => a + s.cases.length, 0);
     $('paneShowTxt').textContent = `Show list (${nc.toLocaleString()} ${nc === 1 ? 'case' : 'cases'})`;
-    $('count').textContent = `${shown.length.toLocaleString()} ${shown.length === 1 ? 'property' : 'properties'} · ${nc.toLocaleString()} ${nc === 1 ? 'case' : 'cases'}${area ? ' inside your boundary' : ''}${minorHidden ? ` · ${minorHidden} minor staff approvals hidden (Type → Staff approval)` : ''}`;
+    $('count').textContent = `${shown.length.toLocaleString()} ${shown.length === 1 ? 'property' : 'properties'} · ${nc.toLocaleString()} ${nc === 1 ? 'case' : 'cases'}${area ? ' inside your boundary' : ''}${minorHidden ? ` · ${minorHidden} minor approvals hidden` : ''}`;
   }
 
   const LIMIT = 300;
@@ -412,7 +415,7 @@
     for (const o of z.overlays || []) parts.push(`<a class="badge badge-outline" href="${esc(o.link || '#')}" target="_blank" rel="noopener" title="${esc(o.label || 'Overlay district')}">${esc(o.name)}${o.label ? ' · ' + esc(o.label) : ''}</a>`);
     if (z.height) parts.push(`<span class="badge badge-outline" title="${esc(z.height_note || '')}">Height ${esc(z.height)}</span>`);
     if (z.flu) parts.push(`<span class="badge badge-outline" title="Comprehensive Plan future land use">Plan: ${esc(z.flu)}</span>`);
-    return `<div class="zoning"><span class="zoning-label">Current zoning</span><div class="facts">${parts.join('')}</div></div>`;
+    return `<details class="zoning"><summary><span class="zoning-label">Zoning on this lot</span>${z.zoning ? ` <span class="muted small">${esc(z.zoning.join(' / '))}${(z.overlays || []).length ? ' + ' + z.overlays.length + ' overlay' + (z.overlays.length > 1 ? 's' : '') : ''}</span>` : ''}</summary><div class="facts">${parts.join('')}</div></details>`;
   }
 
   function caseCard(c, term) {
@@ -468,15 +471,19 @@
         <span class="badge badge-outline">${p.cases.length} ${p.cases.length === 1 ? 'case' : 'cases'}</span>
         ${p.lat ? `<a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lng}" target="_blank" rel="noopener">${ICON.ext}Google Maps</a>` : ''}
       </div>
-      ${hoodLink(p)}
       ${agendaBanner(p)}
-      <a class="btn btn-primary btn-sm alerts-inline" href="plan.html?address=${encodeURIComponent(p.address)}">Planning a request here?</a>
-      <button class="btn btn-outline btn-sm alerts-inline" type="button" data-alerts="property" data-addr="${esc(p.address)}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Alert me about new cases near here</button>
-      ${p.geo ? `<p class="geo-note">${esc(GEO_LABEL[p.geo] || p.geo)}</p>` : ''}
-      ${zoningHtml(p)}
       ${p.lat ? '' : '<p class="unmapped">This location could not be placed on the map: the minutes give no street number, or the parcel number has since been retired.</p>'}
       ${p.cases.map((c) => caseCard(c, term)).join('')}
-      <p class="report-row">Something wrong on this page? <button type="button" class="linklike" data-report="${esc(p.id)}" data-report-label="${esc(p.address)}">Report an error</button></p>`;
+      ${zoningHtml(p)}
+      <div class="detail-actions">
+        ${hoodLink(p)}
+        <div class="detail-btns">
+          <a class="btn btn-outline btn-sm" href="plan.html?address=${encodeURIComponent(p.address)}">Planning a request here?</a>
+          <button class="btn btn-outline btn-sm" type="button" data-alerts="property" data-addr="${esc(p.address)}">Alert me about new cases near here</button>
+        </div>
+        ${p.geo ? `<p class="geo-note">${esc(GEO_LABEL[p.geo] || p.geo)}</p>` : ''}
+        <p class="report-row">Something wrong on this page? <button type="button" class="linklike" data-report="${esc(p.id)}" data-report-label="${esc(p.address)}">Report an error</button></p>
+      </div>`;
     $('pane').scrollTop = 0;
     if (fly && p.lat) {
       const bounds = p.rings ? L.latLngBounds(p.rings.flat()) : L.latLng(p.lat, p.lng).toBounds(120);
@@ -578,9 +585,36 @@
     setTimeout(() => map.invalidateSize(), 50);
   });
 
+  // ---------- Tabs: Coming up | Cases | Neighborhoods ----------
+  let curTab = 'cases', userPickedTab = false;
+  function setTab(name) {
+    curTab = name;
+    for (const [t, panel] of [['soon', 'panelSoon'], ['cases', 'panelCases'], ['hoods', 'panelHoods']]) {
+      const b = document.querySelector(`.tabs [data-tab="${t}"]`);
+      b.setAttribute('aria-selected', String(t === name));
+      $(panel).hidden = t !== name;
+    }
+  }
+  document.querySelector('.tabs').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-tab]');
+    if (!b) return;
+    userPickedTab = true;
+    setTab(b.dataset.tab);
+    track('tab/' + b.dataset.tab, 'Tab: ' + b.textContent.trim());
+  });
+  $('filtersBtn').addEventListener('click', () => {
+    const open = $('filterPanel').hidden;
+    $('filterPanel').hidden = !open;
+    $('filtersBtn').setAttribute('aria-expanded', String(open));
+  });
+  $('drawBtn').addEventListener('click', () => {
+    if (window.matchMedia('(max-width: 760px)').matches) { document.body.classList.add('show-map'); syncMapToggle(); setTimeout(() => map.invalidateSize(), 50); }
+    startDrawing();
+  });
+
   // ---------- Events ----------
   let t;
-  $('q').addEventListener('input', () => { paneOpenIfClosed(); clearTimeout(t); t = setTimeout(() => { if (!$('detailView').hidden) closeDetail(); apply(); }, 150); });
+  $('q').addEventListener('input', () => { paneOpenIfClosed(); if (curTab !== 'cases') setTab('cases'); clearTimeout(t); t = setTimeout(() => { if (!$('detailView').hidden) closeDetail(); apply(); }, 150); });
   ['fDecision', 'fKind', 'fYear', 'fInView'].forEach((id) => $(id).addEventListener('change', () => {
     apply();
     track('filter/' + id.replace(/^f/, '').toLowerCase(), 'Used filter: ' + id.replace(/^f/, ''));
@@ -715,15 +749,15 @@
     const meets = upcoming.filter((m) => m.date >= today);
     soonLayer.clearLayers();
     soonByProp.clear();
-    if (!meets.length) { el.hidden = true; return; }
+    if (!meets.length) { el.hidden = true; $('tabSoon').hidden = true; if (curTab === 'soon') setTab('cases'); return; }
     const nItems = meets.reduce((a, m) => a + m.items.length, 0);
     const itemHtml = (m, mi, it, ii) => `<li><button type="button" class="up-item" data-m="${mi}" data-i="${ii}">
         <span class="up-kind">${esc(it.kind || 'Item')}</span>
         <span class="up-title">${esc(it.title)}${it.status ? ` <span class="up-flag">(${esc(it.status)})</span>` : ''}</span>
-        ${it.request || it.address ? `<span class="up-req">${esc([it.address, it.request].filter(Boolean).join(' · '))}</span>` : ''}
       </button></li>`;
-    el.innerHTML = `<summary><span class="up-live" aria-hidden="true"></span><h2>Coming up</h2>
-        <span class="up-sub">${nItems} ${nItems === 1 ? 'item' : 'items'} on ${meets.length} posted ${meets.length === 1 ? 'agenda' : 'agendas'}</span></summary>
+    $('soonN').textContent = nItems;
+    $('tabSoon').hidden = false;
+    el.innerHTML = `<p class="up-intro muted small">Zoning items on agendas the Town has posted. Tap one to see it on the map.</p>
       ${meets.map((m, mi) => {
         const rel = relDay(m.date);
         const first = m.items.slice(0, 3), rest = m.items.slice(3);
@@ -731,14 +765,12 @@
           <div class="up-when">${rel ? `<span class="up-rel">${esc(rel[0].toUpperCase() + rel.slice(1))}</span>·` : ''}<b>${esc(fmtDay(m.date))}${m.time ? ', ' + esc(m.time) : ''}</b><span class="muted">${esc(m.label)}</span></div>
           <ul class="up-items">${first.map((it, ii) => itemHtml(m, mi, it, ii)).join('')}</ul>
           ${rest.length ? `<details class="up-more"><summary>${rest.length} more</summary><ul class="up-items">${rest.map((it, k) => itemHtml(m, mi, it, k + 3)).join('')}</ul></details>` : ''}
-          <div class="up-foot">
-            ${m.deadline ? `<span>Written comments by <b>${esc(m.deadline)}</b>${m.email ? ` to <a href="mailto:${esc(m.email)}">${esc(m.email)}</a>` : ''}</span>` : (m.public_comment ? '<span>Public comment is on the agenda</span>' : '')}
-            <a href="${esc(m.agenda)}" target="_blank" rel="noopener" data-track="upcoming/agenda">Agenda (PDF)</a>
-          </div>
+          ${m.deadline ? `<p class="up-foot">Written comments by <b>${esc(m.deadline)}</b></p>` : ''}
           ${window.MPShared ? window.MPShared.meetingActions(m) : ''}
         </div>`;
       }).join('')}`;
     el.hidden = false;
+    if (!userPickedTab && !location.hash && !$('q').value) setTab('soon');
     meets.forEach((m, mi) => m.items.forEach((it) => {
       if (it.property && !soonByProp.has(it.property)) soonByProp.set(it.property, { m, it });
       if (!it.lat) return;
@@ -769,10 +801,22 @@
   let hoods = null; // {assign: {propId: slug}, bySlug: {slug: hood}}
   fetch('data/neighborhoods.json').then((r) => r.json()).then((d) => {
     hoods = { assign: d.assign, bySlug: Object.fromEntries(d.hoods.map((h) => [h.slug, h])) };
+    renderHoodsTab(d.hoods);
     const cur = activeId && byId.get(activeId);
     const slot = document.querySelector('#detail .hood-slot');
     if (cur && slot) slot.outerHTML = hoodLink(cur);
   }).catch(() => { /* optional */ });
+  function renderHoodsTab(list) {
+    const pages = list.filter((h) => h.page);
+    $('hoodsPanel').innerHTML = `<p class="muted small">Cases, outcomes and what's coming up, for ${pages.length} neighborhoods. Each page has its own link to share.</p>
+      <input class="input" id="hoodQ" type="search" placeholder="Find a neighborhood" autocomplete="off">
+      <ul class="hood-list">${pages.map((h) => `<li data-name="${esc(h.name.toLowerCase())}"><a href="n/${esc(h.slug)}/" data-track="hood/from-tab"><b>${esc(h.name)}</b><span class="muted small">${h.cases} cases</span></a></li>`).join('')}</ul>
+      <p class="small"><a href="n/">All neighborhoods, with charts →</a></p>`;
+    $('hoodQ').addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      $('hoodsPanel').querySelectorAll('.hood-list li').forEach((li) => { li.hidden = q && !li.dataset.name.includes(q); });
+    });
+  }
   function hoodLink(p) {
     if (!hoods) return '<span class="hood-slot"></span>';
     const h = hoods.bySlug[hoods.assign[p.id]];
