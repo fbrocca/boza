@@ -51,6 +51,28 @@ outcome, cases by type, a map, and recent decisions. `tools/hood_pages.py` write
 one static page per neighborhood at deploy (`n/<slug>/`), so shared links preview
 with the neighborhood's name.
 
+## Meeting videos, feeds, map layers, development pipeline
+
+- **Videos** (`tools/videos.py`, daily): the Town's YouTube channel feed is matched by
+  date and body to Town Council, Planning Committee and Planning Commission meetings
+  and kept in `data/videos.json` (coverage grows from July 2026). Timeline steps
+  show "Watch"; older steps of those bodies get a search of the channel. Zoning
+  Appeals, Historic District and Design Review meetings are not on the channel. The
+  minutes PDFs themselves carry no recording links.
+- **Feeds** (`tools/feeds.py`, at deploy): `feeds/meetings.ics` (subscribable
+  calendar of posted zoning meetings) and `feeds/agenda.xml` (RSS, one entry per
+  agenda item), from `data/upcoming.json`.
+- **Map layers**: zoning districts, FEMA 2021 flood zones and future land use,
+  drawn by the Town's map server for the current view, with its legend. Zoning
+  draws at 1:12,000 and closer (map zoom 16+).
+- **Development pipeline**: counts of approved rezonings, annexations, PD
+  amendments and subdivisions by year (neighborhood index) and per neighborhood.
+  Lots or units are shown per case where the request or minutes state them
+  (`c.units`, about 40 of 175 approvals); no totals, because counts are partial and
+  parcel acreage overstates phased projects.
+- **Staff recommendations** are not extracted: sampled staff reports state facts
+  and code comments but no approve / deny recommendation.
+
 ## Sales (`tools/sales.py`)
 
 The most recent recorded transfer and the county appraisal for each parcel, from

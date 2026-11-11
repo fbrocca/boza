@@ -35,8 +35,10 @@ jobs:
           python3 tools/agenda_docs.py
           tools/build.sh --geocode
           python3 tools/neighborhoods.py
-      - name: Upcoming agendas
-        run: python3 tools/upcoming.py
+      - name: Upcoming agendas and meeting videos
+        run: |
+          python3 tools/upcoming.py
+          python3 tools/videos.py || echo "video feed unavailable; keeping data/videos.json"
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
@@ -66,6 +68,7 @@ jobs:
           mkdir _site
           cp -r index.html app.js style.css shared.js plan.html plan.js plan.css hood.html hood.js hood.css vendor data minutes _site/
           python3 tools/hood_pages.py _site
+          python3 tools/feeds.py _site
           rm -f _site/data/cases.json _site/data/planning.json _site/data/geocode-cache.json _site/data/parcels.json
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3

@@ -199,7 +199,7 @@
     if (d.coverage_pct) rows.push(row('coverage', 'Building coverage (max)', `${d.coverage_pct}%${lotSf ? ` <span class="muted">(≈ ${sf(lotSf * d.coverage_pct / 100)} here)</span>` : ''}`));
     if (d.coverage_sf) rows.push(row('coverage', 'Building coverage (max)', sf(d.coverage_sf)));
     if (d.gfa_max_sf) rows.push(row('gfa', 'Building floor area (max)', sf(d.gfa_max_sf)));
-    rows.push(row('height', 'Height (max)', `${d.height} ft, ${d.height_sfha} ft in a flood zone${z.height ? `<br><span class="muted">Building Height Plan Map for this lot: ${esc(z.height)}. The map governs where it differs.</span>` : ''}`));
+    rows.push(row('height', 'Height (max)', `${d.height} ft, ${d.height_sfha} ft in a flood zone${z.height ? `<br><span class="muted">Building Height Plan Map for this lot: ${esc(z.height)}. The map governs.</span>` : ''}`));
     if (d.density) rows.push(row('density', 'Density (max)', esc(d.density)));
     const a = std.accessory;
     rows.push(row('accessory', 'Accessory building', `${a.side} ft side, ${a.rear} ft rear, ${a.height} ft tall${d.acc_footprint ? `, ${sf(d.acc_footprint)} footprint` : ', no footprint cap if coverage is met'}`, sec(a.sec)));
@@ -244,7 +244,7 @@
       ${cmp}
       <table class="code-table"><tbody>${rows.join('')}</tbody></table>
       ${notes.map((n) => `<p class="callout">${n}</p>`).join('')}
-      <p class="hint">Transcribed from the code; the Town's reading governs. A denied variance can't be refiled for 12 months unless the Board finds changed facts (§ 156.1298). A rezoning Council denies can't be refiled on the same parcel for 12 months unless Council accepts a petition showing conditions changed (§ 156.1163).</p>
+      <p class="hint">Transcribed from Chapter 156; the Town's reading governs. After a denial, the same variance or rezoning can't be refiled for 12 months (§ 156.1298, § 156.1163).</p>
     </section>`;
   }
 
@@ -288,7 +288,7 @@
       <table class="sales"><tr><th>Address</th><th>Sold</th><th>Date</th><th class="n">Acres</th></tr>
         ${s.near.slice(0, 10).map((x) => `<tr><td>${esc([x.PROP_ST_NO, titleCase(x.PROP_ST_NAME)].filter(Boolean).join(' ') || 'n/a')}</td><td>${usd(x.SALE_PRICE)}</td><td>${fmtDate(isoDay(x.DOC_DATE))}</td><td class="n">${x.ACRES_CAL ? x.ACRES_CAL.toFixed(2) : ''}</td></tr>`).join('')}
       </table>` : `<p class="muted">No ${kind} sales with a recorded price within ¼ mile in the last ${SINCE_YEARS} years.</p>`}
-      <p class="hint">Charleston County records: the most recent recorded transfer per parcel, so earlier sales of the same lot aren't shown. Transfers under $1,000 (trusts, family, corrections) are excluded. The appraisal is the county's tax value, not a market estimate. Prices include buildings, so they can't show what a variance or rezoning is worth on its own.</p>
+      <p class="hint">Charleston County records: latest recorded sale per parcel; transfers under $1,000 excluded. The appraisal is a tax value, and prices include buildings.</p>
     </section>`;
   }
 
@@ -311,7 +311,7 @@
             <dt>Height limit</dt><dd>${esc(z.height || 'not found')}${z.height_note ? ` <span class="muted">(${esc(z.height_note)})</span>` : ''}</dd>
             <dt>Comprehensive Plan</dt><dd>${esc(z.flu || 'not found')}</dd>
           </dl>
-          <p class="hint">${lot.source === 'nearest' ? 'The address point fell outside a lot; this is the nearest parcel. ' : ''}Wrong lot? Enter its parcel number (TMS) in the address box instead.</p>
+          <p class="hint">${lot.source === 'nearest' ? 'The address point fell outside a lot; this is the nearest parcel. ' : ''}Wrong lot? Search by its TMS.</p>
           <h3>History on this lot</h3><ul>${hist}</ul>
           <p class="hint">${near.length} zoning cases within 500 ft since 2017${near.length ? ` (${near.filter((x) => (x.f.public_opposition || 0) > 0).length} drew recorded opposition)` : ''}.</p>
         </div>
@@ -385,7 +385,7 @@
         <div class="stat"><b>${rl.pct ?? '–'}%</b><span>within ~1¼ mi: ${rl.txt} ${smallN(rl)}</span></div>
         <div class="stat"><b>${rr.pct ?? '–'}%</b><span>since 2021: ${rr.txt} ${smallN(rr)}</span></div>
       </div>
-      ${(() => { const old = decided.filter((x) => x.c.date < '2025-05-01').length; return old ? `<p class="hint">${old} of these ${decided.length} decisions came before the current zoning code took effect (May 1, 2025). They were judged against the old dimensional rules; compare what was asked to today's requirement above, not to the old one.</p>` : ''; })()}
+      ${(() => { const old = decided.filter((x) => x.c.date < '2025-05-01').length; return old ? `<p class="hint">${old} of these ${decided.length} were decided under the pre-2025 code; compare requests to today's rules above.</p>` : ''; })()}
       <h3>Most similar past cases</h3>
       <ul class="comps">${top.map((x) => {
         const docs = (x.c.events || []).flatMap((e) => e.docs || []).filter((d) => !d.all && /Application|Staff report/.test(d.t)).slice(0, 2);
@@ -521,9 +521,9 @@
         : pickComparables(pool, lot, z, relief, userPct);
       $('out').innerHTML = lotSection(lot, z, here, near) + salesSection(sales) + codeSection(lot, z, relief, { ask, req, unit: $('sizeUnit').value }, std) + pathSection(relief, z, stats) + compSection(comps, relief, isUse || relief === 'lot_size_density_subdivision') +
         `<section class="card block"><h2>How to strengthen your application</h2>
-          <p class="muted">Patterns from past Mount Pleasant cases, not a prediction. Each line shows how many cases it rests on.</p>
+          <p class="muted">Patterns from past cases, with how many cases each rests on. Not a prediction.</p>
           <ol class="tips">${isUse || relief === 'lot_size_density_subdivision' ? rezoningTips(R, z, near) : varianceTips(V, comps, relief, userPct, near)}</ol>
-          <p class="hint">Want to see how others made their case? Open the application documents linked under the similar cases above.</p>
+          
         </section>`;
       $('out').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {

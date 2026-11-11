@@ -63,6 +63,22 @@ def is_street(s):
     return bool(s) and bool(re.match(r"^[1-9]\d*", s))
 
 
+UNITS = re.compile(r"\b(\d{1,4})\s*(?:-|\s)\s*(?:new\s+|additional\s+|proposed\s+)?"
+                   r"(?:(?:single[- ]family|residential|townhouse|townhome|multi-?family|attached|detached|buildable|"
+                   r"dwelling|apartment|condominium)\s+){0,3}(lots?|units?|townho(?:mes|uses)|homes|dwellings|apartments)\b", re.I)
+
+
+def units_of(request, texts):
+    """Lots or dwelling units a planning request proposes, where the request or minutes state it.
+    First mention wins (the request, then the minutes in date order). Returns {"n": 17, "what": "lots"}."""
+    for t in [request or ""] + texts:
+        for n, what in UNITS.findall(t):
+            if 1 < int(n) < 5000:
+                w = what.lower()
+                return {"n": int(n), "what": "lots" if w.startswith("lot") else "units"}
+    return None
+
+
 JUNK_NAME = re.compile(r"^\W*(summary|request|staff report|agenda item)\b|\(TMS\b", re.I)
 
 
@@ -373,6 +389,10 @@ def main(out_dir):
                 texts[e["id"]] = cap(e.pop("text") or "")
                 for f in [f for f, v in e.items() if v in (None, "")]:
                     del e[f]
+            if c["board"] == "planning" and "units" not in c:
+                u = units_of(c.get("request"), [texts.get(e["id"], "") for e in c["events"]])
+                if u:
+                    c["units"] = u
         p["cases"].sort(key=lambda c: c["date"], reverse=True)
         p["date"] = p["cases"][0]["date"]
         out.append(p)
