@@ -22,6 +22,7 @@ import os
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DATA = os.path.join(ROOT, "data")
 SKIP = {"procedural", "other"}
+SETBACKS = {"front_setback", "side_setback", "rear_setback", "multiple_setbacks"}
 LABEL = {
     "alternatives": "Alternatives to the request", "hardship_origin": "Where the hardship comes from",
     "size_dimensions": "Size and dimensions", "neighbors": "Neighbors and outreach", "trees": "Trees",
@@ -35,7 +36,12 @@ LABEL = {
 
 def group_of(board, kind, relief):
     if board == "Board of Zoning Appeals":
-        return ["boza:all"] + ([f"boza:{relief}"] if relief and kind == "Variance" else [])
+        out = ["boza:all"]
+        if relief and kind == "Variance":
+            out.append(f"boza:{relief}")
+            if relief in SETBACKS:
+                out.append("boza:setbacks")
+        return out
     if board in ("Planning Commission", "Planning Committee", "Town Council"):
         if kind in ("Sketch plan", "Subdivision plat"):
             return ["planning:subdivision"]
@@ -57,7 +63,8 @@ def summarize(recs, hearings):
     for topic, rs in by_topic.items():
         heard = len({r["event"] for r in rs})
         seen, ex = set(), []
-        for r in sorted(rs, key=lambda r: (len(r["q"]), r["q"])):  # short, distinct examples
+        # distinct examples of middling length (the shortest tend to be trivia, the longest too specific)
+        for r in sorted(rs, key=lambda r: (abs(len(r["q"].split()) - 9), r["q"])):
             key = r["q"].lower().rstrip("?")
             if key not in seen and len(ex) < 3:
                 seen.add(key)

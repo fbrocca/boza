@@ -173,11 +173,13 @@
   function faqSection(faq, relief, z) {
     if (!faq) return '';
     const groups = [];
-    if (relief === 'use') groups.push(['planning:rezoning', 'rezoning requests']);
-    else if (relief === 'lot_size_density_subdivision') groups.push(['planning:subdivision', 'subdivisions'], ['planning:rezoning', 'rezoning requests']);
+    if (relief === 'use') groups.push(['planning:rezoning', 'rezoning hearings']);
+    else if (relief === 'lot_size_density_subdivision') groups.push(['planning:subdivision', 'subdivision hearings'], ['planning:rezoning', 'rezoning hearings']);
     else {
       const g = faq.groups[`boza:${relief}`];
-      groups.push(g && g.hearings >= 15 ? [`boza:${relief}`, `${RELIEF[relief] || relief} variances`] : ['boza:all', 'variance and appeal hearings']);
+      const sb = SETBACKS.includes(relief) && faq.groups['boza:setbacks'];
+      groups.push(g && g.topics.length >= 4 ? [`boza:${relief}`, `${RELIEF[relief] || relief} variance hearings`]
+        : sb ? ['boza:setbacks', 'setback variance hearings'] : ['boza:all', 'Board of Zoning Appeals hearings']);
     }
     if (z && z.overlays && z.overlays.some((o) => o.name === 'OV-HD')) groups.push(['hdpc:all', 'Historic District reviews']);
     const g = groups.map(([k, label]) => [faq.groups[k], label]).find(([x]) => x && x.topics.length);
@@ -186,12 +188,12 @@
     const top = grp.topics.slice(0, 6);
     return `<section class="card block">
       <h2>Questions you'll likely be asked</h2>
-      <p class="muted">What board members raised most at ${grp.hearings} past ${esc(label)}, from the minutes.</p>
+      <p class="muted">What board members raised most often at past ${esc(label)}, from the minutes.</p>
       <ul class="faq">${top.map((t) => `<li>
-        <div class="faq-head"><b>${esc(t.label)}</b><span class="muted small">${t.hearings} hearings</span></div>
+        <div class="faq-head"><b>${esc(t.label)}</b><span class="muted small">raised at ${t.hearings} ${t.hearings === 1 ? 'hearing' : 'hearings'}</span></div>
         <ul class="faq-q">${t.examples.map((e) => `<li>${esc(e.q)} <a class="small" href="./#${encodeURIComponent(e.pid)}">${e.case ? esc(e.case) : 'case'}</a></li>`).join('')}</ul>
       </li>`).join('')}</ul>
-      <p class="hint">Minutes record questions selectively, so these counts understate how often each topic comes up.</p>
+      <p class="hint">Restated from ${grp.hearings} hearings' minutes, without names. Minutes record questions selectively, so counts understate how often a topic comes up.</p>
     </section>`;
   }
 
