@@ -23,7 +23,7 @@
   const eventTone = (d) => tone(/denied/i.test(d) ? 'denied' : /conditions/i.test(d) ? 'conditions'
     : /approv|adopt/i.test(d) && !/recommend/i.test(d) ? 'approved'
     : /withdr/i.test(d) ? 'withdrawn' : /defer|recommend|pending|comments only/i.test(d) ? 'pending' : 'other');
-  const BOARD = { boza: 'Zoning Appeals', planning: 'Rezoning & planning', design: 'Design review' };
+  const BOARD = { boza: 'Zoning Appeals', planning: 'Planning', design: 'Design review' };
   const SHORT = { 'Annexation and zoning': 'Annexation', 'PD / development agreement amendment': 'PD amendment', 'Subdivision plat': 'Plat', 'Special exception': 'Special exc.' };
   const RELIEF = {
     front_setback: 'Front setback', side_setback: 'Side setback', rear_setback: 'Rear setback', multiple_setbacks: 'Several setbacks',
@@ -32,13 +32,13 @@
     signage: 'Signage', use: 'Use', porch_or_design_standard: 'Porch / design standard', dock_or_marsh: 'Dock / marsh',
   };
   const STATUS_HELP = {
-    'Reversed': 'Appeal granted: the board overturned the staff decision.',
-    'Upheld': 'Appeal denied: the board upheld the staff decision.',
-    'Comments only': 'A preliminary or conceptual review: the board gave comments but did not vote. A final review usually follows.',
-    'Approved by staff': 'A minor change approved by Town staff and reported to the board, without a board vote.',
-    'Recommended approval': 'The Planning Commission recommended approval. No Town Council decision was found in the minutes.',
-    'Recommended denial': 'The Planning Commission recommended denial. No Town Council decision was found in the minutes.',
-    'Passed first reading': 'Town Council approved first reading. No later reading was found in the minutes.',
+    'Reversed': 'Appeal granted: staff decision overturned.',
+    'Upheld': 'Appeal denied: staff decision upheld.',
+    'Comments only': 'Preliminary review: comments, no vote.',
+    'Approved by staff': 'Minor change approved by staff.',
+    'Recommended approval': 'Commission recommended approval. No Council decision found yet.',
+    'Recommended denial': 'Commission recommended denial. No Council decision found yet.',
+    'Passed first reading': 'Council passed first reading. Final reading not found yet.',
   };
   const GEO_LABEL = {
     'parcel': 'Pin and outline from the county parcel record',
@@ -52,6 +52,7 @@
     ext: '<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     doc: '<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Zm0 0v5h5M9 13h6M9 17h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     text: '<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+    play: '<svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M8 5v14l11-7Z" fill="currentColor"/></svg>',
   };
 
   const $ = (id) => document.getElementById(id);
@@ -129,8 +130,10 @@
   // ---------- Map ----------
   const map = L.map('map', { zoomControl: false }).setView(CENTER, 12);
   L.control.zoom({ position: 'topright' }).addTo(map);
+  // OpenStreetMap, quieted to near-grayscale (CSS on this layer only) so cases, not streets, carry colour.
   const streets = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19, className: 'base-quiet',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
   const satellite = L.layerGroup([
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -140,7 +143,55 @@
       maxZoom: 20, maxNativeZoom: 19, opacity: 0.7,
     }),
   ]);
-  L.control.layers({ 'Map': streets, 'Satellite': satellite }, null, { position: 'topright' }).addTo(map);
+  /* Town GIS layers drawn by the Town's map server for the current view (MapServer export),
+     with the server's own legend shown while a layer is on. */
+  const TOWN_GIS = 'https://maps.tompsc.com/arcgis/rest/services/Parcel_Search_New';
+  const legendBox = L.DomUtil.create('div', 'gis-legend');
+  legendBox.hidden = true;
+  map.getContainer().appendChild(legendBox);
+  const activeLegends = new Map();
+  const minZooms = new Map(); // layers the Town's server only draws when zoomed in
+  function renderLegends() {
+    legendBox.hidden = !activeLegends.size;
+    legendBox.innerHTML = [...activeLegends.entries()].map(([name, items]) => {
+      const mz = minZooms.get(name);
+      return `<div class="gis-legend-group"><b>${esc(name)}</b>${mz && map.getZoom() < mz ? '<span class="gis-zoom">Zoom in to see this layer</span>' : items}</div>`;
+    }).join('');
+  }
+  map.on('zoomend', () => { if (activeLegends.size) renderLegends(); });
+  function townLayer(name, service, layerId, minZoom) {
+    if (minZoom) minZooms.set(name, minZoom);
+    const group = L.layerGroup();
+    let shown = null;
+    const refresh = () => {
+      if (!map.hasLayer(group)) return;
+      const b = map.getBounds(), size = map.getSize();
+      const sw = L.CRS.EPSG3857.project(b.getSouthWest()), ne = L.CRS.EPSG3857.project(b.getNorthEast());
+      const url = `${TOWN_GIS}/${service}/MapServer/export?bbox=${sw.x},${sw.y},${ne.x},${ne.y}&bboxSR=3857&imageSR=3857`
+        + `&size=${size.x},${size.y}&format=png32&transparent=true&layers=show:${layerId}&f=image`;
+      const next = L.imageOverlay(url, b, { opacity: 0.55, interactive: false });
+      next.once('load', () => { if (shown) group.removeLayer(shown); shown = next; });
+      group.addLayer(next);
+    };
+    group.on('add', () => {
+      map.on('moveend', refresh);
+      refresh();
+      track('layer/' + service, 'Map layer: ' + name);
+      fetch(`${TOWN_GIS}/${service}/MapServer/legend?f=json`).then((r) => r.json()).then((d) => {
+        const l = (d.layers || []).find((x) => x.layerId === layerId);
+        if (!l || !map.hasLayer(group)) return;
+        activeLegends.set(name, l.legend.map((i) => `<span><img alt="" src="data:${i.contentType};base64,${i.imageData}">${esc(i.label || l.layerName)}</span>`).join(''));
+        renderLegends();
+      }).catch(() => {});
+    });
+    group.on('remove', () => { map.off('moveend', refresh); group.clearLayers(); shown = null; activeLegends.delete(name); renderLegends(); });
+    return group;
+  }
+  L.control.layers({ 'Map': streets, 'Satellite': satellite }, {
+    'Zoning districts': townLayer('Zoning districts', 'MPSC_Zoning_New', 2, 16), // drawn at 1:12,000 and closer
+    'Flood zones (FEMA 2021)': townLayer('Flood zones', 'MPSC_FloodZones', 3),
+    'Future land use': townLayer('Future land use', 'MPSC_Land_Use_New', 3),
+  }, { position: 'topright' }).addTo(map);
   const cluster = L.markerClusterGroup({
     // Group widely at city scale, tighter near street level, none from zoom 18.
     showCoverageOnHover: false, spiderfyOnMaxZoom: true, disableClusteringAtZoom: 18,
@@ -388,9 +439,21 @@
       return `<a class="btn btn-outline btn-sm" href="${esc(d.u)}" target="_blank" rel="noopener" title="${esc(d.l)}">${ICON.doc}${esc(label)}</a>`;
     }).join('');
   }
+  /* Meeting recordings on the Town's YouTube channel (data/videos.json, refreshed daily).
+     Older Council / Committee / Commission meetings get a search of the channel instead. */
+  let videos = {};
+  fetch('data/videos.json').then((r) => (r.ok ? r.json() : {})).then((d) => { videos = d; }).catch(() => {});
+  const ON_CHANNEL = new Set(['Town Council', 'Planning Committee', 'Planning Commission']);
+  function videoLink(e) {
+    const id = videos[e.date] && videos[e.date][e.body];
+    if (id) return `<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/watch?v=${esc(id)}" target="_blank" rel="noopener" data-track="video/watch">${ICON.play}Watch</a>`;
+    if (!ON_CHANNEL.has(e.body) || e.date < '2019') return '';
+    const d = new Date(e.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    return `<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/channel/UCNhfTlBOB2AbKtELKzY7_yQ/search?query=${encodeURIComponent(d)}" target="_blank" rel="noopener" data-track="video/find">${ICON.play}Find recording</a>`;
+  }
   function eventLinks(e) {
     const pdf = e.pdf ? `${e.pdf}#page=${e.page}` : e.town ? `${e.town}#page=${e.page}` : null;
-    return `${docLinks(e)}
+    return `${videoLink(e)}${docLinks(e)}
       <button class="btn btn-secondary btn-sm" type="button" data-excerpt="${esc(e.id)}" aria-expanded="false">${ICON.text}<span>Minutes</span></button>
       ${pdf ? `<a class="btn btn-ghost btn-sm" href="${esc(pdf)}" target="_blank" rel="noopener">${ICON.ext}PDF p.${e.page}</a>` : ''}
       ${e.pdf && e.town ? `<a class="btn btn-ghost btn-sm" href="${esc(e.town)}" target="_blank" rel="noopener">${ICON.ext}Town's copy</a>` : ''}`;
@@ -512,11 +575,11 @@
       <div class="detail-actions">
         ${hoodLink(p)}
         <div class="detail-btns">
-          <a class="btn btn-outline btn-sm" href="plan.html?address=${encodeURIComponent(p.address)}">Planning a request here?</a>
-          <button class="btn btn-outline btn-sm" type="button" data-alerts="property" data-addr="${esc(p.address)}">Alert me about new cases near here</button>
+          <a class="btn btn-primary btn-sm" href="plan.html?address=${encodeURIComponent(p.address)}">Plan a request here</a>
+          <button class="btn btn-outline btn-sm" type="button" data-alerts="property" data-addr="${esc(p.address)}">Get alerts nearby</button>
         </div>
         ${p.geo ? `<p class="geo-note">${esc(GEO_LABEL[p.geo] || p.geo)}</p>` : ''}
-        <p class="report-row">Something wrong on this page? <button type="button" class="linklike" data-report="${esc(p.id)}" data-report-label="${esc(p.address)}">Report an error</button></p>
+        <p class="report-row"><button type="button" class="linklike" data-report="${esc(p.id)}" data-report-label="${esc(p.address)}">Report an error</button></p>
       </div>`;
     $('pane').scrollTop = 0;
     if (fly && p.lat) {
@@ -572,7 +635,7 @@
         <span class="preview-title">${esc(p.address)}</span>
         <span><span class="badge" style="${statusTone(c.status)}"><span class="dot"></span>${esc(c.status)}</span>
           <span class="muted small">&nbsp;${c.case ? esc(c.case) + ' · ' : ''}${fmtDate(c.date)}</span></span>
-        <button class="btn btn-primary btn-sm" type="button" data-open="${esc(p.id)}">View case history</button>
+        <button class="btn btn-primary btn-sm" type="button" data-open="${esc(p.id)}">Open</button>
       </div>`;
     L.popup({ className: 'preview', offset: [0, -10], maxWidth: 300, autoPanPadding: [40, 40] })
       .setLatLng(latlng).setContent(html).openOn(map);
@@ -791,7 +854,7 @@
       </button></li>`;
     $('soonN').textContent = nItems;
     $('tabSoon').hidden = false;
-    el.innerHTML = `<p class="up-intro muted small">Zoning items on agendas the Town has posted. Tap one to see it on the map.</p>
+    el.innerHTML = `
       ${meets.map((m, mi) => {
         const rel = relDay(m.date);
         const first = m.items.slice(0, 3), rest = m.items.slice(3);
@@ -799,10 +862,15 @@
           <div class="up-when">${rel ? `<span class="up-rel">${esc(rel[0].toUpperCase() + rel.slice(1))}</span>·` : ''}<b>${esc(fmtDay(m.date))}${m.time ? ', ' + esc(m.time) : ''}</b><span class="muted">${esc(m.label)}</span></div>
           <ul class="up-items">${first.map((it, ii) => itemHtml(m, mi, it, ii)).join('')}</ul>
           ${rest.length ? `<details class="up-more"><summary>${rest.length} more</summary><ul class="up-items">${rest.map((it, k) => itemHtml(m, mi, it, k + 3)).join('')}</ul></details>` : ''}
-          ${m.deadline ? `<p class="up-foot">Written comments by <b>${esc(m.deadline)}</b></p>` : ''}
+          ${m.deadline ? `<p class="up-foot">Comments due ${esc(m.deadline.replace(/, \d{4}$/, ''))}</p>` : ''}
           ${window.MPShared ? window.MPShared.meetingActions(m) : ''}
         </div>`;
       }).join('')}`;
+    const base = `${location.host}${location.pathname.replace(/[^/]*$/, '')}feeds/`;
+    el.insertAdjacentHTML('beforeend', `<p class="up-subscribe">Follow every meeting:
+      <a href="https://calendar.google.com/calendar/r?cid=${encodeURIComponent('webcal://' + base + 'meetings.ics')}" target="_blank" rel="noopener" data-track="feed/google">Google Calendar</a>
+      <a href="webcal://${base}meetings.ics" data-track="feed/webcal">Apple / Outlook</a>
+      <a href="feeds/agenda.xml" data-track="feed/rss">RSS</a></p>`);
     el.hidden = false;
     if (!userPickedTab && !location.hash && !$('q').value) setTab('soon');
     meets.forEach((m, mi) => m.items.forEach((it) => {

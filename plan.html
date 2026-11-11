@@ -7,7 +7,7 @@
 <meta name="description" content="Planning a variance or rezoning in Mount Pleasant, SC? See your lot's zoning, the right application, comparable past cases and how successful applicants made their case.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="plan.css">
 </head>
@@ -15,29 +15,29 @@
 <header class="topbar">
   <a class="brand" href="./" aria-label="Zoning Map, home">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" fill="currentColor"/></svg>
-    <span>Zoning Map</span>
+    <span>Mount Pleasant Zoning</span>
   </a>
   <div></div>
-  <div class="topbar-right"><a class="btn btn-outline btn-sm" href="./">← Back to the map</a></div>
+  <div class="topbar-right"><a class="btn btn-ghost btn-sm" href="./">Map</a></div>
 </header>
 
 <main class="plan">
   <section class="plan-intro">
     <p class="eyebrow">Plan a request</p>
     <h1>Planning a variance or rezoning?</h1>
-    <p class="muted lead">Enter your address and what you want to do. You'll see your lot's current zoning, which application you likely need, how comparable requests in Mount Pleasant fared, and what successful applicants did. Based on 684 cases read from the Town's minutes, 2017–2026.</p>
+    <p class="lead">See the rules for your lot, the application you need, and how similar requests fared.</p>
   </section>
 
   <form class="card plan-form" id="planForm">
     <div class="field">
-      <label class="label" for="addr">1. Property address or parcel number (TMS)</label>
+      <label class="label" for="addr">Address or parcel number</label>
       <div class="row">
         <input class="input" id="addr" type="text" placeholder="e.g. 100 Ann Edwards Lane" autocomplete="off" required>
       </div>
-      <p class="hint" id="addrHint">Mount Pleasant, SC only. If the lot shown isn't yours, enter its TMS (e.g. 532-01-00-147).</p>
+      <p class="hint" id="addrHint">Mount Pleasant only. Wrong lot? Use its TMS, e.g. 532-01-00-147.</p>
     </div>
     <div class="field">
-      <label class="label" for="relief">2. What do you want to do?</label>
+      <label class="label" for="relief">What do you want to do?</label>
       <select class="input" id="relief" required>
         <option value="">Choose…</option>
         <optgroup label="Build closer to a property line">
@@ -66,25 +66,23 @@
       </select>
     </div>
     <div class="field" id="sizeField">
-      <label class="label">3. How much? <span class="muted">(optional)</span></label>
+      <label class="label">How much? <span class="muted">Optional</span></label>
       <div class="row size-row">
         <span>Ask for</span><input class="input num" id="sizeAsk" type="number" min="0" step="0.5" placeholder="3">
         <span>of a</span><input class="input num" id="sizeReq" type="number" min="0" step="0.5" placeholder="10">
         <span>requirement</span>
         <select class="input unit" id="sizeUnit"><option>ft</option><option>%</option><option>sq ft</option><option>inches</option></select>
       </div>
-      <p class="hint">E.g. a 3 ft encroachment into a 10 ft side setback. Used only to compare with past requests, in your browser.</p>
+      <p class="hint">For example, 3 ft into a 10 ft side setback.</p>
     </div>
     <button class="btn btn-primary" type="submit" id="go">Show my options</button>
-    <p class="hint">Nothing you enter is stored. The address is looked up with Charleston County and Town of Mount Pleasant map services.</p>
+    <p class="hint">Nothing you enter is stored.</p>
   </form>
 
   <div id="out" aria-live="polite"></div>
 
-  <footer class="plan-foot muted small">
-    Information from public records, not legal advice. Patterns describe past cases and do not predict any decision.
-    Confirm requirements with the Town of Mount Pleasant Planning Department before applying.
-    Outcomes and summaries were read from the minutes with AI assistance and checked against them; the minutes are authoritative.
+  <footer class="plan-foot">
+    Independent project built from public records. Not affiliated with the Town of Mount Pleasant. Not legal advice. Patterns describe past cases and don't predict decisions; confirm requirements with the Town's Planning Department.
   </footer>
 </main>
 
