@@ -53,12 +53,16 @@ with the neighborhood's name.
 
 ## Meeting videos, feeds, map layers, development pipeline
 
-- **Videos** (`tools/videos.py`, daily): the Town's YouTube channel feed is matched by
-  date and body to Town Council, Planning Committee and Planning Commission meetings
-  and kept in `data/videos.json` (coverage grows from July 2026). Timeline steps
-  show "Watch"; older steps of those bodies get a search of the channel. Zoning
-  Appeals, Historic District and Design Review meetings are not on the channel. The
-  minutes PDFs themselves carry no recording links.
+- **Videos** (`tools/videos.py`, daily): the Town's YouTube channel feed and Open
+  Publica's meeting list (openpublica.com: free API, no key, independent machine
+  transcripts of the Town's videos from Aug 2025) are matched by date and body to
+  Town Council, Planning Committee and Planning Commission meetings
+  (`data/videos.json`). Where a transcript exists, each case heard that day is
+  located by house number + street, case number or project name, and the densest
+  five minutes of mentions gives a "Watch from h:mm:ss" link
+  (`data/video-moments.json`; approximate; 26 of 80 hearings at the 17 transcribed
+  meetings so far). Zoning Appeals, Historic District and Design Review meetings
+  are not recorded on the channel; the minutes PDFs carry no recording links.
 - **Feeds** (`tools/feeds.py`, at deploy): `feeds/meetings.ics` (subscribable
   calendar of posted zoning meetings) and `feeds/agenda.xml` (RSS, one entry per
   agenda item), from `data/upcoming.json`.
