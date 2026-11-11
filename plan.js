@@ -164,6 +164,39 @@
 
   // ---------- current code (Chapter 156, effective May 1, 2025) ----------
   let code = null;
+  /* Questions boards raised at past hearings of this type (data/faq.json, from the minutes). */
+  let faqData = null;
+  async function loadFaq() {
+    if (!faqData) faqData = await fetch('data/faq.json').then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    return faqData;
+  }
+  function faqSection(faq, relief, z) {
+    if (!faq) return '';
+    const groups = [];
+    if (relief === 'use') groups.push(['planning:rezoning', 'rezoning hearings']);
+    else if (relief === 'lot_size_density_subdivision') groups.push(['planning:subdivision', 'subdivision hearings'], ['planning:rezoning', 'rezoning hearings']);
+    else {
+      const g = faq.groups[`boza:${relief}`];
+      const sb = SETBACKS.includes(relief) && faq.groups['boza:setbacks'];
+      groups.push(g && g.topics.length >= 4 ? [`boza:${relief}`, `${RELIEF[relief] || relief} variance hearings`]
+        : sb ? ['boza:setbacks', 'setback variance hearings'] : ['boza:all', 'Board of Zoning Appeals hearings']);
+    }
+    if (z && z.overlays && z.overlays.some((o) => o.name === 'OV-HD')) groups.push(['hdpc:all', 'Historic District reviews']);
+    const g = groups.map(([k, label]) => [faq.groups[k], label]).find(([x]) => x && x.topics.length);
+    if (!g) return '';
+    const [grp, label] = g;
+    const top = grp.topics.slice(0, 6);
+    return `<section class="card block">
+      <h2>Questions you'll likely be asked</h2>
+      <p class="muted">What board members raised most often at past ${esc(label)}, from the minutes.</p>
+      <ul class="faq">${top.map((t) => `<li>
+        <div class="faq-head"><b>${esc(t.label)}</b><span class="muted small">raised at ${t.hearings} ${t.hearings === 1 ? 'hearing' : 'hearings'}</span></div>
+        <ul class="faq-q">${t.examples.map((e) => `<li>${esc(e.q)} <a class="small" href="./#${encodeURIComponent(e.pid)}">${e.case ? esc(e.case) : 'case'}</a></li>`).join('')}</ul>
+      </li>`).join('')}</ul>
+      <p class="hint">Restated from ${grp.hearings} hearings' minutes, without names. Minutes record questions selectively, so counts understate how often a topic comes up.</p>
+    </section>`;
+  }
+
   async function loadCode() {
     if (!code) code = await (await fetch('data/code-standards.json')).json();
     return code;
@@ -497,7 +530,7 @@
     $('go').disabled = true;
     track('plan/submit', 'Plan: ' + relief);
     try {
-      const [rows, std] = await Promise.all([loadCases(), loadCode()]);
+      const [rows, std, faq] = await Promise.all([loadCases(), loadCode(), loadFaq()]);
       const lot = await findLot(addr, rows);
       if (!lot) {
         $('out').innerHTML = '<div class="card block"><h2>Address not found</h2><p>Try the street number and name only (e.g. "100 Ann Edwards Lane"), or enter the parcel number (TMS, e.g. 532-01-00-147). Only Mount Pleasant properties can be looked up.</p></div>';
@@ -523,8 +556,7 @@
         `<section class="card block"><h2>How to strengthen your application</h2>
           <p class="muted">Patterns from past cases, with how many cases each rests on. Not a prediction.</p>
           <ol class="tips">${isUse || relief === 'lot_size_density_subdivision' ? rezoningTips(R, z, near) : varianceTips(V, comps, relief, userPct, near)}</ol>
-          
-        </section>`;
+        </section>` + faqSection(faq, relief, z);
       $('out').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {
       $('out').innerHTML = `<div class="card block"><h2>Something went wrong</h2><p>${esc(err.message)}. The county or Town map service may be busy; try again in a minute.</p></div>`;

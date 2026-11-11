@@ -35,6 +35,7 @@ jobs:
           python3 tools/agenda_docs.py
           tools/build.sh --geocode
           python3 tools/neighborhoods.py
+          python3 tools/faq_build.py
       - name: Upcoming agendas and meeting videos
         run: |
           python3 tools/upcoming.py
@@ -69,7 +70,7 @@ jobs:
           cp -r index.html app.js style.css shared.js plan.html plan.js plan.css hood.html hood.js hood.css vendor data minutes _site/
           python3 tools/hood_pages.py _site
           python3 tools/feeds.py _site
-          rm -f _site/data/cases.json _site/data/planning.json _site/data/geocode-cache.json _site/data/parcels.json
+          rm -f _site/data/cases.json _site/data/planning.json _site/data/geocode-cache.json _site/data/parcels.json _site/data/questions-coded.json
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:

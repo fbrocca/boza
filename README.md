@@ -74,6 +74,15 @@ with the neighborhood's name.
   Lots or units are shown per case where the request or minutes state them
   (`c.units`, about 40 of 175 approvals); no totals, because counts are partial and
   parcel acreage overstates phased projects.
+- **Frequently raised questions** (`tools/faq_build.py`): 4,483 question and
+  concern sentences were taken from the minutes (all six boards, 2017–2026) and
+  coded by AI readers against a fixed sheet: who raised it (board member,
+  resident, applicant, staff), topic, and a short restated question without names,
+  addresses or case numbers (`data/questions-coded.json`, not published). The
+  Plan page shows what board members asked most often at hearings of the same
+  type; neighborhood pages show what residents raised. Counts are hearings.
+  Minutes record questions selectively, so counts understate frequency. New
+  minutes are not coded automatically.
 - **Staff recommendations** are not extracted: sampled staff reports state facts
   and code comments but no approve / deny recommendation.
 
