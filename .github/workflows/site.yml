@@ -38,7 +38,7 @@ jobs:
       - name: Upcoming agendas and meeting videos
         run: |
           python3 tools/upcoming.py
-          python3 tools/videos.py || echo "video feed unavailable; keeping data/videos.json"
+          python3 tools/videos.py || echo "video sources unavailable; keeping data/videos.json and data/video-moments.json"
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"

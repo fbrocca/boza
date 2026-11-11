@@ -439,17 +439,18 @@
       return `<a class="btn btn-outline btn-sm" href="${esc(d.u)}" target="_blank" rel="noopener" title="${esc(d.l)}">${ICON.doc}${esc(label)}</a>`;
     }).join('');
   }
-  /* Meeting recordings on the Town's YouTube channel (data/videos.json, refreshed daily).
-     Older Council / Committee / Commission meetings get a search of the channel instead. */
-  let videos = {};
+  /* Meeting recordings (data/videos.json) and, where a transcript exists, the moment the case
+     comes up (data/video-moments.json; located from Open Publica's transcripts, so approximate). */
+  let videos = {}, moments = {};
   fetch('data/videos.json').then((r) => (r.ok ? r.json() : {})).then((d) => { videos = d; }).catch(() => {});
-  const ON_CHANNEL = new Set(['Town Council', 'Planning Committee', 'Planning Commission']);
+  fetch('data/video-moments.json').then((r) => (r.ok ? r.json() : {})).then((d) => { moments = d; }).catch(() => {});
+  const hms = (t) => (t >= 3600 ? `${Math.floor(t / 3600)}:${String(Math.floor(t % 3600 / 60)).padStart(2, '0')}` : `${Math.floor(t / 60)}`) + `:${String(t % 60).padStart(2, '0')}`;
   function videoLink(e) {
+    const m = moments[e.id];
+    if (m) return `<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/watch?v=${esc(m[0])}&t=${m[1]}s" target="_blank" rel="noopener" data-track="video/moment" title="Approximate: located from an automatic transcript">${ICON.play}Watch from ${hms(m[1])}</a>`;
     const id = videos[e.date] && videos[e.date][e.body];
-    if (id) return `<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/watch?v=${esc(id)}" target="_blank" rel="noopener" data-track="video/watch">${ICON.play}Watch</a>`;
-    if (!ON_CHANNEL.has(e.body) || e.date < '2019') return '';
-    const d = new Date(e.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    return `<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/channel/UCNhfTlBOB2AbKtELKzY7_yQ/search?query=${encodeURIComponent(d)}" target="_blank" rel="noopener" data-track="video/find">${ICON.play}Find recording</a>`;
+    if (id) return `<a class="btn btn-ghost btn-sm" href="https://www.youtube.com/watch?v=${esc(id)}" target="_blank" rel="noopener" data-track="video/watch">${ICON.play}Watch meeting</a>`;
+    return '';
   }
   function eventLinks(e) {
     const pdf = e.pdf ? `${e.pdf}#page=${e.page}` : e.town ? `${e.town}#page=${e.page}` : null;
