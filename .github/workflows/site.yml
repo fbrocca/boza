@@ -35,6 +35,7 @@ jobs:
           python3 tools/agenda_docs.py
           tools/build.sh --geocode
           python3 tools/neighborhoods.py
+          python3 tools/faq_build.py
       - name: Upcoming agendas and meeting videos
         run: |
           python3 tools/upcoming.py

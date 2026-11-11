@@ -50,7 +50,8 @@
     fetch('data/neighborhoods.json').then((r) => r.json()),
     fetch('data/upcoming.json').then((r) => (r.ok ? r.json() : { meetings: [] })).catch(() => ({ meetings: [] })),
     slug ? fetch('data/neighborhood-shapes.json').then((r) => r.json()).catch(() => ({})) : Promise.resolve({}),
-  ]).then(([{ properties }, nb, up, shapes]) => {
+    slug ? fetch('data/faq.json').then((r) => (r.ok ? r.json() : null)).catch(() => null) : Promise.resolve(null),
+  ]).then(([{ properties }, nb, up, shapes, faq]) => {
     const rows = [];
     for (const p of properties) for (const c of p.cases) rows.push({ p, c, hood: nb.assign[p.id] });
     const town = Object.fromEntries(MEASURES.map((m) => [m.key, measure(rows, m)]));
@@ -59,7 +60,7 @@
     if (!slug) return renderIndex(nb, rows, town);
     const h = nb.hoods.find((x) => x.slug === slug);
     if (!h) { $('hood').innerHTML = '<section class="h-head"><h1>Not found</h1><p><a href="n/">All neighborhoods</a></p></section>'; return; }
-    renderHood(h, rows.filter((x) => x.hood === slug), town, meetings, shapes[slug] || [], nb);
+    renderHood(h, rows.filter((x) => x.hood === slug), town, meetings, shapes[slug] || [], nb, faq && faq.hoods[slug]);
   }).catch((e) => {
     $('hood').innerHTML = `<section class="h-head"><h1>Couldn't load the data</h1><p class="muted">${esc(e.message)}</p></section>`;
   });
@@ -74,7 +75,7 @@
   }
 
   // ---------- one neighborhood ----------
-  function renderHood(h, rows, town, meetings, rings, nb) {
+  function renderHood(h, rows, town, meetings, rings, nb, raised) {
     document.title = `${h.name} · Mount Pleasant Zoning`;
     const main = rows.filter((x) => !minor(x.c));
     const first = main.reduce((a, x) => ((x.c.first || x.c.date) < a ? (x.c.first || x.c.date) : a), '9999');
@@ -120,6 +121,15 @@
             <span class="h-li-sub"><i class="sw" style="background:${t.color}"></i>${esc(t.label)}${x.c.units ? ` · ${x.c.units.n} ${esc(x.c.units.what)}` : ''} · ${fmtMonth(x.c.date)}${x.c.case ? ' · ' + esc(x.c.case) : ''}</span></li>`;
         }).join('')}</ul>
         ${dev.length > 10 ? `<p class="h-more muted small">${dev.length - 10} more on the map</p>` : ''}
+      </section>` : ''}
+
+      ${raised && raised.topics.length ? `<section class="h-section">
+        <h2>What neighbors raise</h2>
+        <ul class="h-list">${raised.topics.slice(0, 5).map((t) => `<li>
+          <span class="h-li-main">${esc(t.label)} <span class="muted small">· ${t.hearings} ${t.hearings === 1 ? 'hearing' : 'hearings'}</span></span>
+          <span class="h-li-sub">${t.examples.slice(0, 2).map((e) => esc(e.q)).join(' · ')}</span>
+        </li>`).join('')}</ul>
+        <p class="h-note">Concerns residents raised at hearings here, from the minutes. Names are not shown.</p>
       </section>` : ''}
 
       <section class="h-section">

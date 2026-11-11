@@ -83,3 +83,10 @@ select.input { height: 40px; padding-right: 32px; appearance: none; -webkit-appe
 .plan > *, .plan-form > *, .field > * { min-width: 0; }
 .plan-form select.input, #addr { width: 100%; max-width: 520px; }
 .size-row { row-gap: 10px; }
+
+/* Questions you'll likely be asked */
+.faq { list-style: none; margin: 12px 0 6px; padding: 0; }
+.faq > li { padding: 12px 0; border-top: 1px solid var(--hairline); }
+.faq-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.faq-q { margin: 6px 0 0; padding-left: 18px; color: var(--foreground); font-size: 14px; display: grid; gap: 3px; }
+.faq-q a { margin-left: 4px; }
