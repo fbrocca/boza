@@ -1,4 +1,29 @@
 {
- "updated": "2026-11-11",
- "meetings": []
+ "updated": "2026-11-18",
+ "meetings": [
+  {
+   "body": "boza",
+   "label": "Board of Zoning Appeals",
+   "date": "2026-12-07",
+   "time": "6:00pm",
+   "agenda": "https://sc-mountpleasant2.civicplus.com/AgendaCenter/ViewFile/Agenda/_12072026-2298",
+   "title": "December 7, 2026 BOZA Agenda",
+   "deadline": "Wednesday, December 2, 2026",
+   "email": null,
+   "public_comment": true,
+   "items": [
+    {
+     "case": "V-20-26",
+     "tms": "532-02-00-032",
+     "title": "709 Coleman Boulevard",
+     "address": null,
+     "kind": "Variance",
+     "request": "Case V-20-2026 Appeal of the Zoning Administrator\u2019s determination that the proposed use of the property does not require a zoning permit or review under the Town\u2019s provisions for changes in principal use.",
+     "status": null,
+     "lat": 32.792082,
+     "lng": -79.869333
+    }
+   ]
+  }
+ ]
 }
