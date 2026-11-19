@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18",
+ "updated": "2026-11-19",
  "meetings": [
   {
    "body": "boza",
@@ -13,12 +13,12 @@
    "public_comment": true,
    "items": [
     {
-     "case": "V-20-26",
+     "case": "A-02-26",
      "tms": "532-02-00-032",
      "title": "709 Coleman Boulevard",
      "address": null,
-     "kind": "Variance",
-     "request": "Case V-20-2026 Appeal of the Zoning Administrator\u2019s determination that the proposed use of the property does not require a zoning permit or review under the Town\u2019s provisions for changes in principal use.",
+     "kind": "Appeal",
+     "request": "Case A-02-2026 Appeal of the Zoning Administrator\u2019s determination that the proposed use of the property does not require a zoning permit or review under the Town\u2019s provisions for changes in principal use.",
      "status": null,
      "lat": 32.792082,
      "lng": -79.869333
