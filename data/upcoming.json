@@ -1,6 +1,75 @@
 {
- "updated": "2026-11-19",
+ "updated": "2026-11-20",
  "meetings": [
+  {
+   "body": "drb",
+   "label": "Design Review Board",
+   "date": "2026-12-02",
+   "time": "5:00pm",
+   "agenda": "https://sc-mountpleasant2.civicplus.com/AgendaCenter/ViewFile/Agenda/_12022026-2300",
+   "title": "December 2nd Design Review Board Agenda",
+   "deadline": "Monday, November 30, 2026",
+   "email": "planning@tompsc.com",
+   "public_comment": true,
+   "items": [
+    {
+     "case": null,
+     "tms": null,
+     "title": "Spartina Creek - Extension",
+     "address": null,
+     "kind": "Design review",
+     "request": "",
+     "status": null
+    },
+    {
+     "case": null,
+     "tms": "532-03-00-087",
+     "title": "Chase Bank",
+     "address": "860 Coleman Blvd",
+     "kind": "Design review",
+     "request": "Final Review of Site, Landscape, and Architecture",
+     "status": null,
+     "property": "tms-532-03-00-086",
+     "lat": 32.794368,
+     "lng": -79.863597
+    },
+    {
+     "case": null,
+     "tms": "517-04-00-106",
+     "title": "Prisma Urgent Care",
+     "address": "631 Johnnie Dodds Blvd",
+     "kind": "Design review",
+     "request": "Final Review of Architecture",
+     "status": null,
+     "lat": 32.807358,
+     "lng": -79.879603
+    },
+    {
+     "case": null,
+     "tms": "600-00-00-075",
+     "title": "Market at Oakland Tobacco and Wine",
+     "address": "Oakland Market Rd",
+     "kind": "Design review",
+     "request": "Final Review of Site, Landscape, and Architecture",
+     "status": null,
+     "property": "tms-600-00-00-075",
+     "lat": 32.864996,
+     "lng": -79.78358
+    },
+    {
+     "case": null,
+     "tms": "598-00-00-437",
+     "title": "George Browder Townhomes",
+     "address": "George Browder Blvd",
+     "kind": "Design review",
+     "request": "Preliminary Review of Site, Landscape, and Architecture",
+     "status": null,
+     "property": "tms-598-00-00-437",
+     "lat": 32.872963,
+     "lng": -79.782053
+    }
+   ]
+  },
   {
    "body": "boza",
    "label": "Board of Zoning Appeals",
