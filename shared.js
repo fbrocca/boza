@@ -85,7 +85,7 @@
   function calText(m, items) {
     const list = (items || m.items).slice(0, 12).map((it) => `- ${it.title}${it.request ? ': ' + it.request : ''}`).join('\n');
     const how = m.deadline ? `Written comments by ${m.deadline}${m.email ? ' to ' + m.email : ''}.` : '';
-    return `${list}\n\n${how}\nAgenda: ${m.agenda}\nFrom the Mount Pleasant Zoning Map: ${location.origin}${location.pathname.replace(/[^/]*$/, '')}`;
+    return `${list}\n\n${how}\nAgenda: ${m.agenda}\nFrom The Zoning Record: ${location.origin}${location.pathname.replace(/[^/]*$/, '')}`;
   }
   function googleCal(m, items) {
     const t = calTimes(m);
@@ -98,7 +98,7 @@
     const e = (s) => s.replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/[,;]/g, (c) => '\\' + c);
     const when = t.allDay ? `DTSTART;VALUE=DATE:${t.start}\r\nDTEND;VALUE=DATE:${t.end}`
       : `DTSTART;TZID=America/New_York:${t.start}\r\nDTEND;TZID=America/New_York:${t.end}`;
-    const body = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Mount Pleasant Zoning Map//EN', 'BEGIN:VEVENT',
+    const body = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//The Zoning Record//EN', 'BEGIN:VEVENT',
       `UID:${m.body}-${m.date}@mp-zoning-map`, `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').slice(0, 15)}Z`, when,
       `SUMMARY:${e(m.label + ' meeting')}`, `LOCATION:${e(LOCATION)}`, `DESCRIPTION:${e(calText(m, items))}`, `URL:${m.agenda}`,
       'END:VEVENT', 'END:VCALENDAR'].join('\r\n');

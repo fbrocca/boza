@@ -110,7 +110,7 @@
     }
     const shape = p.rings
       ? p.rings.map((r) => `<polygon points="${r.map((q) => project(q[0], q[1], z).map((v) => v.toFixed(1)).join(',')).join(' ')}" fill="rgba(255,255,255,.16)" stroke="#fff" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`).join('')
-      : `<circle cx="${cx}" cy="${cy}" r="7" fill="#ef4444" stroke="#fff" stroke-width="2.5"/>`;
+      : `<circle cx="${cx}" cy="${cy}" r="7" fill="#191b18" stroke="#f5f2ea" stroke-width="2.5"/>`;
     return `<svg viewBox="${x0.toFixed(1)} ${y0.toFixed(1)} ${W} ${H}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Satellite view of ${esc(p.address)}">${imgs}${shape}</svg>`;
   }
   const thumbObserver = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
@@ -247,7 +247,7 @@
   function setArea(pts, { fit = true } = {}) {
     if (areaLayer) map.removeLayer(areaLayer);
     area = pts;
-    areaLayer = pts ? L.polygon(pts, { color: '#2563eb', weight: 2.5, fillColor: '#2563eb', fillOpacity: 0.08, dashArray: null, interactive: false }).addTo(map) : null;
+    areaLayer = pts ? L.polygon(pts, { color: '#2e5b3f', weight: 2.5, fillColor: '#2e5b3f', fillOpacity: 0.08, dashArray: null, interactive: false }).addTo(map) : null;
     if (pts && fit) map.fitBounds(areaLayer.getBounds(), { padding: [40, 40] });
     renderAreaCtl();
     areaUrl();
@@ -282,7 +282,7 @@
       const ll = map.mouseEventToLatLng(e);
       pts = [ll];
       lastPx = [e.clientX, e.clientY];
-      line = L.polyline(pts, { color: '#2563eb', weight: 3, interactive: false }).addTo(map);
+      line = L.polyline(pts, { color: '#2e5b3f', weight: 3, interactive: false }).addTo(map);
     });
     box.addEventListener('pointermove', (e) => {
       if (!drawing || !pts) return;
@@ -425,7 +425,8 @@
     outline.clearLayers();
     const p = id && byId.get(id);
     if (p && p.rings) {
-      L.polygon(p.rings, { color: '#09090b', weight: 2.5, fillColor: '#09090b', fillOpacity: 0.1, interactive: false }).addTo(outline);
+      const ink = getComputedStyle(document.documentElement).getPropertyValue('--foreground').trim() || '#191b18';
+      L.polygon(p.rings, { color: ink, weight: 2.5, fillColor: ink, fillOpacity: 0.1, interactive: false }).addTo(outline);
     }
   }
 
