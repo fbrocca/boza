@@ -1,0 +1,62 @@
+/* Static record pages (properties, meetings, guides). Builds on landing.css tokens. */
+.doc { max-width: 860px; padding-top: 28px; padding-bottom: 64px; }
+.crumbs { font: 12px var(--mono); color: var(--ink-3); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 28px; }
+.crumbs a { color: var(--ink-3); text-decoration: none; }
+.crumbs a:hover { color: var(--ink); text-decoration: underline; }
+.doc h1 { font-size: 52px; margin-bottom: 18px; }
+.doc .lede { font-size: 20px; max-width: none; margin-bottom: 14px; }
+.doc h2 { font: 500 26px/1.2 var(--serif); letter-spacing: -.01em; margin: 44px 0 12px; padding-top: 14px; border-top: 2px solid var(--ink); }
+.doc p { margin: 0 0 12px; }
+.doc a { color: var(--marsh); }
+.facts, .note, .tags { color: var(--ink-3); font-size: 14px; }
+.facts { font-family: var(--mono); font-size: 13px; }
+.note { font-size: 13px; margin-top: 28px !important; }
+.actions { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; margin: 20px 0 8px !important; font-size: 15px; }
+.btn { background: var(--ink); color: var(--paper) !important; text-decoration: none; padding: 10px 18px; font: 500 14px var(--sans); }
+.btn:hover { background: var(--marsh); }
+
+.case h2 { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; font-family: var(--mono); font-size: 20px; letter-spacing: 0; }
+.case .status { font: 600 14px var(--sans); color: var(--marsh); }
+.tags { font: 12px var(--mono); text-transform: uppercase; letter-spacing: .05em; }
+.ai { background: var(--paper-2); padding: 10px 14px; font-size: 15px; }
+.ai span { font: 500 10.5px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); margin-right: 8px; }
+
+.hearings, .items, .meets { list-style: none; padding: 0; margin: 12px 0 0; }
+.hearings li, .meets li { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 10px 0; border-top: 1px solid var(--rule); font-size: 15px; }
+.when { font: 12.5px/1.6 var(--mono); color: var(--ink-3); }
+.when a { color: var(--ink-3) !important; }
+.hearings small { color: var(--ink-3); font-size: 13px; line-height: 1.7; }
+.items li { padding: 14px 0; border-top: 1px solid var(--rule); font-size: 15px; color: var(--ink-2); }
+.items b { font: 500 19px var(--serif); color: var(--ink); }
+.mono { font: 13px var(--mono); color: var(--ink-3); margin-left: 6px; }
+.dec { font-weight: 600; color: var(--ink); }
+
+.index { list-style: none; padding: 0; margin: 20px 0 0; }
+.streets li { padding: 9px 0; border-top: 1px solid var(--rule); font-size: 14.5px; line-height: 1.7; }
+.streets b { font: 500 17px var(--serif); margin-right: 10px; }
+.streets a { text-decoration: none; }
+.streets a:hover { text-decoration: underline; }
+.meets small { color: var(--ink-3); margin-left: 6px; }
+.guides li { padding: 16px 0; border-top: 1px solid var(--ink); color: var(--ink-2); }
+.guides b { font: 500 24px var(--serif); color: var(--ink); }
+.guides small { font: 12px var(--mono); color: var(--ink-3); margin-left: 6px; }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+.t { width: 100%; border-collapse: collapse; font-size: 14.5px; margin: 8px 0; }
+.t th, .t td { text-align: left; padding: 7px 8px 7px 0; border-bottom: 1px solid var(--rule); font-weight: 400; }
+.t td { text-align: right; font-family: var(--mono); font-size: 13.5px; }
+.t thead th, .t thead td { font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--ink); }
+.faq { padding-left: 20px; }
+.faq > li { margin: 0 0 14px; }
+.faq small { color: var(--ink-3); font: 12px var(--mono); margin-left: 6px; }
+.faq ul { margin: 6px 0 0; padding-left: 18px; color: var(--ink-2); font-size: 14.5px; }
+
+@media (max-width: 900px) {
+  nav a:not(:first-child) { display: none; }
+  .doc h1 { font-size: 36px; }
+  .doc .lede { font-size: 18px; }
+  .two { grid-template-columns: 1fr; gap: 0; }
+  .hearings li, .meets li { grid-template-columns: 1fr; gap: 2px; }
+  .doc h2 { font-size: 22px; }
+  .case h2 { font-size: 17px; }
+}

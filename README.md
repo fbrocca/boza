@@ -35,6 +35,23 @@ links shared before the landing page existed (`#property`, `?area=`, `?q=`) are
 forwarded there. `tools/landing_data.py` writes `data/summary.json` and `plat.svg`
 at deploy.
 
+## Pages for search engines and AI assistants (`tools/static_pages.py`)
+
+The site lives at https://zoningrecord.com/mount-pleasant/. The map is a JavaScript app, which most
+crawlers and AI assistants don't run, so the deploy also writes the record as plain HTML:
+
+- `p/<address>-<parcel digits>/`: one page per property with every case, outcome, hearing and source link.
+  The slug never changes as cases are added; the map's "Permanent page" button links to it.
+- `m/<date>-<board>/`: one page per hearing, with what was heard and decided.
+- `g/<board>/`: what each board decides, outcomes on record, and the questions it asks.
+- `p/`, `m/`, `g/`: indexes. At the domain root: `sitemap.xml`, `robots.txt` (search and AI crawlers
+  allowed) and `llms.txt`.
+
+Pages carry canonical URLs and schema.org data (Place, Event, Article, BreadcrumbList). Nothing is
+committed; everything is rebuilt on every deploy, so new cases appear as soon as the data updates.
+The root `index.html` forwards to `/mount-pleasant/`; the root `404.html` rewrites links shared
+before the move (including `fabiobrocca.tech/boza/...`), keeping `#property` and `?q=`.
+
 ## Coming up
 
 `tools/upcoming.py` reads the agendas the Town has posted for meetings that

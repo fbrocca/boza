@@ -71,10 +71,11 @@ jobs:
           M=_site/mount-pleasant
           mkdir -p $M
           cp root/index.html root/404.html _site/
-          cp -r index.html landing.css landing.js map app.js style.css shared.js plan.html plan.js plan.css hood.html hood.js hood.css vendor data minutes $M/
+          cp -r index.html landing.css landing.js pages.css map app.js style.css shared.js plan.html plan.js plan.css hood.html hood.js hood.css vendor data minutes $M/
           python3 tools/hood_pages.py $M
           python3 tools/feeds.py $M
           python3 tools/landing_data.py $M
+          python3 tools/static_pages.py $M _site   # property, meeting and guide pages; sitemap, robots.txt, llms.txt
           rm -f $M/data/cases.json $M/data/planning.json $M/data/geocode-cache.json $M/data/parcels.json $M/data/questions-coded.json
           cp -r $M/feeds _site/feeds   # calendar and RSS subscribers from before the move (apps do not run JS)
           touch _site/.nojekyll

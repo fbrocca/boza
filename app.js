@@ -31,6 +31,9 @@
     buffer: 'Buffer', parking: 'Parking', lot_size_density_subdivision: 'Lot size / density', accessory_structure: 'Accessory structure',
     signage: 'Signage', use: 'Use', porch_or_design_standard: 'Porch / design standard', dock_or_marsh: 'Dock / marsh',
   };
+  // Same rule as prop_slug() in tools/static_pages.py: address plus parcel digits, stable as cases are added.
+  const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const propSlug = (p) => (p.id.startsWith('tms-') ? `${slugify(p.address)}-${p.id.replace(/[^0-9]/g, '')}` : slugify(p.id.startsWith('addr-') ? p.id.slice(5) : p.id));
   const STATUS_HELP = {
     'Reversed': 'Appeal granted: staff decision overturned.',
     'Upheld': 'Appeal denied: staff decision upheld.',
@@ -579,6 +582,7 @@
         <div class="detail-btns">
           <a class="btn btn-primary btn-sm" href="plan.html?address=${encodeURIComponent(p.address)}">Plan a request here</a>
           <button class="btn btn-outline btn-sm" type="button" data-alerts="property" data-addr="${esc(p.address)}">Get alerts nearby</button>
+          <a class="btn btn-ghost btn-sm" href="p/${propSlug(p)}/" data-track="property/permalink">Permanent page</a>
         </div>
         ${p.geo ? `<p class="geo-note">${esc(GEO_LABEL[p.geo] || p.geo)}</p>` : ''}
         <p class="report-row"><button type="button" class="linklike" data-report="${esc(p.id)}" data-report-label="${esc(p.address)}">Report an error</button></p>
