@@ -70,8 +70,8 @@ jobs:
           # and the root 404 page rewrites links shared before the move.
           M=_site/mount-pleasant
           mkdir -p $M
-          cp root/index.html root/404.html _site/
-          cp -r index.html landing.css landing.js pages.css map app.js style.css shared.js plan.html plan.js plan.css hood.html hood.js hood.css vendor data minutes $M/
+          cp root/index.html root/404.html icons/favicon.ico _site/
+          cp -r index.html site.webmanifest icons landing.css landing.js pages.css map app.js style.css shared.js plan.html plan.js plan.css hood.html hood.js hood.css vendor data minutes $M/
           python3 tools/hood_pages.py $M
           python3 tools/feeds.py $M
           python3 tools/landing_data.py $M
