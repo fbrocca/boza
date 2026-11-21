@@ -31,10 +31,10 @@
      summed into acres or units: parcel acreage overstates phased projects, and lot / unit
      counts are stated for only some cases (shown per case where they are). */
   const DEV = [
-    { key: 'rezoning', label: 'Rezoning', test: (k) => k === 'Rezoning', color: '#2a78d6' },
-    { key: 'annex', label: 'Annexation', test: (k) => /^Annexation/.test(k), color: '#eb6834' },
-    { key: 'pd', label: 'PD amendment', test: (k) => /^PD/.test(k), color: '#1baf7a' },
-    { key: 'sub', label: 'Subdivision', test: (k) => /Sketch plan|Subdivision plat/.test(k), color: '#eda100' },
+    { key: 'rezoning', label: 'Rezoning', test: (k) => k === 'Rezoning', color: '#2e5b3f' },
+    { key: 'annex', label: 'Annexation', test: (k) => /^Annexation/.test(k), color: '#b5652b' },
+    { key: 'pd', label: 'PD amendment', test: (k) => /^PD/.test(k), color: '#4a6d8c' },
+    { key: 'sub', label: 'Subdivision', test: (k) => /Sketch plan|Subdivision plat/.test(k), color: '#c9a33a' },
   ];
   const devType = (c) => (c.board === 'planning' && /^(Approved|Approved with conditions|Adopted by Council)$/.test(c.status)
     ? DEV.find((d) => d.test(c.kind)) : null);
@@ -76,7 +76,7 @@
 
   // ---------- one neighborhood ----------
   function renderHood(h, rows, town, meetings, rings, nb, raised) {
-    document.title = `${h.name} · Mount Pleasant Zoning`;
+    document.title = `${h.name} · The Zoning Record`;
     const main = rows.filter((x) => !minor(x.c));
     const first = main.reduce((a, x) => ((x.c.first || x.c.date) < a ? (x.c.first || x.c.date) : a), '9999');
     const ids = new Set(rows.map((x) => x.p.id));
@@ -202,7 +202,7 @@
   const OUTCOMES = [
     { key: 'approved', label: 'Approved', color: 'var(--approved)' },
     { key: 'denied', label: 'Denied', color: 'var(--denied)' },
-    { key: 'other', label: 'Withdrawn or pending', color: '#c7c7cc' },
+    { key: 'other', label: 'Withdrawn or pending', color: '#c9c1ac' },
   ];
   const yearChart = (rows) => stackChart(rows, OUTCOMES, (x) => outcome(x.c.status), 'Cases per year by outcome');
 
@@ -220,7 +220,7 @@
     const map = mapEl('hmap');
     const pts = [];
     if (rings.length) {
-      const poly = L.polygon(rings.map((r) => [r.map(([x, y]) => [y, x])]), { color: '#0071e3', weight: 2, fillOpacity: 0.05 }).addTo(map);
+      const poly = L.polygon(rings.map((r) => [r.map(([x, y]) => [y, x])]), { color: '#191b18', weight: 2, fillOpacity: 0.05 }).addTo(map);
       pts.push(...poly.getLatLngs().flat(2));
     }
     const seen = new Set();
@@ -228,7 +228,7 @@
       if (!x.p.lat || seen.has(x.p.id)) continue;
       seen.add(x.p.id);
       const o = outcome(x.c.status);
-      L.circleMarker([x.p.lat, x.p.lng], { radius: 5, weight: 1.5, color: '#fff', fillOpacity: 1, fillColor: o === 'approved' ? '#248a3d' : o === 'denied' ? '#c9341c' : '#8e8e93' })
+      L.circleMarker([x.p.lat, x.p.lng], { radius: 5, weight: 1.5, color: '#f5f2ea', fillOpacity: 1, fillColor: o === 'approved' ? '#2e6b45' : o === 'denied' ? '#9a3324' : '#74776f' })
         .bindPopup(`<b>${esc(x.p.address)}</b><br>${esc(x.c.kind)} · ${esc(x.c.status)}<br><a href="map/#${encodeURIComponent(x.p.id)}">Open</a>`).addTo(map);
       pts.push(L.latLng(x.p.lat, x.p.lng));
     }
