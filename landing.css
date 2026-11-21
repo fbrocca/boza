@@ -18,7 +18,9 @@ a { color: inherit; }
 /* Masthead */
 .mast { border-bottom: 1px solid var(--ink); }
 .mast .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-.logo { font: 600 22px var(--serif); letter-spacing: -.01em; text-decoration: none; }
+.logo { display: inline-flex; align-items: center; font: 600 22px var(--serif); letter-spacing: -.01em; text-decoration: none; }
+.logo .mark { width: 26px; height: 26px; margin-right: 12px; flex: none; }
+.mark .lot { fill: var(--marsh); }
 .logo i { font: 500 12px var(--sans); font-style: normal; color: var(--ink-3); letter-spacing: .1em; text-transform: uppercase; margin-left: 14px; }
 nav { display: flex; gap: 28px; font-size: 14px; }
 nav a { text-decoration: none; color: var(--ink-2); }

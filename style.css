@@ -126,10 +126,11 @@ a.badge:hover { background: var(--accent); }
   background: var(--background);
   border-bottom: 1px solid var(--rule-strong);
 }
-.brand { display: inline-flex; align-items: baseline; gap: 12px; font: 600 20px/1 var(--font-display); letter-spacing: -.01em; color: var(--foreground); text-decoration: none; white-space: nowrap; }
+.brand { display: inline-flex; align-items: center; gap: 11px; font: 600 20px/1 var(--font-display); letter-spacing: -.01em; color: var(--foreground); text-decoration: none; white-space: nowrap; }
 .brand:hover { text-decoration: none; }
 .brand i { margin-left: 14px; font: 500 11px var(--font); font-style: normal; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
-.brand .b-mark { display: none; }
+.brand .mark { width: 24px; height: 24px; flex: none; }
+.brand .mark .lot { fill: var(--accent-blue); }
 .searchbar {
   display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 2px; border-radius: 0;
   background: transparent; color: var(--muted-foreground); border-bottom: 1.5px solid var(--rule-strong);
@@ -408,7 +409,7 @@ ul.up-pop { list-style: none; }
   :root { --topbar-h: 56px; }
   .topbar { grid-template-columns: auto minmax(0, 1fr) auto; padding: 0 12px; gap: 10px; }
   .brand .b-full, .plan-btn { display: none; }
-  .brand .b-mark { display: inline-grid; place-items: center; width: 34px; height: 34px; border: 1.5px solid var(--rule-strong); font: 600 16px/1 var(--font-display); letter-spacing: -.02em; }
+  .brand .mark { width: 30px; height: 30px; }
   .layout { grid-template-columns: 1fr; }
   .pane-head { padding: 10px 16px 8px; }
   .cases-head { padding: 4px 16px; }

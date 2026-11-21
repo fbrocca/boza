@@ -136,6 +136,14 @@ def shell(base, title, desc, url, body, ld=None, crumbs=None):
 <meta property="og:url" content="{E(url)}">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="The Zoning Record">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#f5f2ea">
+<meta property="og:image" content="https://zoningrecord.com/mount-pleasant/icons/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -144,7 +152,7 @@ def shell(base, title, desc, url, body, ld=None, crumbs=None):
 {ld_html}</head>
 <body>
 <header class="mast"><div class="wrap">
-  <a class="logo" href="./">The Zoning Record<i>Mount Pleasant</i></a>
+  <a class="logo" href="./"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M8 8H56V56H8Z"/><path d="M8 30H56M30 8V56"/></g><path class="lot" d="M32 32H54V54H32Z" fill="#2e5b3f"/></svg><span>The Zoning Record</span><i>Mount Pleasant</i></a>
   <nav aria-label="Main"><a href="map/">Map</a><a href="p/">Properties</a><a href="m/">Meetings</a><a href="g/">Guides</a><a href="plan.html">Plan a request</a></nav>
 </div></header>
 <main class="wrap doc">
