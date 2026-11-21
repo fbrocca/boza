@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<base href="../">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mount Pleasant Zoning Map</title>
+<meta name="description" content="Every variance, appeal, rezoning, annexation and sketch plan heard in Mount Pleasant, SC since 2017, on a map, with each step from Planning Commission to Town Council, the minutes, and the case documents.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="vendor/markercluster/MarkerCluster.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="./" aria-label="Mount Pleasant Zoning Map, home">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" fill="currentColor"/></svg>
+    <span>Mount Pleasant Zoning</span>
+  </a>
+  <label class="searchbar">
+    <span class="sr">Search</span>
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m21 21-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input id="q" type="search" placeholder="Search address or case number" autocomplete="off">
+  </label>
+  <div class="topbar-right">
+    <span class="sr" id="stats">Loading&hellip;</span>
+    <a class="btn btn-primary btn-sm plan-btn" href="plan.html">Plan a request</a>
+    <button class="btn btn-outline btn-sm alerts-btn icon-only" type="button" data-alerts="topbar" aria-label="Get alerts" title="Get alerts about new cases near you"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Get alerts</span></button>
+  </div>
+</header>
+
+<div class="layout" id="layout">
+  <section class="pane" id="pane" aria-label="Cases">
+    <div id="listView">
+      <div class="pane-head">
+        <h1 class="sr">Zoning cases in Mount Pleasant</h1>
+        <div class="tabs" role="tablist" aria-label="View">
+          <button type="button" role="tab" id="tabSoon" data-tab="soon" aria-selected="false" hidden>Coming up <span class="tab-n" id="soonN"></span></button>
+          <button type="button" role="tab" id="tabCases" data-tab="cases" aria-selected="true">Cases</button>
+          <button type="button" role="tab" id="tabHoods" data-tab="hoods" aria-selected="false">Neighborhoods</button>
+        </div>
+      </div>
+      <div class="tabpanel" id="panelSoon" role="tabpanel" hidden>
+        <div class="upcoming" id="upcoming" hidden></div>
+      </div>
+      <div class="tabpanel" id="panelHoods" role="tabpanel" hidden>
+        <div class="hoods-panel" id="hoodsPanel"><p class="muted">Loading…</p></div>
+      </div>
+      <div class="tabpanel" id="panelCases" role="tabpanel">
+      <div class="cases-head">
+        <div class="toggle-group" role="radiogroup" aria-label="Board" id="fBoard">
+          <button type="button" role="radio" aria-checked="true" data-v="">All</button>
+          <button type="button" role="radio" aria-checked="false" data-v="boza">Zoning Appeals</button>
+          <button type="button" role="radio" aria-checked="false" data-v="planning">Planning</button>
+          <button type="button" role="radio" aria-checked="false" data-v="design">Design review</button>
+        </div>
+        <div class="cases-bar">
+          <p class="muted small" id="count">&nbsp;</p>
+          <button type="button" class="btn btn-outline btn-sm filters-btn" id="filtersBtn" aria-expanded="false" aria-controls="filterPanel">
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M3 5h18M6 12h12M10 19h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Filters<span class="tab-n" id="filtersN" hidden></span></button>
+        </div>
+        <div class="pills" id="filterPanel" hidden>
+          <label class="pill-select"><span class="sr">Outcome</span>
+            <select id="fDecision"><option value="">Outcome</option></select>
+          </label>
+          <label class="pill-select"><span class="sr">Type</span>
+            <select id="fKind"><option value="">Type of case</option></select>
+          </label>
+          <label class="pill-select"><span class="sr">Year</span>
+            <select id="fYear"><option value="">Year</option></select>
+          </label>
+          <label class="pill-check"><input type="checkbox" id="fInView"><span>In map area</span></label>
+          <button type="button" class="pill-check pill-btn" id="drawBtn">Draw an area on the map</button>
+          <button type="button" class="pill-reset" id="reset" hidden>Clear</button>
+        </div>
+      </div>
+      <ol class="cards" id="results"></ol>
+      </div>
+    </div>
+
+    <div id="detailView" hidden>
+      <div class="detail-bar">
+        <button class="btn btn-ghost" id="back" type="button">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m15 18-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          All properties
+        </button>
+      </div>
+      <div id="detail"></div>
+    </div>
+
+    <footer class="pane-foot">
+      Independent project built from the Town's public <a href="https://sc-mountpleasant2.civicplus.com/AgendaCenter" target="_blank" rel="noopener">minutes and agendas</a>. Not affiliated with the Town of Mount Pleasant. Not legal advice. <a href="https://github.com/fbrocca/boza">Method</a>
+    </footer>
+  </section>
+
+  <section class="mapwrap" aria-label="Map">
+    <button class="btn btn-outline btn-sm pane-btn" id="paneHide" type="button" aria-controls="pane" title="Hide the list and show the map full screen"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="m15 18-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Full map</span></button>
+    <button class="btn btn-primary btn-sm pane-btn" id="paneShow" type="button" aria-controls="pane" hidden><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="paneShowTxt">Show list</span></button>
+    <div id="map"></div>
+    <details class="legend card" id="legend"></details>
+  </section>
+</div>
+
+<dialog class="dialog card" id="alertsDlg" aria-labelledby="alertsTitle">
+  <form method="dialog" class="dialog-close"><button class="btn btn-ghost btn-sm" aria-label="Close">✕</button></form>
+  <div id="alertsAsk">
+    <div class="dialog-icon"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h2 id="alertsTitle">Get zoning alerts near you</h2>
+    <p class="muted">Get an email when a new zoning case (variance, rezoning, subdivision) is filed within 500&nbsp;ft of your property, before the hearing, so you have time to weigh in.</p>
+    <form id="alertsForm" class="dialog-form">
+      <label for="alertsAddr" class="label">Your address</label>
+      <input class="input" id="alertsAddr" type="text" placeholder="e.g. 100 Ann Edwards Lane" autocomplete="off" required>
+      <button class="btn btn-primary" type="submit">Continue</button>
+    </form>
+  </div>
+  <div id="alertsThanks" hidden>
+    <div class="dialog-icon">✓</div>
+    <h2>Thanks for your interest</h2>
+    <p>Alerts aren't live yet. We're checking whether people want this before building it, and your click counts as a vote.</p>
+    <p class="muted small">Nothing you typed was saved or sent anywhere.</p>
+    <form method="dialog"><button class="btn btn-primary" style="width:100%">Back to the map</button></form>
+  </div>
+</dialog>
+
+<button class="btn btn-primary map-toggle" id="mapToggle" type="button" aria-pressed="false">
+  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Zm0 0v14m6-12v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+  <span>Map</span>
+</button>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="vendor/markercluster/leaflet.markercluster.js"></script>
+<script src="shared.js"></script>
+<script src="app.js"></script>
+<!-- GoatCounter: cookie-free analytics. Path excludes the query string so
+     drawn boundaries (?area=...) and tester tags don't become separate pages. -->
+<script>window.goatcounter = { path: function () { return location.pathname; } };</script>
+<script data-goatcounter="https://fbrocca.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>

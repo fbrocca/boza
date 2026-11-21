@@ -117,7 +117,7 @@
         <h2>Development approved</h2>
         <ul class="h-list">${dev.slice(0, 10).map((x) => {
           const t = devType(x.c);
-          return `<li><a class="h-li-main" href="./#${encodeURIComponent(x.p.id)}">${esc(x.p.address)}</a>
+          return `<li><a class="h-li-main" href="map/#${encodeURIComponent(x.p.id)}">${esc(x.p.address)}</a>
             <span class="h-li-sub"><i class="sw" style="background:${t.color}"></i>${esc(t.label)}${x.c.units ? ` · ${x.c.units.n} ${esc(x.c.units.what)}` : ''} · ${fmtMonth(x.c.date)}${x.c.case ? ' · ' + esc(x.c.case) : ''}</span></li>`;
         }).join('')}</ul>
         ${dev.length > 10 ? `<p class="h-more muted small">${dev.length - 10} more on the map</p>` : ''}
@@ -210,7 +210,7 @@
     const list = [...rows].sort((a, b) => (b.c.date > a.c.date ? 1 : -1)).slice(0, 8);
     if (!list.length) return '<p class="muted">No cases.</p>';
     return `<ul class="h-list">${list.map((x) => `<li>
-        <a class="h-li-main" href="./#${encodeURIComponent(x.p.id)}" data-track="hood/open-property">${esc(x.p.address)}</a>
+        <a class="h-li-main" href="map/#${encodeURIComponent(x.p.id)}" data-track="hood/open-property">${esc(x.p.address)}</a>
         <span class="h-li-sub"><span class="h-st h-${outcome(x.c.status)}">${esc(x.c.status)}</span> · ${esc(x.c.kind)} · ${fmtDate(x.c.date)}</span>
       </li>`).join('')}</ul>`;
   }
@@ -229,7 +229,7 @@
       seen.add(x.p.id);
       const o = outcome(x.c.status);
       L.circleMarker([x.p.lat, x.p.lng], { radius: 5, weight: 1.5, color: '#fff', fillOpacity: 1, fillColor: o === 'approved' ? '#248a3d' : o === 'denied' ? '#c9341c' : '#8e8e93' })
-        .bindPopup(`<b>${esc(x.p.address)}</b><br>${esc(x.c.kind)} · ${esc(x.c.status)}<br><a href="./#${encodeURIComponent(x.p.id)}">Open</a>`).addTo(map);
+        .bindPopup(`<b>${esc(x.p.address)}</b><br>${esc(x.c.kind)} · ${esc(x.c.status)}<br><a href="map/#${encodeURIComponent(x.p.id)}">Open</a>`).addTo(map);
       pts.push(L.latLng(x.p.lat, x.p.lng));
     }
     if (pts.length) map.fitBounds(L.latLngBounds(pts), { padding: [24, 24], maxZoom: 17 });
