@@ -24,6 +24,17 @@ correspondence, presentation).
 
 **Site:** https://fbrocca.github.io/boza/
 
+## The Zoning Record (landing page)
+
+`index.html` (with `landing.css`, `landing.js`) is the front door: search (which
+opens the map at the result), a live docket of items on posted agendas, a survey
+drawing of the lots around the Old Village and Coleman Boulevard that went before a
+Town board (green: on an upcoming agenda), live counts and the method. The map
+lives at `map/` (its page carries `<base href="../">`, so its paths are unchanged);
+links shared before the landing page existed (`#property`, `?area=`, `?q=`) are
+forwarded there. `tools/landing_data.py` writes `data/summary.json` and `plat.svg`
+at deploy.
+
 ## Coming up
 
 `tools/upcoming.py` reads the agendas the Town has posted for meetings that

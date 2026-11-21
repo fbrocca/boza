@@ -63,7 +63,7 @@
     const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * toR) * Math.cos(b.lat * toR) * Math.sin(dLng / 2) ** 2;
     return 2 * R * Math.asin(Math.sqrt(h));
   }
-  const link = (x, label) => `<a href="./#${encodeURIComponent(x.p.id)}" target="_blank" rel="noopener">${esc(label || x.p.address)}</a>`;
+  const link = (x, label) => `<a href="map/#${encodeURIComponent(x.p.id)}" target="_blank" rel="noopener">${esc(label || x.p.address)}</a>`;
 
   // ---------- live lookups ----------
   async function arc(url, params) {
@@ -191,7 +191,7 @@
       <p class="muted">What board members raised most often at past ${esc(label)}, from the minutes.</p>
       <ul class="faq">${top.map((t) => `<li>
         <div class="faq-head"><b>${esc(t.label)}</b><span class="muted small">raised at ${t.hearings} ${t.hearings === 1 ? 'hearing' : 'hearings'}</span></div>
-        <ul class="faq-q">${t.examples.map((e) => `<li>${esc(e.q)} <a class="small" href="./#${encodeURIComponent(e.pid)}">${e.case ? esc(e.case) : 'case'}</a></li>`).join('')}</ul>
+        <ul class="faq-q">${t.examples.map((e) => `<li>${esc(e.q)} <a class="small" href="map/#${encodeURIComponent(e.pid)}">${e.case ? esc(e.case) : 'case'}</a></li>`).join('')}</ul>
       </li>`).join('')}</ul>
       <p class="hint">Restated from ${grp.hearings} hearings' minutes, without names. Minutes record questions selectively, so counts understate how often a topic comes up.</p>
     </section>`;

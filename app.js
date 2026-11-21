@@ -587,7 +587,7 @@
       const bounds = p.rings ? L.latLngBounds(p.rings.flat()) : L.latLng(p.lat, p.lng).toBounds(120);
       map.flyToBounds(bounds, { maxZoom: 18, padding: [60, 60], duration: 0.6 });
     }
-    history.replaceState(null, '', '#' + encodeURIComponent(id));
+    history.replaceState(null, '', location.pathname + location.search + '#' + encodeURIComponent(id)); // absolute: the page has <base href="../">
   }
   function closeDetail() {
     setActive(null);
@@ -977,7 +977,14 @@
     }
     loadUpcoming();
     const hash = decodeURIComponent(location.hash.slice(1));
+    const fromLanding = new URLSearchParams(location.search).get('q');
     if (hash && byId.has(hash)) openProperty(hash);
+    else if (fromLanding) {
+      $('q').value = fromLanding;
+      setTab('cases');
+      apply();
+      if (shown.length === 1) openProperty(shown[0].p.id);
+    }
   }).catch((e) => {
     $('stats').textContent = 'Could not load case data: ' + e.message;
   });
