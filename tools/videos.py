@@ -35,7 +35,7 @@ MOMENTS = os.path.join(ROOT, "data", "video-moments.json")
 FEED = "https://www.youtube.com/feeds/videos.xml?channel_id=UCNhfTlBOB2AbKtELKzY7_yQ"
 OPENPUBLICA = "https://api.openpublica.com/v1/meetings"
 GOV = "mount_pleasant-south_carolina"
-UA = {"User-Agent": "Mount Pleasant zoning map (+https://www.fabiobrocca.tech/boza/)"}
+UA = {"User-Agent": "The Zoning Record (+https://zoningrecord.com/)"}
 MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july", "august",
                                       "september", "october", "november", "december"], 1)}
 WINDOW = 300  # seconds: the densest five minutes of mentions is where the case is heard

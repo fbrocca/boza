@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not found · The Zoning Record</title>
+<script>
+  // Links shared before the move (fabiobrocca.tech/boza/..., which GitHub now redirects here)
+  // point at paths without /mount-pleasant/: send them to the same page under it.
+  (function () {
+    var p = location.pathname.replace(/^\/boza(\/|$)/, '/');
+    if (!/^\/mount-pleasant(\/|$)/.test(p)) location.replace('/mount-pleasant' + p + location.search + location.hash);
+  })();
+</script>
+<style>body{margin:0;background:#f5f2ea;color:#191b18;font:18px/1.5 Georgia,serif;display:grid;place-items:center;min-height:100vh;text-align:center;padding:0 16px}h1{font-weight:500;font-size:34px;margin:0 0 8px}a{color:#2e5b3f}</style>
+</head>
+<body><div><h1>This page isn't in the record.</h1><p><a href="/mount-pleasant/">The Zoning Record · Mount Pleasant</a> · <a href="/mount-pleasant/map/">Map</a></p></div></body>
+</html>

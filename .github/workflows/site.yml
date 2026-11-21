@@ -66,12 +66,17 @@ jobs:
       - uses: actions/configure-pages@v5
       - name: Assemble site
         run: |
-          mkdir _site
-          cp -r index.html landing.css landing.js map app.js style.css shared.js plan.html plan.js plan.css hood.html hood.js hood.css vendor data minutes _site/
-          python3 tools/hood_pages.py _site
-          python3 tools/feeds.py _site
-          python3 tools/landing_data.py _site
-          rm -f _site/data/cases.json _site/data/planning.json _site/data/geocode-cache.json _site/data/parcels.json _site/data/questions-coded.json
+          # zoningrecord.com: Mount Pleasant lives under /mount-pleasant/; the root forwards there
+          # and the root 404 page rewrites links shared before the move.
+          M=_site/mount-pleasant
+          mkdir -p $M
+          cp root/index.html root/404.html _site/
+          cp -r index.html landing.css landing.js map app.js style.css shared.js plan.html plan.js plan.css hood.html hood.js hood.css vendor data minutes $M/
+          python3 tools/hood_pages.py $M
+          python3 tools/feeds.py $M
+          python3 tools/landing_data.py $M
+          rm -f $M/data/cases.json $M/data/planning.json $M/data/geocode-cache.json $M/data/parcels.json $M/data/questions-coded.json
+          cp -r $M/feeds _site/feeds   # calendar and RSS subscribers from before the move (apps do not run JS)
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:

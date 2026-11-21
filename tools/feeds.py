@@ -17,7 +17,7 @@ from email.utils import format_datetime
 from zoneinfo import ZoneInfo
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-SITE = "https://www.fabiobrocca.tech/boza/"
+SITE = "https://zoningrecord.com/mount-pleasant/"
 LOCATION = "Town Hall, 100 Ann Edwards Lane, Mount Pleasant, SC 29464"
 TZ = ZoneInfo("America/New_York")
 
