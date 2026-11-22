@@ -289,7 +289,8 @@ def main(out_dir):
     agenda_docs = load(os.path.join(out_dir, "agenda-docs.json"), {})
     # Links the Town has since removed (tools/check_links.py): point to the Wayback Machine copy when
     # there is one, otherwise leave the link out.
-    corrections = load(os.path.join(out_dir, "status-corrections.json"), {}).get("cases", {})
+    corr_file = load(os.path.join(out_dir, "status-corrections.json"), {})
+    corrections, drop_props = corr_file.get("cases", {}), set(corr_file.get("drop_properties", []))
     dead_docs = load(os.path.join(out_dir, "dead-docs.json"), {})
     dead, archived = set(dead_docs.get("urls", [])), dead_docs.get("archive", {})
     agenda_docs = {k: [({**d, "url": archived[d["url"]], "label": d["label"] + " (archived copy)"} if d["url"] in archived else d)
@@ -407,6 +408,8 @@ def main(out_dir):
                 c["auto_status"] = c["status"]
                 c["status"] = fix["status"]
                 c["status_evidence"] = {"quote": fix["evidence"], "date": fix["event_date"]}
+        if p["id"] in drop_props:
+            continue
         p["cases"].sort(key=lambda c: c["date"], reverse=True)
         p["date"] = p["cases"][0]["date"]
         out.append(p)
