@@ -582,7 +582,7 @@
         ${hoodLink(p)}
         <div class="detail-btns">
           <a class="btn btn-primary btn-sm" href="plan.html?address=${encodeURIComponent(p.address)}">Plan a request here</a>
-          <button class="btn btn-outline btn-sm" type="button" data-alerts="property" data-addr="${esc(p.address)}">Get alerts nearby</button>
+          <button class="btn btn-outline btn-sm" type="button" data-alerts="property" data-pid="${esc(p.id)}">Get alerts nearby</button>
           <a class="btn btn-ghost btn-sm" href="p/${propSlug(p)}/" data-track="property/permalink">Permanent page</a>
         </div>
         ${p.geo ? `<p class="geo-note">${esc(GEO_LABEL[p.geo] || p.geo)}</p>` : ''}
@@ -772,25 +772,48 @@
   });
   $('back').addEventListener('click', closeDetail);
 
-  // ---------- Alerts: demand test ("fake door"). Nothing typed is stored or sent. ----------
+  // ---------- Alerts: signup (alerts/lambda_function.py stores it and sends a confirmation email) ----------
+  const ALERTS_URL = 'https://f5lvprd64h7z6xbbsh42743zoe0hxagd.lambda-url.us-east-1.on.aws/';
   const dlg = $('alertsDlg');
+  function fillHoods() {
+    const sel = $('alertsHood');
+    if (!hoods || sel.options.length > 1) return;
+    Object.values(hoods.bySlug).filter((h) => h.page).sort((a, b) => a.name.localeCompare(b.name))
+      .forEach((h) => sel.add(new Option(h.name, h.slug)));
+  }
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-alerts]');
     if (!b) return;
+    fillHoods();
     $('alertsAsk').hidden = false;
     $('alertsThanks').hidden = true;
-    $('alertsAddr').value = b.dataset.addr || '';
+    $('alertsErr').hidden = true;
+    const slug = b.dataset.pid && hoods ? hoods.assign[b.dataset.pid] : null;
+    $('alertsHood').value = slug && hoods.bySlug[slug] && hoods.bySlug[slug].page ? slug : 'all';
     track('alerts/open-' + b.dataset.alerts, 'Opened alerts (' + b.dataset.alerts + ')');
     if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
-    setTimeout(() => $('alertsAddr').focus(), 30);
+    setTimeout(() => $('alertsEmail').focus(), 30);
   });
-  $('alertsForm').addEventListener('submit', (e) => {
+  $('alertsForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!$('alertsAddr').value.trim()) return;
-    track('alerts/continue', 'Entered an address for alerts');
-    $('alertsAddr').value = '';
-    $('alertsAsk').hidden = true;
-    $('alertsThanks').hidden = false;
+    const email = $('alertsEmail').value.trim();
+    const err = (msg) => { $('alertsErr').textContent = msg; $('alertsErr').hidden = false; };
+    if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(email)) return err('Please enter a valid email address.');
+    $('alertsGo').disabled = true;
+    try {
+      const r = await fetch(ALERTS_URL, { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email, hoods: [$('alertsHood').value], website: $('alertsWebsite').value }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok || !d.ok) return err(d.error || 'Something went wrong. Please try again in a minute.');
+      track('alerts/subscribe', 'Subscribed to alerts (' + $('alertsHood').value + ')');
+      $('alertsEmail').value = '';
+      $('alertsAsk').hidden = true;
+      $('alertsThanks').hidden = false;
+    } catch (x) {
+      err('Could not reach the alerts service. Please try again in a minute.');
+    } finally {
+      $('alertsGo').disabled = false;
+    }
   });
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });  // click on backdrop
   document.addEventListener('keydown', (e) => {
