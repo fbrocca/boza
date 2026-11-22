@@ -52,13 +52,10 @@ jobs:
             git push
           fi
 
-  deploy:
+  build:
     needs: update
     if: always() && (needs.update.result == 'success' || needs.update.result == 'skipped')
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -82,5 +79,16 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+
+  # Separate job, as in GitHub's Pages template: deploying in the same job as the upload sometimes
+  # failed with "No artifacts named github-pages were found" (the upload not yet visible to the API).
+  deploy:
+    needs: build
+    if: always() && needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v4
