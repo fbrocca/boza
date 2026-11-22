@@ -54,16 +54,17 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::272106374268:role/zoningrecord-archiver
           aws-region: us-east-1
-      - name: Archive Town documents
+      - name: Send zoning alerts
         if: steps.aws.outcome == 'success'
         continue-on-error: true
         run: |
           pip install -q boto3 requests
-          python3 tools/archive_docs.py --bucket zoningrecord-archive-272106374268 --minutes 40 || echo "archive run failed; will retry tomorrow"
-      - name: Send zoning alerts
+          python3 tools/send_alerts.py
+      - name: Archive Town documents
         if: steps.aws.outcome == 'success'
         continue-on-error: true
-        run: python3 tools/send_alerts.py
+        run: |
+          python3 tools/archive_docs.py --bucket zoningrecord-archive-272106374268 --minutes 40 || echo "archive run failed; will retry tomorrow"
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
