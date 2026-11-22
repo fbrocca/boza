@@ -287,9 +287,14 @@ def main(out_dir):
     geo = load(os.path.join(out_dir, "geocode-cache.json"), {})
     parcels = load(os.path.join(out_dir, "parcels.json"), {})
     agenda_docs = load(os.path.join(out_dir, "agenda-docs.json"), {})
-    # links the Town has since removed (checked by hand; see data/dead-docs.json)
-    dead = set(load(os.path.join(out_dir, "dead-docs.json"), {}).get("urls", []))
-    agenda_docs = {k: [d for d in v if d["url"] not in dead] for k, v in agenda_docs.items()}
+    # Links the Town has since removed (tools/check_links.py): point to the Wayback Machine copy when
+    # there is one, otherwise leave the link out.
+    corr_file = load(os.path.join(out_dir, "status-corrections.json"), {})
+    corrections, drop_props = corr_file.get("cases", {}), set(corr_file.get("drop_properties", []))
+    dead_docs = load(os.path.join(out_dir, "dead-docs.json"), {})
+    dead, archived = set(dead_docs.get("urls", [])), dead_docs.get("archive", {})
+    agenda_docs = {k: [({**d, "url": archived[d["url"]], "label": d["label"] + " (archived copy)"} if d["url"] in archived else d)
+                       for d in v if d["url"] not in dead or d["url"] in archived] for k, v in agenda_docs.items()}
     body_key = {"Board of Zoning Appeals": "boza", "Planning Commission": "pc",
                 "Historic District Preservation Commission": "hdpc", "Design Review Board": "drb"}
     overrides = {k: v for k, v in load(os.path.join(out_dir, "geocode-overrides.json"), {}).items()
@@ -396,6 +401,15 @@ def main(out_dir):
                 u = units_of(c.get("request"), [texts.get(e["id"], "") for e in c["events"]])
                 if u:
                     c["units"] = u
+            # Outcomes read by hand or by AI readers where the parser found none, each with a verbatim
+            # quote checked against the minutes (data/status-corrections.json).
+            fix = corrections.get(f"{p['id']}|{c['board']}|{c['case'] or c['first']}")
+            if fix and fix["status"] != c["status"]:
+                c["auto_status"] = c["status"]
+                c["status"] = fix["status"]
+                c["status_evidence"] = {"quote": fix["evidence"], "date": fix["event_date"]}
+        if p["id"] in drop_props:
+            continue
         p["cases"].sort(key=lambda c: c["date"], reverse=True)
         p["date"] = p["cases"][0]["date"]
         out.append(p)

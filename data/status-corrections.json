@@ -1,0 +1,789 @@
+{
+ "note": "Outcomes read from the Town's minutes for cases the parser could not settle (AI readers, Nov 2026). Each quote was machine-checked as verbatim text of the minutes; a sample was checked by hand. Applied by tools/build_data.py. drop_properties: records parsed from staff comments, not properties.",
+ "cases": {
+  "addr-108-carr-street|design|2020-03-09": {
+   "status": "Deferred",
+   "event_date": "2021-09-20",
+   "evidence": "Ms. Montgomery moved for a deferral as requested by the applicant. Ms. Shaw seconded the motion. All in favor."
+  },
+  "addr-1136-bowman-road|design|2018-04-25": {
+   "status": "Deferred",
+   "event_date": "2018-04-25",
+   "evidence": "Mr. Seabrook moved for deferral to a subcommittee of the Board and staff to work on streetscape issues and staff and Board comments."
+  },
+  "addr-1435-six-mile-road|planning|SP-04-20": {
+   "status": "Deferred",
+   "event_date": "2020-06-10",
+   "evidence": "Development Regulations to allow access from a private easement. Ms. Smith moved for deferral. Mr. Campbell seconded the motion. All in favor."
+  },
+  "addr-150-is-the-required-driveway-separation-within-the-town-th|design|2017-08-30": {
+   "status": "Approved",
+   "event_date": "2017-08-30",
+   "evidence": "L. 12. Market at Mill Creek Retail B/7 Unit, 2118 Highway 41, 594-05-00-228, Final Approval of Site, Landscape and Architecture These items were approved through a consent motion."
+  },
+  "addr-1799-hwy-17|design|2018-10-31": {
+   "status": "Approved",
+   "event_date": "2018-10-31",
+   "evidence": "Mr. Wurst moved for preliminary approval based on staff and Board comments and given the disparities on the site plan. Mr. Boan seconded the motion. All in favor."
+  },
+  "addr-201-bank-street|design|2017-09-18": {
+   "status": "Approved",
+   "event_date": "2017-09-18",
+   "evidence": "Mr. Hirshorn requested that 201 Bank Street, Request for Continuation of COA also be included in the consent motion. Ms. Wilson amended her motion to include 201 Bank Street;"
+  },
+  "addr-204-venning-street|design|2017-06-12": {
+   "status": "Approved",
+   "event_date": "2017-06-12",
+   "evidence": "Ms. Rowe moved to extend the COA for one year; seconded by Ms. Dickson. Ms. Wilson was opposed. All others present voted in favor. Motion carries."
+  },
+  "addr-426-egypt-road|planning|SP-03-21": {
+   "status": "Recommended approval",
+   "event_date": "2021-06-23",
+   "evidence": "Mr. Davis moved for approval. Ms. Ireland seconded the motion. All in favor."
+  },
+  "addr-9-x18-are-the-required-dimensions-for-a-parking-space-8-w|design|2017-07-26": {
+   "status": "Approved with conditions",
+   "event_date": "2017-07-26",
+   "evidence": "Mr. Seabrook moved for approval with consideration of the written public comments, staff comments regarding the suitability of the proposed ten foot buffer along Hwy 41"
+  },
+  "addr-910-houston-northcutt-blvd|design|2017-10-25": {
+   "status": "Approved",
+   "event_date": "2017-10-25",
+   "evidence": "517-00-00073, Final Approval of Site, Landscape and Architecture APPROVED BY STAFF This item was approved by staff."
+  },
+  "addr-915-mccants-drive|planning|SP-02-20": {
+   "status": "Recommended denial",
+   "event_date": "2020-06-10",
+   "evidence": "Mr. Campbell moved for denial based on flooding issues that should be resolved before approval is granted. Mr. Davis seconded the motion. Motion passed on a 5 to 1 vote"
+  },
+  "addr-915|planning|SP-07-20": {
+   "status": "Recommended denial",
+   "event_date": "2020-09-23",
+   "evidence": "Ms. Smith moved for denial of the LDR waiver. Ms. Ireland seconded the motion. Motion passed on a 6 to 2 vote"
+  },
+  "tms-147-15-00-140|design|2018-05-14": {
+   "status": "Approved",
+   "event_date": "2018-05-14",
+   "evidence": "Street; #9, 141 Toomer Lane, #11, 116 Beach Street; and #12, 204 Live Oak Drive; seconded by Ms. Wilson. All present voted in favor."
+  },
+  "tms-514-00-00-018|design|2022-05-25": {
+   "status": "Deferred",
+   "event_date": "2022-05-25",
+   "evidence": "Mr. Magoon moved to defer the application. Mr. Lambert seconded the motion. All in favor."
+  },
+  "tms-514-00-00-032|planning|2017-10-18": {
+   "status": "Deferred",
+   "event_date": "2017-10-18",
+   "evidence": "Mr. Neal moved for deferral of this issue to the next meeting. Ms. Smith seconded the motion. All in favor."
+  },
+  "tms-514-00-00-070|boza|A-07-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-07-26",
+   "evidence": "listed on an executive session agenda or discussed in an executive session during a properly noticed meeting. These items were withdrawn by staff."
+  },
+  "tms-517-00-00-001|planning|R-14-24": {
+   "status": "Deferred",
+   "event_date": "2025-04-08",
+   "evidence": "Mr. Tinkey moved to defer both items but have a more definitive way to go through this, page by page; seconded by Mr. Brownstein."
+  },
+  "tms-517-00-00-002|planning|R-01-23": {
+   "status": "Recommended denial",
+   "event_date": "2023-03-22",
+   "evidence": "Ms. Ireland moved for denial based on the findings that there are other approved hotel units nearby, there are concerns regarding additional traffic in the area"
+  },
+  "tms-517-00-00-027|design|2017-11-29": {
+   "status": "Approved",
+   "event_date": "2017-11-29",
+   "evidence": "D. Aiden Fabrics, 1117 Highway 41, 580-00-00-028, Final Approval of Site, Landscape and Architecture These were approved by consent motion."
+  },
+  "tms-517-00-00-074|design|2022-08-03": {
+   "status": "Deferred",
+   "event_date": "2022-08-03",
+   "evidence": "Mr. Lambert moved for deferral to a subcommittee for final approval and for the applicant to relocate the elevator tower."
+  },
+  "tms-517-00-00-232|boza|A-11-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-517-00-00-232|boza|V-40-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-517-00-00-245|design|2017-06-28": {
+   "status": "Approved with conditions",
+   "event_date": "2017-06-28",
+   "evidence": "Mr. Kichanan moved for final approval with further study of the trail side for more emphasis on the planting plan and drop-off. Mr. Seabrook seconded the motion. All in favor."
+  },
+  "tms-517-06-00-060|design|2017-06-28": {
+   "status": "Deferred",
+   "event_date": "2017-06-28",
+   "evidence": "Mr. Kichanan moved for deferral for restudy with approval of the project through a committee and staff. Mr. Seabrook seconded the motion. All in favor."
+  },
+  "tms-517-06-00-063|design|2020-01-29": {
+   "status": "Approved",
+   "event_date": "2020-05-27",
+   "evidence": "Ms. Spencer moved for final approval. Mr. McCarthy seconded the motion. All in favor with Mr. O\u2019Neal abstaining."
+  },
+  "tms-517-06-00-079|boza|A-03-17": {
+   "status": "Deferred",
+   "event_date": "2017-10-30",
+   "evidence": "and is not subject to additional parking requirements as the result of the change of use. This item was deferred."
+  },
+  "tms-517-07-00-002|design|2020-09-30": {
+   "status": "Deferred",
+   "event_date": "2020-10-28",
+   "evidence": "Mr. Duncan moved for deferral of the request for the applicant to address and incorporate comments on reducing the weight of the canopy and extending the lattice."
+  },
+  "tms-517-07-00-013|boza|V-25-25": {
+   "status": "Deferred",
+   "event_date": "2025-08-25",
+   "evidence": "for the construction of an addition to an existing residence. These items were continued. 4. Case V-28-25, 412 Palm Street"
+  },
+  "tms-517-07-00-024|boza|S-01-18": {
+   "status": "Deferred",
+   "event_date": "2018-02-26",
+   "evidence": "Mr. Yates stated that due to some underlying issues, they would like to request a deferral. Mr. Wolff moved for deferral to the next meeting."
+  },
+  "tms-517-07-00-123|design|2019-08-28": {
+   "status": "Approved",
+   "event_date": "2019-08-28",
+   "evidence": "moved for final approval including the roof structure as it is not considered a tower. Mr. Swails seconded the motion. All in favor with Mr. Wurst abstaining."
+  },
+  "tms-517-15-00-009|design|2019-10-30": {
+   "status": "Deferred",
+   "event_date": "2019-11-20",
+   "evidence": "Ms. Johnson stated that the applicant has requested deferral."
+  },
+  "tms-517-15-00-028|design|2017-12-11": {
+   "status": "Approved",
+   "event_date": "2018-04-09",
+   "evidence": "Ms. Wilson moved for consent motion on item #2, 10 Pierates Cruz; #4, 135 Toomer Lane; #5, 304 King Street; #6, 720 Pitt Street and #7, 202 Bank Street; seconded by Ms. Rowe."
+  },
+  "tms-517-15-00-060|design|2023-05-08": {
+   "status": "Comments only",
+   "event_date": "2023-05-08",
+   "evidence": "Mr. Crosland closed public comment and moved to Commission comments. The Commission provided comments for the applicant."
+  },
+  "tms-517-15-00-061|design|2020-11-09": {
+   "status": "Approved",
+   "event_date": "2020-11-09",
+   "evidence": "Mr. Gallogly moved for approval of historic designation based on \u00a7156.432(B)(1)(e). Ms. Montgomery seconded the motion. All in favor. G. 124 Mary Street"
+  },
+  "tms-517-15-00-064|design|2017-07-10": {
+   "status": "Approved",
+   "event_date": "2018-04-09",
+   "evidence": "Ms. Wilson moved for consent motion on item #2, 10 Pierates Cruz; #4, 135 Toomer Lane; #5, 304 King Street; #6, 720 Pitt Street and #7, 202 Bank Street; seconded by Ms. Rowe."
+  },
+  "tms-517-15-00-064|design|2017-10-09": {
+   "status": "Approved",
+   "event_date": "2018-07-09",
+   "evidence": "Ms. Rowe moved to accept the applications for items #1, 242 Middle Street; #2, 407 Royall Avenue; #3, 141 Toomer Lane; and #5, 308 McCormick Street, as submitted; seconded by Ms. Montgomery."
+  },
+  "tms-517-15-00-065|design|2017-07-10": {
+   "status": "Approved",
+   "event_date": "2017-09-18",
+   "evidence": "Ms. Wilson made a motion for consent items #1, 402 Patjens Lane; #4, 739 Pitt Street; #6, 139 Toomer Lane; #7, 324 Pitt Street and #12, 6 William Street; seconded by Ms. Rowe."
+  },
+  "tms-517-15-00-068|design|2020-11-09": {
+   "status": "Approved",
+   "event_date": "2020-11-17",
+   "evidence": "Ms. Montgomery moved for approval of historic designation. Mr. Barber seconded the motion. Motion passed on a 3 to 1 vote with Mr. Barber, Mr. Gallogly and Ms. Montgomery in favor; Mr. Crosland opposed."
+  },
+  "tms-517-15-00-071|design|2021-02-08": {
+   "status": "Approved",
+   "event_date": "2021-02-08",
+   "evidence": "VIII. Staff Approvals a. 123 Mary Street \u2013 Survey 6257 - (TMS 517-15-00-071) Roof replacement. Ms. Miller reviewed staff approvals with the Commission."
+  },
+  "tms-517-15-00-072|design|2017-12-11": {
+   "status": "Approved",
+   "event_date": "2017-12-11",
+   "evidence": "Ms. Wilson amended her motion for consent items: #2, 133 Mary Street; #3, 975 Pitt Street, #5, 304 Morrison Street, #8, 141 Toomer Lane; and #12, 728 Pitt Street; seconded by Ms. Rowe."
+  },
+  "tms-517-15-00-075|design|2020-11-09": {
+   "status": "Approved",
+   "event_date": "2023-01-09",
+   "evidence": "C. 124 Mary Street - Survey 6253/ Historic (TMS# 5171500075) Roof replacement. VIII. Discussion and Action of Changes to Design Guidelines"
+  },
+  "tms-517-15-00-088|design|2022-11-14": {
+   "status": "Approved",
+   "event_date": "2024-02-12",
+   "evidence": "b. 200 Hibben Street \u2013 Survey 6217/Non-Historic \u2013 (TMS 5171500088) approved for the installation of a new copper roof. Mr. Hankinson reviewed staff approvals."
+  },
+  "tms-517-15-00-104|design|2018-03-12": {
+   "status": "Deferred",
+   "event_date": "2018-03-12",
+   "evidence": "Ms. Wilson made a motion to defer 116 Beach Street, as upon review by the Town of Mount Pleasant, the application will be required to"
+  },
+  "tms-517-15-00-131|design|2021-04-12": {
+   "status": "Approved",
+   "event_date": "2022-08-08",
+   "evidence": "Ms. Miller reviewed the staff approvals with the Commission as follows: a. 108 Beach Street \u2013 No Survey / Non-Historic (TMS 517-15-00-131) Adjust pool design to meet setback."
+  },
+  "tms-517-16-00-002|design|2019-05-29": {
+   "status": "Approved with conditions",
+   "event_date": "2019-09-25",
+   "evidence": "Mr. Wurst moved for final approval including all staff and Board comments including the addition of a window on south facade facing Coleman Blvd"
+  },
+  "tms-517-16-00-002|design|2022-03-30": {
+   "status": "Deferred",
+   "event_date": "2022-03-30",
+   "evidence": "Ms. Spencer moved for deferral based on staff and Board comments. Mr. Magoon seconded the motion. All in favor."
+  },
+  "tms-517-16-00-066|boza|A-10-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-517-16-00-066|boza|V-39-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-532-01-00-003|design|2019-11-11": {
+   "status": "Approved",
+   "event_date": "2019-11-11",
+   "evidence": "D. 205 Morrison Street \u2013 Survey 6165 \u2013 (TMS 532-01-00-029) Applicant is seeking Final Review for alteration of windows. The Commission approved these through a consent motion."
+  },
+  "tms-532-01-00-023|design|2017-10-09": {
+   "status": "Approved",
+   "event_date": "2017-10-09",
+   "evidence": "#2, 116 Bennett Street; #4, 110 Morrison Street; #5, 6 William Street; #7, 641 Royall Avenue; #9, 309 Bennett Street; and #13, 959 Pitt Street; seconded by Ms. Rowe. All present voted in favor."
+  },
+  "tms-532-01-00-027|design|2020-11-09": {
+   "status": "Denied",
+   "event_date": "2020-11-09",
+   "evidence": "Mr. Crosland moved to deny consideration of historic designation. Ms. Montgomery seconded the motion. All in favor. C. 206 Center Street"
+  },
+  "tms-532-01-00-029|design|2019-11-11": {
+   "status": "Approved",
+   "event_date": "2019-11-11",
+   "evidence": "Applicant is seeking Final Review for alteration of windows. The Commission approved these through a consent motion."
+  },
+  "tms-532-01-00-033|design|2017-10-09": {
+   "status": "Approved",
+   "event_date": "2017-10-09",
+   "evidence": "Ms. Wilson moved for consent motion on #1, 215 Pitt Street; #2, 116 Bennett Street; #4, 110 Morrison Street; #5, 6 William Street;"
+  },
+  "tms-532-01-00-041|design|2018-02-12": {
+   "status": "Approved",
+   "event_date": "2018-04-09",
+   "evidence": "Ms. Wilson moved for consent motion on item #2, 10 Pierates Cruz; #4, 135 Toomer Lane; #5, 304 King Street; #6, 720 Pitt Street and #7, 202 Bank Street;"
+  },
+  "tms-532-01-00-043|design|2020-11-17": {
+   "status": "Withdrawn",
+   "event_date": "2020-11-17",
+   "evidence": "23. 204 Pitt Street \u2013 Survey 5941.02 \u2013 (TMS 532-01-00-043) Constructed in c. 1960s. These items were removed by staff."
+  },
+  "tms-532-01-00-055|design|2017-07-10": {
+   "status": "Approved",
+   "event_date": "2017-10-09",
+   "evidence": "Ms. Wilson moved for consent motion on #1, 215 Pitt Street; #2, 116 Bennett Street; #4, 110 Morrison Street; #5, 6 William Street;"
+  },
+  "tms-532-01-00-067|design|2017-03-13": {
+   "status": "Approved",
+   "event_date": "2017-08-14",
+   "evidence": "Ms. Wilson made a motion to define the entry structure at 403 Church Street as a trellis and therefore allow it as an exception to the Commission\u2019s guidelines and consider it approved; seconded by Ms. Dickson."
+  },
+  "tms-532-01-00-078|design|2018-05-14": {
+   "status": "Approved",
+   "event_date": "2018-05-14",
+   "evidence": "Ms. Rowe moved to approve by consent Items #1, 221 Queen Street; #3, 311 Venning Street; #6, 204 Venning Street; #7, 242 Middle Street;"
+  },
+  "tms-532-01-00-098|design|2020-07-13": {
+   "status": "Approved",
+   "event_date": "2020-07-13",
+   "evidence": "Applicant is seeking Final Review to replicate historic fencing. These items were approved by staff."
+  },
+  "tms-532-01-00-099|design|2021-05-10": {
+   "status": "Approved",
+   "event_date": "2023-06-12",
+   "evidence": "E. 404 Church Street \u2013 Survey 6196 / Non-Historic (TMS # 5320100099) Replace existing rear windows."
+  },
+  "tms-532-01-00-104|design|2020-11-17": {
+   "status": "Withdrawn",
+   "event_date": "2020-11-17",
+   "evidence": "37. 425 Whilden Street \u2013 Survey 6173.01 \u2013 (TMS 532-01-00-104) Constructed in c. 1960s. This item was removed by staff."
+  },
+  "tms-532-01-00-138|boza|A-08-19": {
+   "status": "Deferred",
+   "event_date": "2019-09-30",
+   "evidence": "Mr. Duke moved for approval of the continuance to the next month\u2019s meeting. Ms. Stevens seconded the motion. All in favor."
+  },
+  "tms-532-01-00-139|design|2018-07-25": {
+   "status": "Approved with conditions",
+   "event_date": "2018-11-28",
+   "evidence": "Mr. Wurst moved for final approval with the stipulation that colors submitted to staff for approval. Mr. Kichanan seconded the motion. All in favor with Mr. Seabrook abstaining."
+  },
+  "tms-532-01-00-141|design|2018-07-25": {
+   "status": "Approved with conditions",
+   "event_date": "2018-11-28",
+   "evidence": "Mr. Wurst moved for final approval based on the submittal being complete with colors submitted to staff for approval. Mr. Kichanan seconded the motion. Motion passed on a 3 to 1 vote"
+  },
+  "tms-532-01-00-149|design|2017-11-29": {
+   "status": "Approved",
+   "event_date": "2017-11-29",
+   "evidence": "D. Aiden Fabrics, 1117 Highway 41, 580-00-00-028, Final Approval of Site, Landscape and Architecture These were approved by consent motion."
+  },
+  "tms-532-01-00-156|boza|V-41-23": {
+   "status": "Withdrawn",
+   "event_date": "2023-09-25",
+   "evidence": "The ordinance limits the BAR to 5,500sqft. These items were withdrawn by the applicants."
+  },
+  "tms-532-01-00-263|design|2020-10-20": {
+   "status": "Denied",
+   "event_date": "2020-10-20",
+   "evidence": "Ms. Montgomery to recommend denial of consideration for historic designation. Mr. Crosland seconded the motion. Motion passed on a 3 to 1 vote"
+  },
+  "tms-532-01-00-264|design|2018-02-12": {
+   "status": "Approved",
+   "event_date": "2018-06-11",
+   "evidence": "Ms. Wilson made a motion to consent items #2, 115 Friend Street; and #5, 311 Venning Street; seconded by Ms. Rowe. All present voted in favor."
+  },
+  "tms-532-02-00-059|design|2018-03-28": {
+   "status": "Deferred",
+   "event_date": "2018-03-28",
+   "evidence": "Mr. Kichanan moved for deferral of the request pending submittal of an arborist report and clarification on the intended use of the space."
+  },
+  "tms-532-02-00-124|design|2018-05-30": {
+   "status": "Approved",
+   "event_date": "2018-05-30",
+   "evidence": "G. Gregorie Ferry Landing-Building 4, 1151 Muhlenbergia Dr, 580-00-00-004, Final Approval of Site, Landscape and Architecture These items were approved through a consent motion."
+  },
+  "tms-532-05-00-001|design|2020-11-17": {
+   "status": "Withdrawn",
+   "event_date": "2020-11-17",
+   "evidence": "7. 203 King Street \u2013 Survey 6120.01 \u2013 (TMS 532-05-00-001) Constructed in c. 1960s. This item was removed by staff."
+  },
+  "tms-532-05-00-005|design|2017-09-18": {
+   "status": "Approved",
+   "event_date": "2017-09-18",
+   "evidence": "Ms. Wilson made a motion for consent items #1, 402 Patjens Lane; #4, 739 Pitt Street; #6, 139 Toomer Lane; #7, 324 Pitt Street and #12, 6 William Street; seconded by Ms. Rowe."
+  },
+  "tms-532-05-00-007|design|2020-10-12": {
+   "status": "Approved",
+   "event_date": "2020-10-20",
+   "evidence": "Constructed in c. 1950s. Mr. Rutherford reviewed staff comments. Mr. Crosland moved to recommend approval. Mr. Gallogly seconded the motion. All in favor."
+  },
+  "tms-532-05-00-021|design|2020-10-20": {
+   "status": "Approved",
+   "event_date": "2020-10-20",
+   "evidence": "\u27a2 503 Pitt Street \u2013 Survey 5915 \u2013 (TMS 532-05-00-021) Constructed in 1940. \u27a2 510 Pitt Street \u2013 Survey 4231 \u2013 (TMS 532-05-00-045) Constructed in 1950."
+  },
+  "tms-532-05-00-026|design|2017-02-13": {
+   "status": "Denied",
+   "event_date": "2017-05-08",
+   "evidence": "Ms. Wilson moved to decline the application for the fireplace at 205 Queen Street; seconded by Ms. Rowe. All present voted in favor."
+  },
+  "tms-532-05-00-028|design|2017-02-13": {
+   "status": "Approved",
+   "event_date": "2017-03-13",
+   "evidence": "Ms. Rowe made a motion to consent to 217 Queen Street as presented; seconded by Mr. Keenan. All present voted in favor."
+  },
+  "tms-532-05-00-029|design|2018-02-12": {
+   "status": "Approved",
+   "event_date": "2018-05-14",
+   "evidence": "Ms. Rowe moved to approve by consent Items #1, 221 Queen Street; #3, 311 Venning Street; #6, 204 Venning Street; #7, 242 Middle Street;"
+  },
+  "tms-532-05-00-032|design|2022-02-14": {
+   "status": "Approved",
+   "event_date": "2022-02-14",
+   "evidence": "b. 957 Pitt Street- Survey#5891/Non-Historic (TMS#532-13-00-031) Hardscape approval c. 128 Chicco Lane- No Survey/Non-Historic (TMS#532-05-00-032) Alteration of accessory structure"
+  },
+  "tms-532-05-00-034|design|2020-10-20": {
+   "status": "Deferred",
+   "event_date": "2020-10-20",
+   "evidence": "33. 637 Pitt Street \u2013 Survey 4224 \u2013 (TMS 532-05-00-034) Constructed in 1958. Mr. Crosland moved for deferral. Ms. Montgomery seconded the motion. All in favor."
+  },
+  "tms-532-05-00-045|design|2018-08-13": {
+   "status": "Approved",
+   "event_date": "2020-10-20",
+   "evidence": "29. 510 Pitt Street \u2013 Survey 4231 \u2013 (TMS 532-05-00-045) Constructed in 1950. 30. 627 Pitt Street \u2013 Survey 4225 \u2013 (TMS 532-05-00-031) Constructed in 1947."
+  },
+  "tms-532-05-00-057|design|2017-06-12": {
+   "status": "Approved",
+   "event_date": "2018-03-12",
+   "evidence": "#4, 108 Carr Street; #5, 308 McCormick Street, #6, 959 Pitt Street, and #10, 112 Beach Street; seconded by Ms. Rowe. Ms. Montgomery opposed. All others voted in favor. Motion carries 4-1."
+  },
+  "tms-532-05-00-063|design|2018-07-09": {
+   "status": "Approved",
+   "event_date": "2018-07-09",
+   "evidence": "Ms. Rowe moved to accept the applications for items #1, 242 Middle Street; #2, 407 Royall Avenue; #3, 141 Toomer Lane; and #5, 308 McCormick Street, as submitted;"
+  },
+  "tms-532-05-00-064|design|2018-02-12": {
+   "status": "Approved",
+   "event_date": "2018-02-12",
+   "evidence": "Ms. Rowe amended her motion for consent on item #2, 409 Royall Avenue; seconded by Ms. Wilson. All present voted in favor."
+  },
+  "tms-532-05-00-069|design|2018-01-08": {
+   "status": "Approved",
+   "event_date": "2018-06-11",
+   "evidence": "Ms. Wilson made a motion to consent items #2, 115 Friend Street; and #5, 311 Venning Street; seconded by Ms. Rowe. All present voted in favor."
+  },
+  "tms-532-05-00-203|design|2021-04-12": {
+   "status": "Approved with conditions",
+   "event_date": "2024-02-12",
+   "evidence": "Mr. Creech moved for conditional approval with all comments being addressed including paint colors. Mr. Player seconded the motion. All in favor."
+  },
+  "tms-532-05-00-225|design|2017-07-10": {
+   "status": "Approved",
+   "event_date": "2018-04-09",
+   "evidence": "Ms. Wilson moved for consent motion on item #2, 10 Pierates Cruz; #4, 135 Toomer Lane; #5, 304 King Street; #6, 720 Pitt Street and #7, 202 Bank Street; seconded by Ms. Rowe."
+  },
+  "tms-532-09-00-007|design|2018-11-12": {
+   "status": "Approved",
+   "event_date": "2018-12-10",
+   "evidence": "Applicant is seeking Final Review for porch renovations. These items were approved through consent motion."
+  },
+  "tms-532-09-00-013|design|2020-11-17": {
+   "status": "Withdrawn",
+   "event_date": "2020-11-17",
+   "evidence": "19. 8 Pierates Cruze \u2013 Survey 6067 \u2013 (TMS 532-09-00-013) Constructed in 1964. This item was removed by staff."
+  },
+  "tms-532-09-00-018|design|2018-04-09": {
+   "status": "Approved",
+   "event_date": "2018-04-09",
+   "evidence": "Ms. Wilson moved for consent motion on item #2, 10 Pierates Cruz; #4, 135 Toomer Lane; #5, 304 King Street; #6, 720 Pitt Street and #7, 202 Bank Street; seconded by Ms. Rowe. All present voted in favor."
+  },
+  "tms-532-09-00-023|design|2020-11-09": {
+   "status": "Withdrawn",
+   "event_date": "2020-11-09",
+   "evidence": "C. 206 Center Street \u2013 Survey 6048.01 \u2013 (TMS 532-09-00-023) Constructed in 1940s. This item was removed by staff."
+  },
+  "tms-532-09-00-032|design|2023-12-11": {
+   "status": "Approved",
+   "event_date": "2025-07-21",
+   "evidence": "B. 136 Middle St., No Survey Card/Non-Historic - TMS 5320900032, Approved for after the fact changes to the COA, to include alterations to the Alhambra Hall playground."
+  },
+  "tms-532-09-00-041|design|2017-03-13": {
+   "status": "Approved",
+   "event_date": "2017-09-18",
+   "evidence": "Ms. Wilson made a motion for consent items #1, 402 Patjens Lane; #4, 739 Pitt Street; #6, 139 Toomer Lane; #7, 324 Pitt Street and #12, 6 William Street;"
+  },
+  "tms-532-09-00-044|design|2020-06-22": {
+   "status": "Withdrawn",
+   "event_date": "2020-11-17",
+   "evidence": "29. 741 Pitt Street \u2013 Survey 5904.01 \u2013 (TMS 532-09-00-044) Constructed in c. 1960s. This item was removed by staff."
+  },
+  "tms-532-09-00-050|design|2018-05-14": {
+   "status": "Approved",
+   "event_date": "2018-05-14",
+   "evidence": "V. Staff Approvals 1. 9 Pierates Cruz \u2013 Survey 6068\u2013 (TMS 532-09-00-014) Reroofing 2. 817 Pitt Street \u2013 Survey 5899\u2013 (TMS 532-09-00-050) Reroofing, Siding, and Window alterations. Non-historic."
+  },
+  "tms-532-09-00-070|design|2020-10-20": {
+   "status": "Approved",
+   "event_date": "2020-10-20",
+   "evidence": "36. 754 Pitt Street \u2013 Survey 5960.01 \u2013 (TMS 532-09-00-245) Constructed in c. 1950. These items were approved by consent."
+  },
+  "tms-532-09-00-086|design|2017-08-14": {
+   "status": "Approved",
+   "event_date": "2017-10-09",
+   "evidence": "#2, 116 Bennett Street; #4, 110 Morrison Street; #5, 6 William Street; #7, 641 Royall Avenue; #9, 309 Bennett Street; and #13, 959 Pitt Street; seconded by Ms. Rowe. All present voted in favor."
+  },
+  "tms-532-09-00-252|design|2020-06-22": {
+   "status": "Approved",
+   "event_date": "2022-05-09",
+   "evidence": "c. 829 Pitt Street \u2013 No Survey/Non-Historic (TMS# 532-09-00-252) Alteration to previously approved pool."
+  },
+  "tms-532-10-00-149|boza|V-07-19": {
+   "status": "Deferred",
+   "event_date": "2019-02-25",
+   "evidence": "Mr. Wolff moved for deferral in order to give the applicant an opportunity to work with staff and provide additional information. Mr. Wood seconded the motion. All in favor."
+  },
+  "tms-532-11-30-072|design|2017-11-13": {
+   "status": "Approved",
+   "event_date": "2017-11-13",
+   "evidence": "Ms. Wilson made a motion to recommend two projects for consent motions, Item #1, 911 Pitt Street and Item #9, 212 Live Oak Drive; seconded by Ms. Dickson. All present voted in favor."
+  },
+  "tms-532-13-00-032|design|2017-09-18": {
+   "status": "Approved",
+   "event_date": "2018-03-12",
+   "evidence": "Ms. Wilson made a motion for consent on items #2, 115 Friend Street; #3, 304 King Street; #4, 108 Carr Street; #5, 308 McCormick Street, #6, 959 Pitt Street,"
+  },
+  "tms-532-13-00-039|design|2017-09-18": {
+   "status": "Approved",
+   "event_date": "2017-10-09",
+   "evidence": "#2, 116 Bennett Street; #4, 110 Morrison Street; #5, 6 William Street; #7, 641 Royall Avenue; #9, 309 Bennett Street; and #13, 959 Pitt Street; seconded by Ms. Rowe. All present voted in favor."
+  },
+  "tms-532-13-00-049|design|2022-05-09": {
+   "status": "Approved",
+   "event_date": "2024-06-10",
+   "evidence": "b. 934 Richter Way \u2013 Survey 6044/Non-Historic - (TMS5321300049) Application approved for the installation of an HVAC unit and stand."
+  },
+  "tms-532-13-00-059|design|2017-04-10": {
+   "status": "Approved",
+   "event_date": "2017-04-10",
+   "evidence": "Mr. Hirshorn made a motion to approve Item #4, 902 Pitt Street; seconded by Mr. Rowe. All present voted in favor."
+  },
+  "tms-532-13-00-089|design|2017-06-12": {
+   "status": "Approved",
+   "event_date": "2017-06-12",
+   "evidence": "Ms. Wilson made a motion to recommend #1, 932 Richter Way; #5, 201 Haddrell Street; and #9, 219 Haddrell Street for consent motion; seconded by Ms. Rowe."
+  },
+  "tms-535-00-00-260|design|2023-03-29": {
+   "status": "Approved with conditions",
+   "event_date": "2023-03-29",
+   "evidence": "Mr. Cave moved for preliminary approval with the applicant working with staff to address water table issue. Mr. Perez seconded the motion. All in favor."
+  },
+  "tms-535-04-00-171|boza|V-23-18": {
+   "status": "Deferred",
+   "event_date": "2018-07-30",
+   "evidence": "Mr. Wolff moved for deferral of the request in order to have an arborist or staff review the tree and report back to the Board."
+  },
+  "tms-535-06-00-156|boza|V-10-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-05-24",
+   "evidence": "(This item was originally deferred at the April meeting.) These items were withdrawn by the applicant."
+  },
+  "tms-535-06-00-737|boza|V-26-19": {
+   "status": "Approved",
+   "event_date": "2019-07-29",
+   "evidence": "Mr. Wolff moved for approval based on the findings included in the staff report and that they have met all four criteria, particularly that it would not be a detriment to the neighborhood"
+  },
+  "tms-535-14-00-022|boza|V-27-25": {
+   "status": "Deferred",
+   "event_date": "2025-07-28",
+   "evidence": "Ms. Woods-Flowers moved for deferral to the next meeting for the applicant to work with staff on possible remedial measures."
+  },
+  "tms-535-15-00-047|boza|V-30-18": {
+   "status": "Deferred",
+   "event_date": "2018-12-17",
+   "evidence": "Mr. Belton determined that the Board was deadlocked and stated that the application would, therefore, be deferred to a subsequent meeting."
+  },
+  "tms-537-00-00-044|boza|A-13-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-537-00-00-044|boza|V-42-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-537-00-00-095|boza|A-06-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-07-26",
+   "evidence": "listed on an executive session agenda or discussed in an executive session during a properly noticed meeting. These items were withdrawn by staff."
+  },
+  "tms-540-00-00-066|planning|2017-08-23": {
+   "status": "Passed first reading",
+   "event_date": "2017-08-23",
+   "evidence": "Town Council approved first reading for the following items: 1. First Reading: An Ordinance to amend the River Island Plantation Planned Development District Ordinance"
+  },
+  "tms-556-00-00-294|design|2018-06-27": {
+   "status": "Deferred",
+   "event_date": "2018-08-29",
+   "evidence": "Mr. Wurst moved to defer the project to a subcommittee of the Board and staff for final approval to address all comments of the Board and staff."
+  },
+  "tms-556-00-00-384|boza|V-12-18": {
+   "status": "Deferred",
+   "event_date": "2018-05-21",
+   "evidence": "Mr. Wolff moved to defer the request to the next meeting. Mr. Rubin seconded the motion. All in favor."
+  },
+  "tms-558-00-00-173|planning|SP-04-26": {
+   "status": "Withdrawn",
+   "event_date": "2026-01-21",
+   "evidence": "Request to subdivide and establish three new lots, Staff Report These items were withdrawn by staff."
+  },
+  "tms-558-00-00-194|planning|2025-06-18": {
+   "status": "Adopted by Council",
+   "event_date": "2025-08-12",
+   "evidence": "Councilmember Brownstein moved to approve consent agenda items A through F, seconded by Councilmember Chapman. Motion carried unanimously. A. Final Reading: An Ordinance providing for the annexation"
+  },
+  "tms-558-00-00-392|design|2018-11-28": {
+   "status": "Approved with conditions",
+   "event_date": "2019-10-30",
+   "evidence": "Mr. Lambert moved for final approval subject to staff comments being addressed. Mr. Swails seconded the motion. Motion passed on a 3 to 1 vote"
+  },
+  "tms-558-00-00-933|design|2020-05-27": {
+   "status": "Approved",
+   "event_date": "2020-05-27",
+   "evidence": "Mr. Duncan moved for final approval. Mr. McCarthy seconded the motion. All in favor."
+  },
+  "tms-559-00-00-176|design|2022-08-03": {
+   "status": "Approved with conditions",
+   "event_date": "2022-12-07",
+   "evidence": "Mr. Cave moved for final approval with addressing all staff comments. Mr. Kiel seconded the motion. All in favor."
+  },
+  "tms-559-00-00-533|planning|SP-13-26": {
+   "status": "Recommended denial",
+   "event_date": "2026-10-21",
+   "evidence": "Ms. Ireland moved for denial. Mr. Davis seconded the motion. All in favor with Mr. Berry abstaining."
+  },
+  "tms-559-13-00-038|design|2019-10-30": {
+   "status": "Approved with conditions",
+   "event_date": "2019-10-30",
+   "evidence": "Mr. Lambert moved for final approval as presented including all staff comments with exclusion of the suggested alternative location of the outdoor dining."
+  },
+  "tms-559-13-00-044|design|2018-02-28": {
+   "status": "Deferred",
+   "event_date": "2018-04-25",
+   "evidence": "Mr. Seabrook moved for deferral to a subcommittee of the Board and staff for further review and approval. Mr. O\u2019Neal seconded the motion. Motion passed on a 5 to 1 vote"
+  },
+  "tms-559-14-00-042|design|2018-07-25": {
+   "status": "Approved with conditions",
+   "event_date": "2018-07-25",
+   "evidence": "Mr. Wurst moved for preliminary approval including staff and Board comments. Mr. Seabrook seconded the motion. All in favor."
+  },
+  "tms-560-00-00-044|planning|2017-08-23": {
+   "status": "Adopted by Council",
+   "event_date": "2017-08-23",
+   "evidence": "Town Council approved final reading for the following items: 5. Final Reading: An Ordinance providing for the annexation of an approximately 18.64 acre tract of land"
+  },
+  "tms-560-00-00-051|planning|R-19-26": {
+   "status": "Deferred",
+   "event_date": "2026-10-13",
+   "evidence": "Council Member Brownstein moved to defer items 8.B. 1 and 2, seconded by Council Member Tinkey. The motion carried unanimously."
+  },
+  "tms-560-02-00-019|planning|R-03-25": {
+   "status": "Deferred",
+   "event_date": "2025-02-19",
+   "evidence": "Mr. Lacy moved to accept the deferral request from the applicant. Mr. Ferrara seconded the motion. All in favor."
+  },
+  "tms-560-02-00-024|boza|A-14-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-560-02-00-024|boza|V-43-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-561-00-00-102|planning|SP-09-26": {
+   "status": "Withdrawn",
+   "event_date": "2026-06-17",
+   "evidence": "Proposed Subdivision to create three new lots on approximately 0.29 acres. Staff Report These items were withdrawn by staff."
+  },
+  "tms-562-06-00-029|boza|V-24-25": {
+   "status": "Deferred",
+   "event_date": "2025-08-25",
+   "evidence": "for the construction of an addition to an existing residence. These items were continued. 4. Case V-28-25, 412 Palm Street"
+  },
+  "tms-571-00-00-001|boza|A-01-26": {
+   "status": "Upheld",
+   "event_date": "2026-01-26",
+   "evidence": "Mr. Wood moved for denial of appeal and to uphold the Zoning Administrator\u2019s determination based on the facts in evidence at this meeting. Ms. Stevens seconded the motion. Motion passed on a 5 to 1 vote"
+  },
+  "tms-577-14-00-037|boza|A-09-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-07-26",
+   "evidence": "The ordinance limits building height to 35-feet for properties that are not located in a special flood hazard area. These items were withdrawn by staff."
+  },
+  "tms-577-14-00-037|boza|V-22-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-07-26",
+   "evidence": "The ordinance limits building height to 35-feet for properties that are not located in a special flood hazard area. These items were withdrawn by staff."
+  },
+  "tms-577-14-00-039|boza|V-23-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-07-26",
+   "evidence": "The ordinance limits building height to 35-feet for properties that are not located in a special flood hazard area. These items were withdrawn by staff."
+  },
+  "tms-577-14-00-040|boza|V-24-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-07-26",
+   "evidence": "The ordinance limits building height to 35-feet for properties that are not located in a special flood hazard area. These items were withdrawn by staff."
+  },
+  "tms-577-14-00-041|boza|V-25-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-07-26",
+   "evidence": "The ordinance limits building height to 35-feet for properties that are not located in a special flood hazard area. These items were withdrawn by staff."
+  },
+  "tms-577-14-00-042|boza|V-26-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-07-26",
+   "evidence": "The ordinance limits building height to 35-feet for properties that are not located in a special flood hazard area. These items were withdrawn by staff."
+  },
+  "tms-577-14-00-043|boza|V-27-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-07-26",
+   "evidence": "The ordinance limits building height to 35-feet for properties that are not located in a special flood hazard area. These items were withdrawn by staff."
+  },
+  "tms-577-14-00-044|boza|V-28-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-07-26",
+   "evidence": "The ordinance limits building height to 35-feet for properties that are not located in a special flood hazard area. These items were withdrawn by staff."
+  },
+  "tms-577-14-00-045|boza|V-29-21": {
+   "status": "Withdrawn",
+   "event_date": "2021-07-26",
+   "evidence": "The ordinance limits building height to 35-feet for properties that are not located in a special flood hazard area. These items were withdrawn by staff."
+  },
+  "tms-578-00-00-233|planning|2025-06-18": {
+   "status": "Adopted by Council",
+   "event_date": "2025-08-12",
+   "evidence": "Councilmember Brownstein moved to approve consent agenda items A through F, seconded by Councilmember Chapman. Motion carried unanimously. A. Final Reading: An Ordinance providing for the annexation"
+  },
+  "tms-578-00-00-476|boza|A-15-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-578-00-00-476|boza|V-44-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-580-00-00-028|design|2017-07-26": {
+   "status": "Approved with conditions",
+   "event_date": "2019-07-10",
+   "evidence": "Mr. Lambert moved for final approval including all staff comments. Mr. O\u2019Neal seconded the motion. All in favor."
+  },
+  "tms-593-05-00-419|design|2022-09-28": {
+   "status": "Deferred",
+   "event_date": "2022-09-28",
+   "evidence": "Mr. Magoon moved to defer the application to a subcommittee to have all staff comments addressed and to address previous Board comments that were not addressed."
+  },
+  "tms-598-00-00-098|boza|A-12-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-598-00-00-098|boza|V-41-19": {
+   "status": "Deferred",
+   "event_date": "2020-01-27",
+   "evidence": "Mr. Wood moved for approval of a continuance for up to 90 days. Mr. Duke seconded the motion. All in favor."
+  },
+  "tms-598-00-00-405|design|2017-11-29": {
+   "status": "Approved",
+   "event_date": "2017-11-29",
+   "evidence": "L. Park West Professional Office, 1090 Park West Boulevard, 598-00-00-405, Final Approval of Site, Landscape and Architecture M. Hylo Signage, 880 Allbritton Blvd., 535-09-00-044, Final Approval of Architecture These items were approved by consent motion."
+  },
+  "tms-598-00-00-473|design|2025-07-30": {
+   "status": "Approved with conditions",
+   "event_date": "2025-12-03",
+   "evidence": "Mr. Cave moved for final approval including staff comments. Mr. Kiel seconded the motion. All in favor."
+  },
+  "tms-600-00-00-055|design|2019-10-30": {
+   "status": "Approved",
+   "event_date": "2020-05-27",
+   "evidence": "Mr. Magoon moved for final approval. Mr. O\u2019Neal seconded the motion. All in favor."
+  },
+  "tms-614-01-00-133|boza|V-22-25": {
+   "status": "Deferred",
+   "event_date": "2025-08-25",
+   "evidence": "Ms. Stevens moved to continue the following agenda items: \u27a2 Case V-22-25, 3691 Locklear Lane, TMS# 614-01-00-133, Request for relief from \u00a7156.705"
+  },
+  "tms-615-00-00-044|boza|A-01-20": {
+   "status": "Upheld",
+   "event_date": "2020-06-29",
+   "evidence": "Mr. Wood moved to affirm the Zoning Administrator\u2019s decision based on the fact that the principal use of the property is automobile sales. Mr. Duke seconded the motion. Motion passed on a 4 to 1 vote"
+  },
+  "tms-615-00-00-044|design|2020-02-26": {
+   "status": "Approved",
+   "event_date": "2020-05-27",
+   "evidence": "Mr. Lambert moved for preliminary approval for building placement. Mr. Lambert seconded the motion. All in favor."
+  },
+  "tms-632-13-00-033|design|2017-12-11": {
+   "status": "Approved",
+   "event_date": "2017-12-11",
+   "evidence": "Ms. Wilson amended her motion for consent items: #2, 133 Mary Street; #3, 975 Pitt Street, #5, 304 Morrison Street, #8, 141 Toomer Lane;"
+  }
+ },
+ "drop_properties": [
+  "addr-150-is-the-required-driveway-separation-within-the-town-th",
+  "addr-9-x18-are-the-required-dimensions-for-a-parking-space-8-w"
+ ]
+}

@@ -33,6 +33,7 @@ jobs:
         run: |
           python3 tools/fetch_minutes.py
           python3 tools/agenda_docs.py
+          python3 tools/check_links.py || echo "link check failed; keeping data/dead-docs.json"
           tools/build.sh --geocode
           python3 tools/neighborhoods.py
           python3 tools/faq_build.py

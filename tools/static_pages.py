@@ -246,6 +246,7 @@ def property_pages(site, props, hoods, assign, links, meet_of):
   <h2>{E(cid(c))} <span class="status">{E(c['status'])}</span></h2>
   <p class="tags">{' · '.join(tags)}</p>
   <p>{E(c['request'])}</p>
+  {f'<p class="note">Outcome from the minutes of {day(c["status_evidence"]["date"])}: “{E(c["status_evidence"]["quote"])}”</p>' if c.get("status_evidence") else ""}
   {summ}
   <ol class="hearings">{''.join(evs)}</ol>
 </section>""")
