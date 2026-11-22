@@ -69,6 +69,19 @@ file and agenda the record cites is now copied to a private S3 bucket
 - The bucket stays private (applications carry applicants' names and phone numbers). Copies are not
   republished; `tools/check_links.py` links removed documents to a Wayback Machine copy when one exists.
 
+## Alerts (`alerts/lambda_function.py`, `tools/send_alerts.py`)
+
+Email alerts when the Town posts zoning items for a neighborhood a subscriber chose (or all of Mount Pleasant).
+
+- **Signup:** the "Get alerts" dialog posts to an AWS Lambda function URL (`alerts/lambda_function.py`, deployed by
+  hand; code in this repo). Subscribers are stored in DynamoDB `zoningrecord-alerts` (us-east-1), never in this repo.
+  Double opt-in: nothing is sent until the address is confirmed. One confirmation per address per 10 minutes; a
+  hidden honeypot field drops bots. Unsubscribing deletes the record.
+- **Sending:** `tools/send_alerts.py` runs in the daily job after the agendas update. One email per subscriber with
+  only items they haven't been sent, via Amazon SES from `alerts@zoningrecord.com`, with a one-click unsubscribe
+  link and List-Unsubscribe headers. It also retries confirmations that couldn't be sent at signup.
+- **Credentials:** the job's IAM role (GitHub OIDC) may scan and update the table and send from that address only.
+
 ## Coming up
 
 `tools/upcoming.py` reads the agendas the Town has posted for meetings that

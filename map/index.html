@@ -112,19 +112,23 @@
   <form method="dialog" class="dialog-close"><button class="btn btn-ghost btn-sm" aria-label="Close">✕</button></form>
   <div id="alertsAsk">
     <div class="dialog-icon"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9Zm4.3 13a1.94 1.94 0 0 0 3.4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <h2 id="alertsTitle">Get zoning alerts near you</h2>
-    <p class="muted">Get an email when a new zoning case (variance, rezoning, subdivision) is filed within 500&nbsp;ft of your property, before the hearing, so you have time to weigh in.</p>
-    <form id="alertsForm" class="dialog-form">
-      <label for="alertsAddr" class="label">Your address</label>
-      <input class="input" id="alertsAddr" type="text" placeholder="e.g. 100 Ann Edwards Lane" autocomplete="off" required>
-      <button class="btn btn-primary" type="submit">Continue</button>
+    <h2 id="alertsTitle">Get zoning alerts</h2>
+    <p class="muted">An email when the Town posts an agenda with zoning items in your neighborhood, before the hearing, so you have time to weigh in.</p>
+    <form id="alertsForm" class="dialog-form" novalidate>
+      <label for="alertsHood" class="label">Where</label>
+      <select class="input" id="alertsHood"><option value="all">All of Mount Pleasant</option></select>
+      <label for="alertsEmail" class="label">Your email</label>
+      <input class="input" id="alertsEmail" type="email" placeholder="you@example.com" autocomplete="email" required>
+      <input type="text" id="alertsWebsite" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+      <p class="hint" id="alertsErr" role="alert" hidden></p>
+      <button class="btn btn-primary" type="submit" id="alertsGo">Get alerts</button>
+      <p class="hint">We'll send one email to confirm. Your address is used only for these alerts and deleted when you unsubscribe.</p>
     </form>
   </div>
   <div id="alertsThanks" hidden>
     <div class="dialog-icon">✓</div>
-    <h2>Thanks for your interest</h2>
-    <p>Alerts aren't live yet. We're checking whether people want this before building it, and your click counts as a vote.</p>
-    <p class="muted small">Nothing you typed was saved or sent anywhere.</p>
+    <h2>Check your email</h2>
+    <p>We sent a link to confirm your alerts. If it isn't there within a day, check your spam folder.</p>
     <form method="dialog"><button class="btn btn-primary" style="width:100%">Back to the map</button></form>
   </div>
 </dialog>
