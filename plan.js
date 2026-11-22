@@ -68,7 +68,12 @@
   // ---------- live lookups ----------
   async function arc(url, params) {
     const q = new URLSearchParams({ ...params, f: 'json' });
-    const r = await fetch(`${url}?${q}`);
+    // County and Town map services sometimes stall; give up after 12 s rather than leave the page waiting.
+    const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 12000);
+    let r;
+    try { r = await fetch(`${url}?${q}`, { signal: ctl.signal }); }
+    catch (err) { throw new Error(err.name === 'AbortError' ? 'The county or Town map service did not answer' : 'The county or Town map service could not be reached'); }
+    finally { clearTimeout(timer); }
     const d = await r.json();
     if (d.error) throw new Error(d.error.message || 'map service error');
     return d;
@@ -101,15 +106,16 @@
       const par = parcelFrom(f);
       return { address: `TMS ${par.tms}`, ...par, ...centroid(par.rings), source: 'tms' };
     }
-    const g = await arc(`${COUNTY}/LOCATORS/AddressStreetCompositeLocator_Pro/GeocodeServer/findAddressCandidates`,
-      { SingleLine: `${input}, Mount Pleasant, SC`, outSR: 4326, maxLocations: 5, outFields: 'Addr_type,Score' });
-    const cand = (g.candidates || []).find((c) => c.score >= 85 && c.location.y > BBOX[0] && c.location.y < BBOX[1] && c.location.x > BBOX[2] && c.location.x < BBOX[3]);
+    // A property already in our data needs no county lookup (and keeps working if the county service is down).
     const key = houseKey(input);
     const known = key ? [...new Map(rows.filter((x) => x.p.tms && houseKey(x.p.address) === key).map((x) => [x.p.tms, x.p])).values()] : [];
     if (known.length === 1 && known[0].rings) {
       const p = known[0];
       return { address: p.address, tms: p.tms, acres: p.acres, rings: p.rings, ...centroid(p.rings), source: 'known' };
     }
+    const g = await arc(`${COUNTY}/LOCATORS/AddressStreetCompositeLocator_Pro/GeocodeServer/findAddressCandidates`,
+      { SingleLine: `${input}, Mount Pleasant, SC`, outSR: 4326, maxLocations: 5, outFields: 'Addr_type,Score' });
+    const cand = (g.candidates || []).find((c) => c.score >= 85 && c.location.y > BBOX[0] && c.location.y < BBOX[1] && c.location.x > BBOX[2] && c.location.x < BBOX[3]);
     if (!cand) return null;
     const pt = { lat: cand.location.y, lng: cand.location.x };
     const near = { geometry: `${pt.lng},${pt.lat}`, geometryType: 'esriGeometryPoint', inSR: 4326, spatialRel: 'esriSpatialRelIntersects' };
@@ -536,7 +542,9 @@
         $('out').innerHTML = '<div class="card block"><h2>Address not found</h2><p>Try the street number and name only (e.g. "100 Ann Edwards Lane"), or enter the parcel number (TMS, e.g. 532-01-00-147). Only Mount Pleasant properties can be looked up.</p></div>';
         return;
       }
-      const [z, sales] = await Promise.all([zoningOf(lot), salesNear(lot).catch(() => null)]);
+      // Recent sales are a nice-to-have from the county: don't hold the page for them.
+      const salesSoon = Promise.race([salesNear(lot).catch(() => null), new Promise((ok) => setTimeout(() => ok(null), 5000))]);
+      const [z, sales] = await Promise.all([zoningOf(lot), salesSoon]);
       const here = rows.filter((x) => lot.tms && x.p.tms === lot.tms);
       const near = rows.filter((x) => x.p.lat && distM(lot, x.p) <= 152 && !(lot.tms && x.p.tms === lot.tms));
       const isUse = relief === 'use';
@@ -559,7 +567,7 @@
         </section>` + faqSection(faq, relief, z);
       $('out').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {
-      $('out').innerHTML = `<div class="card block"><h2>Something went wrong</h2><p>${esc(err.message)}. The county or Town map service may be busy; try again in a minute.</p></div>`;
+      $('out').innerHTML = `<div class="card block"><h2>Something went wrong</h2><p>${esc(err.message)}. These services are run by Charleston County and the Town and are sometimes slow; try again in a minute.</p></div>`;
     } finally {
       $('go').disabled = false;
     }
