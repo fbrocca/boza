@@ -52,6 +52,23 @@ committed; everything is rebuilt on every deploy, so new cases appear as soon as
 The root `index.html` forwards to `/mount-pleasant/`; the root `404.html` rewrites links shared
 before the move (including `fabiobrocca.tech/boza/...`), keeping `#property` and `?q=`.
 
+## Document archive (`tools/archive_docs.py`)
+
+The Town removes documents from its website over time: of the 2017-2018 case documents, 73 were gone
+by November 2026 and only one had ever been saved by the Wayback Machine. Every document, minutes
+file and agenda the record cites is now copied to a private S3 bucket
+(`zoningrecord-archive-272106374268`, us-east-1) the first time the pipeline sees it:
+
+- `docs/<sha256[:2]>/<sha256>.<ext>`: the file, stored by content hash; `text/.../<sha256>.txt`: its text.
+- `data/archive-manifest.json` (public, no content): source URL to hash, size, type and fetch date, or the
+  HTTP status when the Town no longer has it.
+- Runs in the daily job with a 40-minute budget, so the backlog (about 4,400 links, roughly 27 GB)
+  fills over a few nights. Versioned bucket, cheaper storage tier after 30 days.
+- No stored keys: the job assumes the IAM role `zoningrecord-archiver` through GitHub's OIDC; only this
+  repository's `main` branch can, and the role can read and write the bucket but not delete.
+- The bucket stays private (applications carry applicants' names and phone numbers). Copies are not
+  republished; `tools/check_links.py` links removed documents to a Wayback Machine copy when one exists.
+
 ## Coming up
 
 `tools/upcoming.py` reads the agendas the Town has posted for meetings that
