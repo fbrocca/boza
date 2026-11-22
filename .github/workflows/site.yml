@@ -7,6 +7,11 @@ on:
     - cron: "17 11 5 * *"   # 5th of each month, 11:17 UTC: new minutes, full rebuild
     - cron: "23 10 * * *"   # daily, 10:23 UTC: agendas posted for upcoming meetings
   workflow_dispatch:
+    inputs:
+      rebuild:
+        description: "Full rebuild from the minutes (otherwise only agendas, videos and the document archive)"
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -29,7 +34,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Monthly rebuild from minutes
-        if: github.event_name == 'workflow_dispatch' || github.event.schedule == '17 11 5 * *'
+        if: (github.event_name == 'workflow_dispatch' && inputs.rebuild) || github.event.schedule == '17 11 5 * *'
         run: |
           python3 tools/fetch_minutes.py
           python3 tools/agenda_docs.py
@@ -41,6 +46,16 @@ jobs:
         run: |
           python3 tools/upcoming.py
           python3 tools/videos.py || echo "video sources unavailable; keeping data/videos.json and data/video-moments.json"
+      # Private archive of every Town document the record cites (tools/archive_docs.py). Temporary
+      # credentials from an IAM role that only this repository's main branch can assume; no stored keys.
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::272106374268:role/zoningrecord-archiver
+          aws-region: us-east-1
+      - name: Archive Town documents
+        run: |
+          pip install -q boto3
+          python3 tools/archive_docs.py --bucket zoningrecord-archive-272106374268 --minutes 40 || echo "archive run failed; will retry tomorrow"
       - name: Commit changes
         run: |
           git config user.name "github-actions[bot]"
