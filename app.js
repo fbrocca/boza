@@ -872,7 +872,8 @@
           ${window.MPShared ? window.MPShared.meetingActions(m) : ''}
         </div>`;
       }).join('')}`;
-    const base = `${location.host}${location.pathname.replace(/[^/]*$/, '')}feeds/`;
+    // Feeds live at the site root (the map page sits one level down, under <base href="../">).
+    const base = new URL('feeds/', document.baseURI).href.replace(/^https?:\/\//, '');
     el.insertAdjacentHTML('beforeend', `<p class="up-subscribe">Follow every meeting:
       <a href="https://calendar.google.com/calendar/r?cid=${encodeURIComponent('webcal://' + base + 'meetings.ics')}" target="_blank" rel="noopener" data-track="feed/google">Google Calendar</a>
       <a href="webcal://${base}meetings.ics" data-track="feed/webcal">Apple / Outlook</a>
