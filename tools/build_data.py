@@ -287,9 +287,12 @@ def main(out_dir):
     geo = load(os.path.join(out_dir, "geocode-cache.json"), {})
     parcels = load(os.path.join(out_dir, "parcels.json"), {})
     agenda_docs = load(os.path.join(out_dir, "agenda-docs.json"), {})
-    # links the Town has since removed (checked by hand; see data/dead-docs.json)
-    dead = set(load(os.path.join(out_dir, "dead-docs.json"), {}).get("urls", []))
-    agenda_docs = {k: [d for d in v if d["url"] not in dead] for k, v in agenda_docs.items()}
+    # Links the Town has since removed (tools/check_links.py): point to the Wayback Machine copy when
+    # there is one, otherwise leave the link out.
+    dead_docs = load(os.path.join(out_dir, "dead-docs.json"), {})
+    dead, archived = set(dead_docs.get("urls", [])), dead_docs.get("archive", {})
+    agenda_docs = {k: [({**d, "url": archived[d["url"]], "label": d["label"] + " (archived copy)"} if d["url"] in archived else d)
+                       for d in v if d["url"] not in dead or d["url"] in archived] for k, v in agenda_docs.items()}
     body_key = {"Board of Zoning Appeals": "boza", "Planning Commission": "pc",
                 "Historic District Preservation Commission": "hdpc", "Design Review Board": "drb"}
     overrides = {k: v for k, v in load(os.path.join(out_dir, "geocode-overrides.json"), {}).items()

@@ -1,4 +1,7 @@
 {
+"archive": {
+"http://www.tompsc.com/DocumentCenter/View/21302": "https://web.archive.org/web/20180207041545/http://www.tompsc.com:80/DocumentCenter/View/21302"
+},
 "note": "Town document links that returned 404 when checked on 2026-11-22 (removed from the Town's Document Center). build_data.py leaves them out.",
 "urls": [
 "http://www.tompsc.com/DocumentCenter/View/20631",
