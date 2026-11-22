@@ -794,6 +794,7 @@
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });  // click on backdrop
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
+    if (document.querySelector('dialog[open]')) return;  // the browser closes the dialog; keep the property open
     if (drawing) stopDrawing();
     else if (!$('detailView').hidden) closeDetail();
   });
