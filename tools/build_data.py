@@ -289,6 +289,7 @@ def main(out_dir):
     agenda_docs = load(os.path.join(out_dir, "agenda-docs.json"), {})
     # Links the Town has since removed (tools/check_links.py): point to the Wayback Machine copy when
     # there is one, otherwise leave the link out.
+    corrections = load(os.path.join(out_dir, "status-corrections.json"), {}).get("cases", {})
     dead_docs = load(os.path.join(out_dir, "dead-docs.json"), {})
     dead, archived = set(dead_docs.get("urls", [])), dead_docs.get("archive", {})
     agenda_docs = {k: [({**d, "url": archived[d["url"]], "label": d["label"] + " (archived copy)"} if d["url"] in archived else d)
@@ -399,6 +400,13 @@ def main(out_dir):
                 u = units_of(c.get("request"), [texts.get(e["id"], "") for e in c["events"]])
                 if u:
                     c["units"] = u
+            # Outcomes read by hand or by AI readers where the parser found none, each with a verbatim
+            # quote checked against the minutes (data/status-corrections.json).
+            fix = corrections.get(f"{p['id']}|{c['board']}|{c['case'] or c['first']}")
+            if fix and fix["status"] != c["status"]:
+                c["auto_status"] = c["status"]
+                c["status"] = fix["status"]
+                c["status_evidence"] = {"quote": fix["evidence"], "date": fix["event_date"]}
         p["cases"].sort(key=lambda c: c["date"], reverse=True)
         p["date"] = p["cases"][0]["date"]
         out.append(p)

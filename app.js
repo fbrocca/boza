@@ -533,6 +533,7 @@
         ${c.request ? `<p class="request">${highlight(c.request, term)}</p>` : ''}
         ${factsHtml(c)}
         ${help ? `<p class="note">${esc(help)}</p>` : ''}
+        ${c.status_evidence ? `<p class="note">Outcome from the minutes of ${esc(fmtDate(c.status_evidence.date))}: “${esc(c.status_evidence.quote)}”</p>` : ''}
         <ol class="timeline">
           ${c.events.map((e) => `
             <li style="${eventTone(e.decision)}">
