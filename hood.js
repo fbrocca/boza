@@ -11,9 +11,8 @@
   const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
   const fmtMonth = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
   const fmtDay = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-  const BOARD = { boza: 'Zoning Appeals', planning: 'Planning', design: 'Design review' };
   const APPROVED = /^(Approved|Approved with conditions|Adopted by Council|Approved by staff|Reversed)$/;
-  const DENIED = /^(Denied|Denied by Council)$/;
+  const DENIED = /^(Denied|Denied by Council|Upheld)$/;
   const outcome = (s) => (APPROVED.test(s) ? 'approved' : DENIED.test(s) ? 'denied' : 'other');
   const minor = (c) => c.kind === 'Staff approval';
   const pct = (k, n) => (n ? Math.round((100 * k) / n) : null);

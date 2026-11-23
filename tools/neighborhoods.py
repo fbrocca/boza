@@ -23,7 +23,7 @@ SHAPES = os.path.join(ROOT, "data", "neighborhood-shapes.json")
 TOWN = "https://maps.tompsc.com/arcgis/rest/services"
 SUBDIV = f"{TOWN}/Town_Subdivisions_with_Plats/MapServer/0/query"
 OVERLAY = f"{TOWN}/Parcel_Search_New/MPSC_Zoning_New/MapServer/0/query"
-UA = {"User-Agent": "boza-archive (+https://github.com/fbrocca/boza)"}
+UA = {"User-Agent": "The Zoning Record (+https://zoningrecord.com/)"}
 MIN_CASES = 3
 NAME_FIX = {"Ion": "I'On"}  # GIS spelling vs the neighborhood's own  # neighborhoods with fewer cases are listed but get no page of their own
 

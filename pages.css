@@ -60,3 +60,8 @@
   .doc h2 { font-size: 22px; }
   .case h2 { font-size: 17px; }
 }
+
+/* A-Z jump on the properties index */
+.jump { display: flex; flex-wrap: wrap; gap: 4px 10px; font: 500 14px var(--mono); position: sticky; top: 0; background: var(--paper); padding: 10px 0; border-bottom: 1px solid var(--rule); z-index: 1; }
+.jump a { text-decoration: none; }
+.streets li { scroll-margin-top: 52px; }

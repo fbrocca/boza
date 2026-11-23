@@ -1,7 +1,7 @@
-# BOZA: Mount Pleasant Zoning Map
+# The Zoning Record · Mount Pleasant
 
 Every property-specific zoning action in the Town of Mount Pleasant, SC since
-2017, on a map:
+2017, on a map, with a page per property, hearing and board:
 
 - **Board of Zoning Appeals**: variances, special exceptions, appeals.
 - **Rezoning & planning**: rezonings, annexations, PD amendments, sketch plans
@@ -22,7 +22,7 @@ minutes text, a link to the exact page of the minutes PDF, and links to the
 case documents the Town published with the agenda (application, staff report,
 correspondence, presentation).
 
-**Site:** https://fbrocca.github.io/boza/
+**Site:** https://zoningrecord.com/mount-pleasant/ (map at `/map/`).
 
 ## The Zoning Record (landing page)
 
@@ -180,7 +180,7 @@ Plan designation; the lot's case history and cases within 500 ft; which
 application is likely needed (variance vs rezoning vs subdivision, plus Historic
 District / Design Review Board review where an overlay or district applies); how
 comparable requests fared, with sample sizes; and how to strengthen an
-application, each point backed by counts from `data/case-facts.json` and links to
+application, each point backed by counts from the case facts in `data/properties.json` and links to
 real cases and their application documents. Nothing is scored or predicted, and
 nothing entered is stored.
 
@@ -198,7 +198,11 @@ is amended.
 
 | Path | What |
 |---|---|
-| `index.html`, `app.js`, `style.css` | The map page. Static, no build step. Leaflet is vendored in `vendor/`. |
+| `index.html`, `landing.css`, `landing.js` | The landing page. |
+| `map/index.html`, `app.js`, `style.css`, `shared.js` | The map page (`<base href="../">`). Static, no build step. Leaflet is vendored in `vendor/`. |
+| `plan.html`/`plan.js`/`plan.css`, `hood.html`/`hood.js`/`hood.css`, `pages.css` | Plan a request; neighborhood pages (template for `tools/hood_pages.py`); static property, meeting and guide pages. |
+| `root/` | Domain-root redirect and 404 pages. |
+| `alerts/` | The alerts signup function deployed to AWS Lambda. |
 | `minutes/` | All BOZA minutes PDFs (`YYYY-MM-DD.pdf`), with `index.csv` and a README listing. |
 | `sources/pc`, `sources/pcom`, `sources/council`, `sources/hdpc`, `sources/drb` | Text of every Planning Commission, Planning Committee, Town Council, Historic District Preservation Commission and Design Review Board minutes (`YYYY-MM-DD-<id>.txt`). Only the text is kept because these PDFs total ~2 GB; the map links to the Town's copy. |
 | `data/cases.json` | Every BOZA hearing extracted from the minutes. |
@@ -209,7 +213,10 @@ is amended.
 | `data/agenda-docs.json` | Links to case documents found in each BOZA and Planning Commission agenda, assigned to cases. Links only; the documents stay on the Town's site. |
 | `data/parcels.json`, `data/geocode-cache.json` | Cached county parcel and address lookups. |
 | `data/zoning.json` | Zoning district, overlay districts, height limit and Comprehensive Plan future land use per parcel, from the Town's map server (`tools/zoning.py`). |
-| `data/case-facts.sqlite` | The same facts as one SQLite table, for ad-hoc queries. |
+| `data/case-facts.sqlite` | The same facts as one SQLite table, for ad-hoc queries. Not regenerated: refresh by hand if `case-facts.json` changes. |
+| `data/upcoming.json`, `data/videos.json`, `data/video-moments.json` | Posted agendas for upcoming meetings; meeting recordings and the moment each case comes up. |
+| `data/sales.json`, `data/code-standards.json`, `data/faq.json`, `data/questions-coded.json`, `data/neighborhoods.json`, `data/neighborhood-shapes.json` | Recorded sales; current code standards; questions boards and residents raise (coded, and summarised); neighborhood assignment and outlines. |
+| `data/status-corrections.json`, `data/dead-docs.json`, `data/archive-manifest.json` | Outcomes read by hand where the parser found none (with quotes); Town links that now 404; the S3 document archive index. |
 | `data/case-facts.json` | Structured facts for 684 BOZA and rezoning cases, read from the minutes with an AI-assisted coding sheet and checked against them: type of relief, size of request, arguments made, opposition, vote, stated reasons, outcome, and a one-line summary. Where a fact sheet states the outcome, it replaces the automatic guess on the map. New cases need coding (see below). |
 | `data/geocode-overrides.json` | Hand-placed pins for locations that can't be found automatically. |
 | `tools/` | The pipeline (below). |
@@ -243,7 +250,7 @@ tools/build.sh --geocode         # extract cases, look up parcels/addresses, reb
    then the address point (a mismatch usually means a TMS typo in the
    minutes), then the Census estimate.
 
-Needs `pdftotext` (poppler-utils) and Python 3. No third-party packages.
+Needs `pdftotext` (poppler-utils) and Python 3. The extraction and build use the standard library only; `check_links.py`, `archive_docs.py` and `send_alerts.py` need `requests` and `boto3`.
 
 ### Case documents
 
@@ -253,8 +260,7 @@ in the link text, else the case number inside the same agenda item. A staff
 report named only by board and date covers the whole meeting and is shown on
 every case that night. Links in items with no case number (street names, text
 amendments) and general links (bylaws, code, GIS) are dropped. The map links to
-the Town's copy; nothing is downloaded, stored or extracted from the documents,
-including applicant contact details.
+the Town's copy. A private copy of every document is kept in S3 (see Document archive); nothing from the documents, including applicant contact details, is published.
 
 ### Case facts
 
@@ -266,19 +272,21 @@ not coded yet: they show the automatic outcome until coded.
 ## Automation
 
 `.github/workflows/site.yml` publishes the site to GitHub Pages on every push
-to `main`. Every day it refreshes `data/upcoming.json` from posted agendas.
-On the 5th of each month it also downloads new minutes, rebuilds the data,
-commits the changes, and redeploys. Running it by hand from the Actions tab
-("Update and publish" → Run workflow) does the full monthly rebuild.
+to `main`. Every day it refreshes posted agendas and meeting videos, sends alerts,
+archives new Town documents to S3, commits data changes and redeploys. On the 5th
+of each month it also downloads new minutes, checks every cited link, rebuilds the
+data and regenerates the pages. Running it by hand from the Actions tab ("Update and
+publish" → Run workflow) does the full rebuild unless "rebuild" is unticked.
 
 ## Accuracy
 
 The minutes are the official record. Every event links to its source page.
 
 - Decisions are inferred from motion wording, not entered by hand. A spot
-  check of 8 random hearings matched the minutes after one fix. About 9% show
-  "See minutes" (items heard together with another case, deadlocks).
-- 599 of 630 properties are mapped, mostly on the county parcel. The rest
+  check of 8 random hearings matched the minutes after one fix. Cases the parser
+  couldn't settle were read against the minutes (`data/status-corrections.json`);
+  5 of 1649 still show "See minutes".
+- 1139 of 1183 properties are mapped, mostly on the county parcel. The rest
   have no street number and a retired or missing TMS, so they're listed as
   "not on map". Add them to `data/geocode-overrides.json` to pin them.
 - Coverage: 457 BOZA cases (548 hearings) and 312 Planning Commission cases.

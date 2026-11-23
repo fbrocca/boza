@@ -153,7 +153,7 @@ def shell(base, title, desc, url, body, ld=None, crumbs=None):
 <body>
 <header class="mast"><div class="wrap">
   <a class="logo" href="./"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M8 8H56V56H8Z"/><path d="M8 30H56M30 8V56"/></g><path class="lot" d="M32 32H54V54H32Z" fill="#2e5b3f"/></svg><span>The Zoning Record</span><i>Mount Pleasant</i></a>
-  <nav aria-label="Main"><a href="map/">Map</a><a href="p/">Properties</a><a href="m/">Meetings</a><a href="g/">Guides</a><a href="plan.html">Plan a request</a></nav>
+  <nav aria-label="Main"><a href="map/">Map</a><a href="n/">Neighborhoods</a><a href="p/">Properties</a><a href="m/">Meetings</a><a href="g/">Guides</a><a href="plan.html">Plan a request</a></nav>
 </div></header>
 <main class="wrap doc">
 {crumb_html}
@@ -276,13 +276,19 @@ def property_pages(site, props, hoods, assign, links, meet_of):
     for p in props:
         street = re.sub(r"^[0-9][0-9A-Za-z\-/ &]*?\s+(?=[A-Za-z])", "", p["address"]).strip() or p["address"]
         by_street[street.title()].append(p)
-    groups = []
+    groups, letters = [], []
     for street in sorted(by_street, key=lambda s: s.lower()):
         items = sorted(by_street[street], key=lambda p: (len(p["address"]), p["address"]))
-        groups.append(f'<li><b>{E(street)}</b> ' + " · ".join(
+        first = street[:1].upper() if street[:1].isalpha() else "#"
+        anchor = ""
+        if first not in letters:
+            letters.append(first)
+            anchor = f' id="l-{"0" if first == "#" else first}"'
+        groups.append(f'<li{anchor}><b>{E(street)}</b> ' + " · ".join(
             f'<a href="p/{prop_slug(p)}/">{E(p["address"])}</a>' for p in items) + "</li>")
     body = f"""<p class="kicker">Index</p><h1>Every property with a zoning case</h1>
 <p class="lede">{len(props):,} Mount Pleasant properties that went before a Town board since 2017, by street. Each page lists every case, its outcome and the minutes behind it.</p>
+<p class="jump">{' '.join(f'<a href="p/#l-{"0" if l == "#" else l}">{l}</a>' for l in letters)}</p>
 <ul class="index streets">{''.join(groups)}</ul>"""
     write(os.path.join(site, "p", "index.html"),
           shell("../", "All properties · The Zoning Record · Mount Pleasant", f"{len(props):,} Mount Pleasant, SC properties with zoning, historic or design review cases since 2017.",
