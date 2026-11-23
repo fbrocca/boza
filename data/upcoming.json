@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21",
+ "updated": "2026-11-23",
  "meetings": [
   {
    "body": "drb",
@@ -40,7 +40,9 @@
      "address": "631 Johnnie Dodds Blvd",
      "kind": "Design review",
      "request": "Final Review of Architecture",
-     "status": null
+     "status": null,
+     "lat": 32.807358,
+     "lng": -79.879603
     },
     {
      "case": null,
@@ -86,7 +88,9 @@
      "address": null,
      "kind": "Appeal",
      "request": "Case A-02-2026 Appeal of the Zoning Administrator\u2019s determination that the proposed use of the property does not require a zoning permit or review under the Town\u2019s provisions for changes in principal use.",
-     "status": null
+     "status": null,
+     "lat": 32.792082,
+     "lng": -79.869333
     }
    ]
   }
