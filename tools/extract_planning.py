@@ -27,7 +27,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from extract_cases import clean_lines, decide, reflow  # noqa: E402
 from event_check import belongs  # noqa: E402
 
-BODIES = {"pc": "Planning Commission", "pcom": "Planning Committee", "council": "Town Council"}
 BASE = "https://sc-mountpleasant2.civicplus.com/AgendaCenter/ViewFile/Minutes/"
 
 CASE_ID = re.compile(r"\b(R|SP)\s?-\s?(\d{1,3})\s?-\s?(\d{2,4})\b")

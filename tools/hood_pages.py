@@ -20,6 +20,9 @@ from static_pages import prop_slug, day  # noqa: E402  same slugs as the propert
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 SITE = "https://zoningrecord.com/mount-pleasant/"
 E = html.escape
+# Same classification as hood.js (APPROVED/DENIED); Reversed = appeal granted, Upheld = appeal denied.
+APPROVED = {"Approved", "Approved with conditions", "Adopted by Council", "Approved by staff", "Reversed"}
+DENIED = {"Denied", "Denied by Council", "Upheld"}
 
 
 def page(tpl, base, slug, title, desc, url, body=None):
@@ -75,8 +78,8 @@ def main(site):
                      + "</ul></section>"))
     for h in pages:
         cases = [c for pid, s in nb["assign"].items() if s == h["slug"] for c in props[pid]["cases"] if c["kind"] != "Staff approval"]
-        dec = [c for c in cases if c["status"] in ("Approved", "Approved with conditions", "Adopted by Council", "Denied", "Denied by Council")]
-        ok = sum(c["status"] != "Denied" and c["status"] != "Denied by Council" for c in dec)
+        dec = [c for c in cases if c["status"] in APPROVED | DENIED]
+        ok = sum(c["status"] in APPROVED for c in dec)
         desc = (f"{len(cases)} zoning cases in {h['name']}, Mount Pleasant, SC since 2017"
                 + (f": {ok} of {len(dec)} decided requests approved." if dec else ".")
                 + " What's been filed, what's coming up and what was decided.")

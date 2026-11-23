@@ -32,7 +32,6 @@ select.input { height: 40px; padding-right: 32px; appearance: none; -webkit-appe
 .path p { margin: 4px 0; }
 .callout { background: var(--muted); border-radius: 0; border-left: 3px solid var(--input); padding: 12px 14px; margin: 12px 0 0; font-size: 14px; line-height: 1.45; }
 .callout.warn { background: var(--pending-bg); border-left-color: var(--pending); }
-.callout.bad { background: var(--denied-bg); border-left-color: var(--denied); }
 
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 14px 0 6px; }
 .stat { background: transparent; border-top: 1px solid var(--rule-strong); border-radius: 0; padding: 12px 0 4px; }
@@ -91,3 +90,7 @@ select.input { height: 40px; padding-right: 32px; appearance: none; -webkit-appe
 .faq-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
 .faq-q { margin: 6px 0 0; padding-left: 18px; color: var(--foreground); font-size: 14px; display: grid; gap: 3px; }
 .faq-q a { margin-left: 4px; }
+
+/* Similar cases: four shown, the rest behind a toggle */
+.more-comps > summary { cursor: pointer; color: var(--link); font-size: 14px; padding: 10px 0; list-style: none; border-top: 1px solid var(--hairline); }
+.more-comps > summary::-webkit-details-marker { display: none; }

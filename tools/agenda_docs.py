@@ -61,7 +61,7 @@ def doc_type(text):
 def get(url, tries=6):
     for i in range(tries):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "boza-archive (+https://github.com/fbrocca/boza)"})
+            req = urllib.request.Request(url, headers={"User-Agent": "The Zoning Record (+https://zoningrecord.com/)"})
             with urllib.request.urlopen(req, timeout=120) as r:
                 return r.read()
         except Exception as e:

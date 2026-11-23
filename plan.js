@@ -424,18 +424,18 @@
         <div class="stat"><b>${rl.pct ?? '–'}%</b><span>within ~1¼ mi: ${rl.txt} ${smallN(rl)}</span></div>
         <div class="stat"><b>${rr.pct ?? '–'}%</b><span>since 2021: ${rr.txt} ${smallN(rr)}</span></div>
       </div>
-      ${(() => { const old = decided.filter((x) => x.c.date < '2025-05-01').length; return old ? `<p class="hint">${old} of these ${decided.length} were decided under the pre-2025 code; compare requests to today's rules above.</p>` : ''; })()}
+      ${(() => { const old = decided.filter((x) => x.c.date < '2025-05-01').length; return old ? `<p class="hint">${old} of these ${decided.length} were decided under the pre-2025 code; compare requests to today's rules below.</p>` : ''; })()}
       <h3>Most similar past cases</h3>
-      <ul class="comps">${top.map((x) => {
+      <ul class="comps">${top.map((x, i) => (i === 4 ? `</ul><details class="more-comps"><summary>Show ${top.length - 4} more</summary><ul class="comps">` : '') + (() => {
         const docs = (x.c.events || []).flatMap((e) => e.docs || []).filter((d) => !d.all && /Application|Staff report/.test(d.t)).slice(0, 2);
         return `<li>
           <span class="c-title">${link(x)} <span class="muted">· ${esc(x.c.case || x.c.kind)}</span></span>
-          <span class="badge" style="--c:var(--${/^(Approved|Adopted|Reversed)/.test(x.c.status) ? 'approved' : /Denied/.test(x.c.status) ? 'denied' : 'withdrawn'});--cb:var(--${/^(Approved|Adopted|Reversed)/.test(x.c.status) ? 'approved' : /Denied/.test(x.c.status) ? 'denied' : 'withdrawn'}-bg)"><span class="dot"></span>${esc(x.c.status)}</span>
+          <span class="badge" style="--c:var(--${/^(Approved|Adopted|Reversed)/.test(x.c.status) ? 'approved' : /^(Denied|Upheld)/.test(x.c.status) ? 'denied' : 'withdrawn'});--cb:var(--${/^(Approved|Adopted|Reversed)/.test(x.c.status) ? 'approved' : /^(Denied|Upheld)/.test(x.c.status) ? 'denied' : 'withdrawn'}-bg)"><span class="dot"></span>${esc(x.c.status)}</span>
           <span class="c-meta">${fmtDate(x.c.date)}${x.f.magnitude ? ' · ' + esc(x.f.magnitude) : ''}${x.f.vote ? ' · vote ' + esc(x.f.vote) : ''}${x.p.zoning?.zoning ? ' · ' + esc(x.p.zoning.zoning.join('/')) : ''}${x.dist < 1e8 ? ` · ${(x.dist / 1609).toFixed(1)} mi away` : ''}</span>
           ${x.f.key_factor ? `<span class="c-sum"><span class="ai-tag">AI summary</span>${esc(x.f.key_factor)}</span>` : ''}
           ${docs.length ? `<span class="c-docs">${docs.map((d) => `<a class="btn btn-outline btn-sm" href="${esc(d.u)}" target="_blank" rel="noopener">${esc(d.t)}</a>`).join('')}</span>` : ''}
         </li>`;
-      }).join('')}</ul>
+      })()).join('')}</ul>${top.length > 4 ? '</details>' : ''}
     </section>`;
   }
 
@@ -560,11 +560,13 @@
       const comps = isUse || relief === 'lot_size_density_subdivision'
         ? pool.map((x) => ({ ...x, dist: distM(lot, x.p), score: 0 })).sort((a, b) => a.dist - b.dist)
         : pickComparables(pool, lot, z, relief, userPct);
-      $('out').innerHTML = lotSection(lot, z, here, near) + salesSection(sales) + codeSection(lot, z, relief, { ask, req, unit: $('sizeUnit').value }, std) + pathSection(relief, z, stats) + compSection(comps, relief, isUse || relief === 'lot_size_density_subdivision') +
+      // Answer first: the lot, the application it needs and how similar requests fared; detail after; sales last.
+      $('out').innerHTML = lotSection(lot, z, here, near) + pathSection(relief, z, stats) + compSection(comps, relief, isUse || relief === 'lot_size_density_subdivision') +
+        codeSection(lot, z, relief, { ask, req, unit: $('sizeUnit').value }, std) +
         `<section class="card block"><h2>How to strengthen your application</h2>
           <p class="muted">Patterns from past cases, with how many cases each rests on. Not a prediction.</p>
           <ol class="tips">${isUse || relief === 'lot_size_density_subdivision' ? rezoningTips(R, z, near) : varianceTips(V, comps, relief, userPct, near)}</ol>
-        </section>` + faqSection(faq, relief, z);
+        </section>` + faqSection(faq, relief, z) + salesSection(sales);
       $('out').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {
       $('out').innerHTML = `<div class="card block"><h2>Something went wrong</h2><p>${esc(err.message)}. These services are run by Charleston County and the Town and are sometimes slow; try again in a minute.</p></div>`;

@@ -29,7 +29,7 @@ CAT = 8
 FIRST_YEAR = 2017
 TEXT_BODIES = {"pc": 1, "pcom": 17, "council": 4, "hdpc": 16, "drb": 11}
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-UA = {"User-Agent": "boza-archive (+https://github.com/fbrocca/boza)"}
+UA = {"User-Agent": "The Zoning Record (+https://zoningrecord.com/)"}
 
 
 def get(url, data=None, tries=6):

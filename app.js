@@ -1,8 +1,8 @@
-/* Mount Pleasant Zoning Map.
- * Data: data/properties.json  one entry per parcel; each has cases (BOZA or
- *                              planning), each case a timeline of events
- *       data/minutes-text.json minutes text per event, fetched on demand
- * UI: shadcn/ui tokens and components (style.css), Airbnb-style list + map.
+/* The Zoning Record: map app (map/index.html).
+ * Data: data/properties.json  one entry per parcel; each has cases (Zoning Appeals,
+ *                              planning or design review), each a timeline of hearings
+ *       data/minutes-text.json minutes text per hearing, fetched on demand
+ * Styles: style.css (paper, ink and marsh tokens shared with landing.css).
  */
 (function () {
   'use strict';
@@ -11,7 +11,7 @@
   const GROUPS = [
     { key: 'approved', label: 'Approved / adopted', test: (s) => /^(Approved|Adopted by Council|Approved by staff|Reversed)$/.test(s) },
     { key: 'conditions', label: 'Approved with conditions', test: (s) => s === 'Approved with conditions' },
-    { key: 'denied', label: 'Denied', test: (s) => /^(Denied|Denied by Council)$/.test(s) },
+    { key: 'denied', label: 'Denied', test: (s) => /^(Denied|Denied by Council|Upheld)$/.test(s) },
     { key: 'pending', label: 'Pending / recommendation only', test: (s) => /^(Recommended approval|Recommended denial|Passed first reading|Deferred|No recommendation|Comments only)$/.test(s) },
     { key: 'withdrawn', label: 'Withdrawn', test: (s) => s === 'Withdrawn' },
     { key: 'other', label: 'Other / see minutes', test: () => true },
@@ -61,7 +61,6 @@
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-  const isMobile = () => matchMedia('(max-width: 760px)').matches;
 
   // ---------- Usage analytics (GoatCounter events; no cookies, no search text) ----------
   function track(name, title) {

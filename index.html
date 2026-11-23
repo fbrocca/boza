@@ -7,7 +7,7 @@
   // Links shared before the landing page existed pointed at the map: send them there.
   (function () {
     var s = location.search, h = location.hash;
-    if ((h && h.length > 1) || /[?&](area|q)=/.test(s)) location.replace('map/' + s + h);
+    if (/^#(tms|addr)-/.test(h) || /[?&](area|q)=/.test(s)) location.replace('map/' + s + h);
   })();
 </script>
 <title>The Zoning Record · Mount Pleasant</title>
@@ -38,13 +38,7 @@
 <header class="mast">
   <div class="wrap">
     <a class="logo" href="./"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="4"><path d="M8 8H56V56H8Z"/><path d="M8 30H56M30 8V56"/></g><path class="lot" d="M32 32H54V54H32Z" fill="#2e5b3f"/></svg><span>The Zoning Record</span><i>Mount Pleasant</i></a>
-    <nav aria-label="Main">
-      <a href="map/">Map</a>
-      <a href="#docket">Coming up</a>
-      <a href="n/">Neighborhoods</a>
-      <a href="plan.html">Plan a request</a>
-      <a href="g/">Guides</a>
-    </nav>
+    <nav aria-label="Main"><a href="map/">Map</a><a href="n/">Neighborhoods</a><a href="p/">Properties</a><a href="m/">Meetings</a><a href="g/">Guides</a><a href="plan.html">Plan a request</a></nav>
   </div>
 </header>
 <div class="dateline"><div class="wrap"><span>Mount Pleasant, South Carolina</span><span id="updated">From the Town's own minutes</span></div></div>

@@ -51,7 +51,7 @@ def main(site):
     os.makedirs(os.path.join(site, "feeds"), exist_ok=True)
     now = datetime.datetime.now(datetime.timezone.utc)
     stamp = now.strftime("%Y%m%dT%H%M%SZ")
-    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Mount Pleasant Zoning Map//EN", "CALSCALE:GREGORIAN",
+    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//The Zoning Record//EN", "CALSCALE:GREGORIAN",
              "X-WR-CALNAME:Mount Pleasant zoning meetings", "X-WR-TIMEZONE:America/New_York",
              "REFRESH-INTERVAL;VALUE=DURATION:PT12H",
              # US Eastern time rules, so clients that need a VTIMEZONE (Outlook) read the times correctly
