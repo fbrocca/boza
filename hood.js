@@ -45,7 +45,7 @@
   };
 
   Promise.all([
-    fetch('data/properties.json').then((r) => r.json()),
+    fetch('data/cases-lite.json').then((r) => r.json()),  // slim copy written by tools/split_data.py
     fetch('data/neighborhoods.json').then((r) => r.json()),
     fetch('data/upcoming.json').then((r) => (r.ok ? r.json() : { meetings: [] })).catch(() => ({ meetings: [] })),
     slug ? fetch('data/neighborhood-shapes.json').then((r) => r.json()).catch(() => ({})) : Promise.resolve({}),

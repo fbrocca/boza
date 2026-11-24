@@ -92,13 +92,14 @@ jobs:
           M=_site/mount-pleasant
           mkdir -p $M
           cp root/index.html root/404.html icons/favicon.ico _site/
-          cp -r index.html site.webmanifest icons landing.css landing.js pages.css map app.js style.css shared.js plan.html plan.js plan.css hood.js hood.css vendor data minutes $M/
+          cp -r index.html site.webmanifest icons landing.css landing.js pages.css map app.js style.css shared.js plan.html plan.js plan.css hood.js hood.css vendor data $M/   # minutes PDFs are not published: pages link the Town's copy, S3 keeps ours
           python3 tools/hood_pages.py $M
           python3 tools/feeds.py $M
           python3 tools/landing_data.py $M
+          python3 tools/split_data.py $M   # per-property minutes text, slim case list for neighborhood pages
           python3 tools/static_pages.py $M _site   # property, meeting and guide pages; sitemap, robots.txt, llms.txt
           # ship only the data files the pages read (the generators above read data/ from the repo)
-          find $M/data -type f ! \( -name properties.json -o -name minutes-text.json -o -name neighborhoods.json -o -name neighborhood-shapes.json -o -name upcoming.json -o -name videos.json -o -name video-moments.json -o -name faq.json -o -name code-standards.json -o -name summary.json \) -delete
+          find $M/data -type f ! -path "$M/data/minutes/*" ! \( -name properties.json -o -name cases-lite.json -o -name neighborhoods.json -o -name neighborhood-shapes.json -o -name upcoming.json -o -name videos.json -o -name video-moments.json -o -name faq.json -o -name code-standards.json -o -name summary.json \) -delete
           cp -r $M/feeds _site/feeds   # calendar and RSS subscribers from before the move (apps do not run JS)
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3

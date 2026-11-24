@@ -203,17 +203,16 @@ is amended.
 | `plan.html`/`plan.js`/`plan.css`, `hood.html`/`hood.js`/`hood.css`, `pages.css` | Plan a request; neighborhood pages (template for `tools/hood_pages.py`); static property, meeting and guide pages. |
 | `root/` | Domain-root redirect and 404 pages. |
 | `alerts/` | The alerts signup function deployed to AWS Lambda. |
-| `minutes/` | All BOZA minutes PDFs (`YYYY-MM-DD.pdf`), with `index.csv` and a README listing. |
+| `minutes/` | All BOZA minutes PDFs (`YYYY-MM-DD.pdf`), with `index.csv` and a README listing. Pipeline input only: not published with the site (pages link the Town's copy; the S3 archive keeps ours). |
 | `sources/pc`, `sources/pcom`, `sources/council`, `sources/hdpc`, `sources/drb` | Text of every Planning Commission, Planning Committee, Town Council, Historic District Preservation Commission and Design Review Board minutes (`YYYY-MM-DD-<id>.txt`). Only the text is kept because these PDFs total ~2 GB; the map links to the Town's copy. |
 | `data/cases.json` | Every BOZA hearing extracted from the minutes. |
 | `data/planning.json` | Every Planning Commission case with its linked Committee and Council events. |
 | `data/design.json` | Every HDPC / DRB project, grouped by parcel, with its review timeline. |
 | `data/properties.json` | All cases grouped by parcel, with location and lot outline. What the map loads. |
-| `data/minutes-text.json` | Minutes text per event, fetched when someone opens it. |
+| `data/minutes-text.json` | Minutes text per event. At deploy `tools/split_data.py` splits it into `data/minutes/<property id>.json`, fetched when someone opens an excerpt, and writes `data/cases-lite.json` (the fields the neighborhood pages need). |
 | `data/agenda-docs.json` | Links to case documents found in each BOZA and Planning Commission agenda, assigned to cases. Links only; the documents stay on the Town's site. |
 | `data/parcels.json`, `data/geocode-cache.json` | Cached county parcel and address lookups. |
 | `data/zoning.json` | Zoning district, overlay districts, height limit and Comprehensive Plan future land use per parcel, from the Town's map server (`tools/zoning.py`). |
-| `data/case-facts.sqlite` | The same facts as one SQLite table, for ad-hoc queries. Not regenerated: refresh by hand if `case-facts.json` changes. |
 | `data/upcoming.json`, `data/videos.json`, `data/video-moments.json` | Posted agendas for upcoming meetings; meeting recordings and the moment each case comes up. |
 | `data/sales.json`, `data/code-standards.json`, `data/faq.json`, `data/questions-coded.json`, `data/neighborhoods.json`, `data/neighborhood-shapes.json` | Recorded sales; current code standards; questions boards and residents raise (coded, and summarised); neighborhood assignment and outlines. |
 | `data/status-corrections.json`, `data/dead-docs.json`, `data/archive-manifest.json` | Outcomes read by hand where the parser found none (with quotes); Town links that now 404; the S3 document archive index. |
