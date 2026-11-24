@@ -525,6 +525,13 @@
     ].join('');
   }
 
+  // The first three tips (the strongest patterns) shown; the rest behind a toggle.
+  function moreTips(html) {
+    const items = html.split(/(?=<li[ >])/).filter((x) => x.trim());
+    if (items.length <= 3) return `<ol class="tips">${html}</ol>`;
+    return `<ol class="tips">${items.slice(0, 3).join('')}</ol><details class="more-comps"><summary>Show ${items.length - 3} more</summary><ol class="tips" start="4">${items.slice(3).join('')}</ol></details>`;
+  }
+
   // ---------- run ----------
   async function run(e) {
     e.preventDefault();
@@ -565,7 +572,7 @@
         codeSection(lot, z, relief, { ask, req, unit: $('sizeUnit').value }, std) +
         `<section class="card block"><h2>How to strengthen your application</h2>
           <p class="muted">Patterns from past cases, with how many cases each rests on. Not a prediction.</p>
-          <ol class="tips">${isUse || relief === 'lot_size_density_subdivision' ? rezoningTips(R, z, near) : varianceTips(V, comps, relief, userPct, near)}</ol>
+          ${moreTips(isUse || relief === 'lot_size_density_subdivision' ? rezoningTips(R, z, near) : varianceTips(V, comps, relief, userPct, near))}
         </section>` + faqSection(faq, relief, z) + salesSection(sales);
       $('out').scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {

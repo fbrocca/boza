@@ -7,7 +7,11 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const LOCATION = 'Town Hall, 100 Ann Edwards Lane, Mount Pleasant, SC 29464';
   const gcReady = () => !!(window.goatcounter && typeof window.goatcounter.count === 'function');
-  const track = (path, title) => { try { if (gcReady()) window.goatcounter.count({ path, title: title || path, event: true }); } catch (e) { /* optional */ } };
+  // Events sent before GoatCounter has loaded wait for the page's load event.
+  const track = (path, title) => {
+    const send = () => { try { window.goatcounter.count({ path, title: title || path, event: true }); } catch (e) { /* optional */ } };
+    if (gcReady()) send(); else window.addEventListener('load', () => { if (gcReady()) send(); }, { once: true });
+  };
 
   // ---------- Report an error ----------
   let dlg;

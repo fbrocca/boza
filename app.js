@@ -1,7 +1,7 @@
 /* The Zoning Record: map app (map/index.html).
  * Data: data/properties.json  one entry per parcel; each has cases (Zoning Appeals,
  *                              planning or design review), each a timeline of hearings
- *       data/minutes-text.json minutes text per hearing, fetched on demand
+ *       data/minutes/<id>.json  minutes text for one property, fetched on demand
  * Styles: style.css (paper, ink and marsh tokens shared with landing.css).
  */
 (function () {
@@ -59,22 +59,17 @@
   };
 
   const $ = (id) => document.getElementById(id);
-  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const { esc, track } = window.MPShared;  // shared.js loads first
   const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
   // ---------- Usage analytics (GoatCounter events; no cookies, no search text) ----------
-  function track(name, title) {
-    const send = () => window.goatcounter.count({ path: name, title: title || name, event: true });
-    if (window.goatcounter && window.goatcounter.count) send();
-    else window.addEventListener('load', () => { if (window.goatcounter && window.goatcounter.count) send(); }, { once: true });
-  }
   const tester = new URLSearchParams(location.search).get('t');
   if (tester && /^[\w-]{1,30}$/.test(tester)) track('tester/' + tester.toLowerCase(), 'Tester link: ' + tester);
 
   let props = [];
   const byId = new Map();
   const markers = new Map();
-  let texts = null;
+  const texts = {};  // minutes text per property, data/minutes/<id>.json (tools/split_data.py)
   let activeId = null;
   let shown = [];
   let board = '';
@@ -456,11 +451,11 @@
     return '';
   }
   function eventLinks(e) {
-    const pdf = e.pdf ? `${e.pdf}#page=${e.page}` : e.town ? `${e.town}#page=${e.page}` : null;
+    const pdf = e.town ? `${e.town}#page=${e.page}` : null;
     return `${videoLink(e)}${docLinks(e)}
       <button class="btn btn-secondary btn-sm" type="button" data-excerpt="${esc(e.id)}" aria-expanded="false">${ICON.text}<span>Minutes</span></button>
       ${pdf ? `<a class="btn btn-ghost btn-sm" href="${esc(pdf)}" target="_blank" rel="noopener">${ICON.ext}PDF p.${e.page}</a>` : ''}
-      ${e.pdf && e.town ? `<a class="btn btn-ghost btn-sm" href="${esc(e.town)}" target="_blank" rel="noopener">${ICON.ext}Town's copy</a>` : ''}`;
+`;
   }
   function factsHtml(c) {
     const f = c.facts;
@@ -615,16 +610,18 @@
       box.hidden = true; btn.setAttribute('aria-expanded', 'false'); label.textContent = 'Minutes';
       return;
     }
-    if (!texts) {
+    const pid = id.split('~')[0];
+    if (!texts[pid]) {
       label.textContent = 'Loading…';
       try {
-        texts = await (await fetch('data/minutes-text.json')).json();
+        const r = await fetch(`data/minutes/${encodeURIComponent(pid)}.json`);
+        texts[pid] = r.ok ? await r.json() : {};  // 404: no minutes text for this property
       } catch (e) {
         label.textContent = 'Could not load';
         return;
       }
     }
-    const t = texts[id];
+    const t = texts[pid][id];
     box.innerHTML = t ? highlight(t, filters().q) : 'No discussion was recorded for this item. See the PDF.';
     box.hidden = false; btn.setAttribute('aria-expanded', 'true'); label.textContent = 'Hide minutes';
     track('minutes', 'Read minutes text');
@@ -893,7 +890,7 @@
           <ul class="up-items">${first.map((it, ii) => itemHtml(m, mi, it, ii)).join('')}</ul>
           ${rest.length ? `<details class="up-more"><summary>${rest.length} more</summary><ul class="up-items">${rest.map((it, k) => itemHtml(m, mi, it, k + 3)).join('')}</ul></details>` : ''}
           ${m.deadline ? `<p class="up-foot">Comments due ${esc(m.deadline.replace(/, \d{4}$/, ''))}</p>` : ''}
-          ${window.MPShared ? window.MPShared.meetingActions(m) : ''}
+          ${window.MPShared.meetingActions(m)}
         </div>`;
       }).join('')}`;
     // Feeds live at the site root (the map page sits one level down, under <base href="../">).
