@@ -43,6 +43,11 @@ BOARD_SLUG = {
     "Planning Committee": "planning-committee", "Town Council": "town-council",
     "Historic District Preservation Commission": "historic-district-commission", "Design Review Board": "design-review-board",
 }
+SHORT_BOARD = {  # board names for page titles (search results cut titles at about 60 characters)
+    "Board of Zoning Appeals": "Zoning Appeals", "Historic District Preservation Commission": "Historic Commission",
+    "Design Review Board": "Design Review Board", "Planning Commission": "Planning Commission",
+    "Planning Committee": "Planning Committee", "Town Council": "Town Council",
+}
 RELIEF = {
     "front_setback": "Front setback", "side_setback": "Side setback", "rear_setback": "Rear setback", "multiple_setbacks": "Several setbacks",
     "height": "Height", "lot_coverage_or_bar": "Lot coverage / building area", "tree_removal_or_protection": "Tree removal / protection",
@@ -50,27 +55,27 @@ RELIEF = {
     "signage": "Signage", "use": "Use", "porch_or_design_standard": "Porch / design standard", "dock_or_marsh": "Dock / marsh",
 }
 GUIDES = [
-    {"slug": "board-of-zoning-appeals", "title": "Board of Zoning Appeals",
+    {"slug": "board-of-zoning-appeals", "seo": "Variances and zoning appeals in Mount Pleasant, SC", "title": "Board of Zoning Appeals",
      "h1": "Variances, special exceptions and appeals in Mount Pleasant",
      "bodies": {"Board of Zoning Appeals"}, "faq": "boza:all",
      "what": "The Board of Zoning Appeals hears requests to depart from the zoning code on a specific lot "
              "(variances, such as building closer to a property line than the setback allows), special exceptions "
              "the code lets the board grant case by case, and appeals of decisions made by Town staff. "
              "Its decision is final at the Town level."},
-    {"slug": "rezoning-and-annexation", "title": "Rezonings and annexations",
+    {"slug": "rezoning-and-annexation", "seo": "Rezonings and annexations in Mount Pleasant, SC", "title": "Rezonings and annexations",
      "h1": "Rezonings, annexations and planned developments in Mount Pleasant",
      "bodies": {"Planning Commission", "Planning Committee", "Town Council"}, "faq": "planning:rezoning",
      "what": "Requests to change a property's zoning district, bring land into the Town, or amend a planned development "
              "start at the Planning Commission, which holds a hearing and makes a recommendation. Town Council decides, "
              "usually after review by its Planning Committee and over two readings of an ordinance. "
              "The Planning Commission also reviews sketch plans for new subdivisions."},
-    {"slug": "historic-district-commission", "title": "Historic District Preservation Commission",
+    {"slug": "historic-district-commission", "seo": "Historic district reviews in Mount Pleasant, SC", "title": "Historic District Preservation Commission",
      "h1": "Historic district reviews and demolitions in Mount Pleasant",
      "bodies": {"Historic District Preservation Commission"}, "faq": "hdpc:all",
      "what": "The Historic District Preservation Commission reviews exterior changes, new buildings and demolitions in the "
              "Town's historic district and on designated historic properties. Projects often come back more than once: "
              "a preliminary or conceptual review with comments, then a final review with a vote."},
-    {"slug": "design-review-board", "title": "Design Review Board",
+    {"slug": "design-review-board", "seo": "Design Review Board decisions in Mount Pleasant, SC", "title": "Design Review Board",
      "h1": "Design review of commercial and larger projects in Mount Pleasant",
      "bodies": {"Design Review Board"}, "faq": "drb:all",
      "what": "The Design Review Board reviews the design of commercial, multifamily and other larger projects in the Town's "
@@ -110,6 +115,12 @@ def load(name, default):
         return json.load(open(os.path.join(DATA, name)))
     except (OSError, ValueError):
         return default
+
+
+def short_addr(a, n=42):
+    """Address for a page title: cut at a word boundary so the title stays under ~60 characters."""
+    a = " ".join(str(a).split())
+    return a if len(a) <= n else a[:n].rsplit(" ", 1)[0].rstrip(" ,;:/-(") + "…"
 
 
 def shell(base, title, desc, url, body, ld=None, crumbs=None):
@@ -268,7 +279,7 @@ def property_pages(site, props, hoods, assign, links, meet_of):
         if p.get("lat"):
             ld["geo"] = {"@type": "GeoCoordinates", "latitude": p["lat"], "longitude": p["lng"]}
         write(os.path.join(site, "p", slug, "index.html"),
-              shell("../../", f"{p['address']} · Zoning history · Mount Pleasant, SC", desc[:300], url, body, ld,
+              shell("../../", f"{short_addr(p['address'])} · Mount Pleasant zoning", desc[:300], url, body, ld,
                     [("Mount Pleasant", "./"), ("Properties", "p/"), (p["address"], f"p/{slug}/")]))
         urls.append((url, p.get("date") or TODAY))
     # index by street
@@ -327,7 +338,7 @@ def meeting_pages(site, meet_of, links):
                            "address": {"@type": "PostalAddress", "streetAddress": "100 Ann Edwards Lane", "addressLocality": "Mount Pleasant", "addressRegion": "SC", "postalCode": "29464", "addressCountry": "US"}},
               "organizer": {"@type": "GovernmentOrganization", "name": f"Town of Mount Pleasant {body_name}"}}
         write(os.path.join(site, "m", ms, "index.html"),
-              shell("../../", f"{title} · Zoning decisions · The Zoning Record", f"What the Mount Pleasant {body_name} heard and decided on {day(date)}: {summary}.",
+              shell("../../", f"{SHORT_BOARD.get(body_name, body_name)}, {day(date, '%b %-d, %Y')} · Mount Pleasant zoning", f"What the Mount Pleasant {body_name} heard and decided on {day(date)}: {summary}.",
                     url, body, ld, [("Mount Pleasant", "./"), ("Meetings", "m/"), (title, f"m/{ms}/")]))
         urls.append((url, date))
         by_year[date[:4]].append((date, body_name, ms, len(rows)))
@@ -344,6 +355,14 @@ def meeting_pages(site, meet_of, links):
                 SITE + "m/", body, crumbs=[("Mount Pleasant", "./"), ("Meetings", "m/")]))
     urls.append((SITE + "m/", TODAY))
     return urls
+
+
+def guide_desc(g, cases, status, first):
+    """Search snippet: lead with what the page has (counts), then what it covers. Under ~160 characters."""
+    yes = sum(n for st, n in status.items() if st.startswith(("Approved", "Adopted", "Reversed")))
+    no = sum(n for st, n in status.items() if st.startswith("Denied") or st == "Upheld")
+    return (f"{len(cases):,} cases since {first[:4]}: {yes:,} approved, {no:,} denied. "
+            f"What the board decides, the questions it asks, and every decision with its minutes.")
 
 
 def guide_pages(site, props, faq, meet_of):
@@ -406,7 +425,7 @@ def guide_pages(site, props, faq, meet_of):
               "about": {"@type": "GovernmentOrganization", "name": f"Town of Mount Pleasant {g['title']}"},
               "publisher": {"@type": "Organization", "name": "The Zoning Record", "url": ORIGIN}}
         write(os.path.join(site, "g", g["slug"], "index.html"),
-              shell("../../", f"{g['h1']} · The Zoning Record", f"{g['what'][:200]} Outcomes and questions from {len(cases):,} cases since {first[:4]}.",
+              shell("../../", g["seo"], guide_desc(g, cases, status, first),
                     url, body, ld, [("Mount Pleasant", "./"), ("Guides", "g/"), (g["title"], f"g/{g['slug']}/")]))
         urls.append((url, TODAY))
         cards.append(f'<li><a href="g/{g["slug"]}/"><b>{E(g["title"])}</b></a><br>{E(g["what"][:160].rsplit(" ", 1)[0])}… <small>{plural(len(cases), "case")}</small></li>')
