@@ -795,6 +795,14 @@
 "status": 200,
 "type": "application/pdf"
 },
+"https://sc-mountpleasant2.civicplus.com/AgendaCenter/ViewFile/Agenda/_12092026-2310": {
+"bytes": 210018,
+"fetched": "2026-11-25",
+"key": "docs/62/621c310a0460faa286e57b8880e131e3d19c3cc8deb70dc21167cb3865ad59ae.pdf",
+"sha256": "621c310a0460faa286e57b8880e131e3d19c3cc8deb70dc21167cb3865ad59ae",
+"status": 200,
+"type": "application/pdf"
+},
 "https://sc-mountpleasant2.civicplus.com/AgendaCenter/ViewFile/Minutes/_01022024-1600": {
 "bytes": 4596319,
 "fetched": "2026-11-22",

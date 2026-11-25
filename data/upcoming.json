@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23",
+ "updated": "2026-11-25",
  "meetings": [
   {
    "body": "drb",
@@ -91,6 +91,126 @@
      "status": null,
      "lat": 32.792082,
      "lng": -79.869333
+    }
+   ]
+  },
+  {
+   "body": "pc",
+   "label": "Planning Commission",
+   "date": "2026-12-09",
+   "time": "5:00pm",
+   "agenda": "https://sc-mountpleasant2.civicplus.com/AgendaCenter/ViewFile/Agenda/_12092026-2310",
+   "title": "December 2026, Mt. Pleasant Planning Commission Meeting",
+   "deadline": "Friday, December 4th, 2026",
+   "email": "planning@tompsc.com",
+   "public_comment": true,
+   "items": [
+    {
+     "case": "R-31-26",
+     "tms": "532-01-00-126",
+     "title": "418 Whilden Street",
+     "address": null,
+     "kind": "Public Hearing",
+     "request": "Request to rezone NC-2, Neighborhood Commercial District 2.",
+     "status": null,
+     "lat": 32.789133,
+     "lng": -79.876497
+    },
+    {
+     "case": "R-32-26",
+     "tms": "535-00-00-029",
+     "title": "798 Dupre Lane",
+     "address": null,
+     "kind": "Public Hearing",
+     "request": "Request to rezone NC-1, Neighborhood Commercial District 1.",
+     "status": null,
+     "lat": 32.818635,
+     "lng": -79.861437
+    },
+    {
+     "case": "R-33-26",
+     "tms": "557-00-00-018",
+     "title": "1223 Long Point Road",
+     "address": null,
+     "kind": "Public Hearing",
+     "request": "Request to rezone CC, Community Conservation District a 1.62-acre portion of the subject parcel.",
+     "status": null,
+     "lat": 32.846532,
+     "lng": -79.830096
+    },
+    {
+     "case": null,
+     "tms": null,
+     "title": "Zoning Code Text Amendment, Chapter 156.1592",
+     "address": null,
+     "kind": "Public Hearing",
+     "request": "Text Amendment Proposal to amend Chapter 156.1592, Zoning Code, of the Mount Pleasant Code of Ordinances, pertaining to conflicts between the zoning map designation and the Comprehensive Plan Future Land Use Map.",
+     "status": null
+    },
+    {
+     "case": null,
+     "tms": null,
+     "title": "Zoning Code Text Amendment, Chapter 156.1662",
+     "address": null,
+     "kind": "Public Hearing",
+     "request": "Text Amendment Proposal to add Chapter 156.1662 to the Zoning Code, of the Mount Pleasant Code of Ordinances related to the regulation and proximity of Smoke and Vape Shops from certain uses. Further proposed is an amortized date of January 1 2032, for legally existing uses to come into compliance.",
+     "status": null
+    },
+    {
+     "case": null,
+     "tms": "517-00-00-050",
+     "title": "963 Houston Northcutt",
+     "address": null,
+     "kind": "Vested Rights Extension",
+     "request": "Request for annual extension of Vested Rights as it pertains to Impact Assessment and Conceptual Plan approval for subject property.",
+     "status": null,
+     "property": "tms-517-00-00-050",
+     "lat": 32.799254,
+     "lng": -79.889291
+    },
+    {
+     "case": "SP-16-26",
+     "tms": "558-00-00-197",
+     "title": "1748 Halls Pond Road",
+     "address": null,
+     "kind": "Sketch Plan",
+     "request": "Request to create 3 lots on 1.17 acres, zoned CC, Community Conservation District. Further requested is an LDR Waiver to subdivide from an access easement.",
+     "status": null,
+     "property": "tms-558-00-00-197",
+     "lat": 32.823596,
+     "lng": -79.835575
+    },
+    {
+     "case": "SP-17-26",
+     "tms": null,
+     "title": "4 & 6 Pearl Avenue, TMS Nos. 535-13-00-067, 068",
+     "address": null,
+     "kind": "Sketch Plan",
+     "request": "Request to create 3 lots on 0.51 acres, zoned R-3, Residential District.",
+     "status": null
+    },
+    {
+     "case": "SP-18-26",
+     "tms": "561-00-00-102",
+     "title": "1751 Rifle Range Road",
+     "address": null,
+     "kind": "Sketch Plan",
+     "request": "Request to create 4 lots on 1.8 acres, zoned CC, Community Conservation District. Further requested is an LDR Waiver to subdivide from an access easement.",
+     "status": null,
+     "property": "tms-561-00-00-102",
+     "lat": 32.814832,
+     "lng": -79.82761
+    },
+    {
+     "case": "SP-19-26",
+     "tms": "535-00-00-043",
+     "title": "779 Dupre Lane",
+     "address": null,
+     "kind": "Sketch Plan",
+     "request": "Request to create two lots on 1.06 acres. Subject Parcel is zoned R-1 Residential District.",
+     "status": null,
+     "lat": 32.818757,
+     "lng": -79.862773
     }
    ]
   }
